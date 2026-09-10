@@ -1,0 +1,6 @@
+package com.vulnerax.modules.database;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List; import java.util.UUID;
+public interface DatabaseRepository extends JpaRepository<DatabaseAsset, UUID> {
+    List<DatabaseAsset> findByProjectId(UUID projectId);
+}

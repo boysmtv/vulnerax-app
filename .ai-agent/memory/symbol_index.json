@@ -1,0 +1,6948 @@
+{
+  "project_root": "D:\\Work\\Pribadi\\WebProject\\vulnerax-app",
+  "file_count": 196,
+  "files": [
+    {
+      "path": "backend/src/main/java/com/vulnerax/common/ApiResponse.java",
+      "language": "java",
+      "package": "com.vulnerax.common",
+      "classes": [
+        {
+          "name": "ApiResponse",
+          "kind": "class",
+          "line": 12
+        }
+      ],
+      "functions": [
+        {
+          "name": "ok",
+          "line": 17
+        },
+        {
+          "name": "ok",
+          "line": 21
+        },
+        {
+          "name": "fail",
+          "line": 24
+        }
+      ],
+      "data_members": [
+        {
+          "name": "success",
+          "line": 13
+        },
+        {
+          "name": "message",
+          "line": 14
+        },
+        {
+          "name": "data",
+          "line": 15
+        },
+        {
+          "name": "meta",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/common/BaseEntity.java",
+      "language": "java",
+      "package": "com.vulnerax.common",
+      "classes": [
+        {
+          "name": "BaseEntity",
+          "kind": "class",
+          "line": 17
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "id",
+          "line": 20
+        },
+        {
+          "name": "createdAt",
+          "line": 24
+        },
+        {
+          "name": "updatedAt",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/common/exception/BusinessException.java",
+      "language": "java",
+      "package": "com.vulnerax.common.exception",
+      "classes": [
+        {
+          "name": "BusinessException",
+          "kind": "class",
+          "line": 2
+        }
+      ],
+      "functions": [
+        {
+          "name": "BusinessException",
+          "line": 4
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/common/exception/GlobalExceptionHandler.java",
+      "language": "java",
+      "package": "com.vulnerax.common.exception",
+      "classes": [
+        {
+          "name": "GlobalExceptionHandler",
+          "kind": "class",
+          "line": 15
+        }
+      ],
+      "functions": [
+        {
+          "name": "handleNotFound",
+          "line": 18
+        },
+        {
+          "name": "handleBusiness",
+          "line": 23
+        },
+        {
+          "name": "handleValidation",
+          "line": 28
+        },
+        {
+          "name": "handleAccess",
+          "line": 35
+        },
+        {
+          "name": "handleOther",
+          "line": 40
+        }
+      ],
+      "data_members": [
+        {
+          "name": "msg",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/common/exception/ResourceNotFoundException.java",
+      "language": "java",
+      "package": "com.vulnerax.common.exception",
+      "classes": [
+        {
+          "name": "ResourceNotFoundException",
+          "kind": "class",
+          "line": 2
+        }
+      ],
+      "functions": [
+        {
+          "name": "ResourceNotFoundException",
+          "line": 4
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/common/PageResponse.java",
+      "language": "java",
+      "package": "com.vulnerax.common",
+      "classes": [
+        {
+          "name": "PageResponse",
+          "kind": "class",
+          "line": 13
+        }
+      ],
+      "functions": [
+        {
+          "name": "from",
+          "line": 19
+        }
+      ],
+      "data_members": [
+        {
+          "name": "content",
+          "line": 14
+        },
+        {
+          "name": "page",
+          "line": 15
+        },
+        {
+          "name": "size",
+          "line": 16
+        },
+        {
+          "name": "totalElements",
+          "line": 17
+        },
+        {
+          "name": "totalPages",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/config/AuditingConfig.java",
+      "language": "java",
+      "package": "com.vulnerax.config",
+      "classes": [
+        {
+          "name": "AuditingConfig",
+          "kind": "class",
+          "line": 11
+        }
+      ],
+      "functions": [
+        {
+          "name": "auditorAware",
+          "line": 13
+        },
+        {
+          "name": "return",
+          "line": 14
+        },
+        {
+          "name": "if",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "auth",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/config/OpenApiConfig.java",
+      "language": "java",
+      "package": "com.vulnerax.config",
+      "classes": [
+        {
+          "name": "OpenApiConfig",
+          "kind": "class",
+          "line": 12
+        }
+      ],
+      "functions": [
+        {
+          "name": "openAPI",
+          "line": 14
+        },
+        {
+          "name": "OpenAPI",
+          "line": 15
+        },
+        {
+          "name": "SecurityScheme",
+          "line": 19
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/config/SecurityConfig.java",
+      "language": "java",
+      "package": "com.vulnerax.config",
+      "classes": [
+        {
+          "name": "SecurityConfig",
+          "kind": "class",
+          "line": 25
+        }
+      ],
+      "functions": [
+        {
+          "name": "filterChain",
+          "line": 30
+        },
+        {
+          "name": "passwordEncoder",
+          "line": 44
+        },
+        {
+          "name": "authenticationManager",
+          "line": 47
+        },
+        {
+          "name": "corsSource",
+          "line": 52
+        }
+      ],
+      "data_members": [
+        {
+          "name": "jwtAuthFilter",
+          "line": 26
+        },
+        {
+          "name": "cfg",
+          "line": 53
+        },
+        {
+          "name": "src",
+          "line": 58
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/ai/AiAnalystService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.ai",
+      "classes": [
+        {
+          "name": "AiAnalystService",
+          "kind": "class",
+          "line": 22
+        }
+      ],
+      "functions": [
+        {
+          "name": "explain",
+          "line": 36
+        },
+        {
+          "name": "if",
+          "line": 41
+        },
+        {
+          "name": "tryDeepSeekExplain",
+          "line": 59
+        },
+        {
+          "name": "if",
+          "line": 61
+        },
+        {
+          "name": "if",
+          "line": 98
+        },
+        {
+          "name": "if",
+          "line": 110
+        },
+        {
+          "name": "rootCause",
+          "line": 134
+        },
+        {
+          "name": "if",
+          "line": 136
+        },
+        {
+          "name": "if",
+          "line": 137
+        },
+        {
+          "name": "if",
+          "line": 138
+        },
+        {
+          "name": "if",
+          "line": 139
+        },
+        {
+          "name": "impact",
+          "line": 142
+        },
+        {
+          "name": "if",
+          "line": 143
+        },
+        {
+          "name": "if",
+          "line": 144
+        },
+        {
+          "name": "remediation",
+          "line": 147
+        },
+        {
+          "name": "if",
+          "line": 148
+        },
+        {
+          "name": "if",
+          "line": 149
+        },
+        {
+          "name": "if",
+          "line": 150
+        },
+        {
+          "name": "codeFix",
+          "line": 153
+        },
+        {
+          "name": "if",
+          "line": 154
+        },
+        {
+          "name": "if",
+          "line": 155
+        },
+        {
+          "name": "priority",
+          "line": 158
+        },
+        {
+          "name": "if",
+          "line": 160
+        },
+        {
+          "name": "if",
+          "line": 161
+        },
+        {
+          "name": "if",
+          "line": 162
+        },
+        {
+          "name": "prioritize",
+          "line": 165
+        },
+        {
+          "name": "reportDraft",
+          "line": 180
+        }
+      ],
+      "data_members": [
+        {
+          "name": "findingRepo",
+          "line": 23
+        },
+        {
+          "name": "deepseekKey",
+          "line": 26
+        },
+        {
+          "name": "deepseekBase",
+          "line": 29
+        },
+        {
+          "name": "deepseekModel",
+          "line": 32
+        },
+        {
+          "name": "om",
+          "line": 33
+        },
+        {
+          "name": "http",
+          "line": 35
+        },
+        {
+          "name": "f",
+          "line": 38
+        },
+        {
+          "name": "deep",
+          "line": 40
+        },
+        {
+          "name": "res",
+          "line": 42
+        },
+        {
+          "name": "prompt",
+          "line": 63
+        },
+        {
+          "name": "body",
+          "line": 79
+        },
+        {
+          "name": "jsonBody",
+          "line": 89
+        },
+        {
+          "name": "req",
+          "line": 90
+        },
+        {
+          "name": "resp",
+          "line": 97
+        },
+        {
+          "name": "null",
+          "line": 100
+        },
+        {
+          "name": "root",
+          "line": 102
+        },
+        {
+          "name": "content",
+          "line": 103
+        },
+        {
+          "name": "inner",
+          "line": 105
+        },
+        {
+          "name": "s",
+          "line": 108
+        },
+        {
+          "name": "e2",
+          "line": 109
+        },
+        {
+          "name": "r",
+          "line": 159
+        },
+        {
+          "name": "list",
+          "line": 167
+        },
+        {
+          "name": "top",
+          "line": 169
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/ai/AiController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.ai",
+      "classes": [
+        {
+          "name": "AiController",
+          "kind": "class",
+          "line": 12
+        }
+      ],
+      "functions": [
+        {
+          "name": "explain",
+          "line": 15
+        },
+        {
+          "name": "prioritize",
+          "line": 17
+        },
+        {
+          "name": "reportDraft",
+          "line": 19
+        }
+      ],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/aillm/AiAsset.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.aillm",
+      "classes": [
+        {
+          "name": "AiAsset",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "model",
+          "line": 12
+        },
+        {
+          "name": "provider",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/aillm/AiLlmController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.aillm",
+      "classes": [
+        {
+          "name": "AiLlmController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/aillm/AiLlmService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.aillm",
+      "classes": [
+        {
+          "name": "AiLlmService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "delete",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/aillm/AiRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.aillm",
+      "classes": [
+        {
+          "name": "AiRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 5
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/assessment/AssessmentController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.assessment",
+      "classes": [
+        {
+          "name": "AssessmentController",
+          "kind": "class",
+          "line": 16
+        }
+      ],
+      "functions": [
+        {
+          "name": "runProjectAssessment",
+          "line": 21
+        },
+        {
+          "name": "if",
+          "line": 24
+        },
+        {
+          "name": "for",
+          "line": 28
+        },
+        {
+          "name": "if",
+          "line": 41
+        },
+        {
+          "name": "if",
+          "line": 42
+        },
+        {
+          "name": "if",
+          "line": 43
+        },
+        {
+          "name": "for",
+          "line": 45
+        },
+        {
+          "name": "summary",
+          "line": 69
+        }
+      ],
+      "data_members": [
+        {
+          "name": "assetRepo",
+          "line": 17
+        },
+        {
+          "name": "scanService",
+          "line": 18
+        },
+        {
+          "name": "assets",
+          "line": 23
+        },
+        {
+          "name": "created",
+          "line": 27
+        },
+        {
+          "name": "scannerType",
+          "line": 29
+        },
+        {
+          "name": "types",
+          "line": 40
+        },
+        {
+          "name": "s",
+          "line": 47
+        },
+        {
+          "name": "saved",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/asset/Asset.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.asset",
+      "classes": [
+        {
+          "name": "Asset",
+          "kind": "class",
+          "line": 11
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "workspaceId",
+          "line": 15
+        },
+        {
+          "name": "identifier",
+          "line": 19
+        },
+        {
+          "name": "version",
+          "line": 21
+        },
+        {
+          "name": "environment",
+          "line": 22
+        },
+        {
+          "name": "owner",
+          "line": 29
+        },
+        {
+          "name": "team",
+          "line": 30
+        },
+        {
+          "name": "location",
+          "line": 31
+        },
+        {
+          "name": "tags",
+          "line": 32
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/asset/AssetController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.asset",
+      "classes": [
+        {
+          "name": "AssetController",
+          "kind": "class",
+          "line": 14
+        }
+      ],
+      "functions": [
+        {
+          "name": "list",
+          "line": 18
+        },
+        {
+          "name": "get",
+          "line": 27
+        },
+        {
+          "name": "create",
+          "line": 30
+        },
+        {
+          "name": "update",
+          "line": 33
+        },
+        {
+          "name": "delete",
+          "line": 36
+        },
+        {
+          "name": "stats",
+          "line": 39
+        },
+        {
+          "name": "discover",
+          "line": 42
+        }
+      ],
+      "data_members": [
+        {
+          "name": "service",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/asset/AssetRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.asset",
+      "classes": [
+        {
+          "name": "AssetRepository",
+          "kind": "interface",
+          "line": 10
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 12
+        },
+        {
+          "name": "findByOrganizationId",
+          "line": 13
+        },
+        {
+          "name": "findByProjectId",
+          "line": 14
+        },
+        {
+          "name": "countByProjectId",
+          "line": 15
+        },
+        {
+          "name": "countByInternetExposedTrue",
+          "line": 16
+        },
+        {
+          "name": "countByType",
+          "line": 18
+        },
+        {
+          "name": "countByCriticality",
+          "line": 20
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/asset/AssetService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.asset",
+      "classes": [
+        {
+          "name": "AssetService",
+          "kind": "class",
+          "line": 18
+        }
+      ],
+      "functions": [
+        {
+          "name": "list",
+          "line": 22
+        },
+        {
+          "name": "if",
+          "line": 24
+        },
+        {
+          "name": "if",
+          "line": 25
+        },
+        {
+          "name": "get",
+          "line": 28
+        },
+        {
+          "name": "create",
+          "line": 32
+        },
+        {
+          "name": "update",
+          "line": 39
+        },
+        {
+          "name": "if",
+          "line": 41
+        },
+        {
+          "name": "if",
+          "line": 42
+        },
+        {
+          "name": "if",
+          "line": 43
+        },
+        {
+          "name": "if",
+          "line": 44
+        },
+        {
+          "name": "if",
+          "line": 45
+        },
+        {
+          "name": "if",
+          "line": 46
+        },
+        {
+          "name": "if",
+          "line": 47
+        },
+        {
+          "name": "if",
+          "line": 48
+        },
+        {
+          "name": "delete",
+          "line": 53
+        },
+        {
+          "name": "stats",
+          "line": 54
+        },
+        {
+          "name": "computeDelta",
+          "line": 68
+        },
+        {
+          "name": "discoverMock",
+          "line": 75
+        },
+        {
+          "name": "if",
+          "line": 80
+        },
+        {
+          "name": "if",
+          "line": 82
+        },
+        {
+          "name": "if",
+          "line": 84
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 19
+        },
+        {
+          "name": "auditService",
+          "line": 20
+        },
+        {
+          "name": "projectRepo",
+          "line": 21
+        },
+        {
+          "name": "saved",
+          "line": 33
+        },
+        {
+          "name": "cur",
+          "line": 40
+        },
+        {
+          "name": "total",
+          "line": 56
+        },
+        {
+          "name": "exposed",
+          "line": 57
+        },
+        {
+          "name": "byType",
+          "line": 58
+        },
+        {
+          "name": "byCrit",
+          "line": 59
+        },
+        {
+          "name": "m",
+          "line": 60
+        },
+        {
+          "name": "all",
+          "line": 71
+        },
+        {
+          "name": "newLast24h",
+          "line": 72
+        },
+        {
+          "name": "orgId",
+          "line": 77
+        },
+        {
+          "name": "any",
+          "line": 81
+        },
+        {
+          "name": "discovered",
+          "line": 86
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/audit/AuditController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.audit",
+      "classes": [
+        {
+          "name": "AuditController",
+          "kind": "class",
+          "line": 12
+        }
+      ],
+      "functions": [
+        {
+          "name": "list",
+          "line": 15
+        }
+      ],
+      "data_members": [
+        {
+          "name": "service",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/audit/AuditEvent.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.audit",
+      "classes": [
+        {
+          "name": "AuditEvent",
+          "kind": "class",
+          "line": 9
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "entityType",
+          "line": 11
+        },
+        {
+          "name": "entityId",
+          "line": 12
+        },
+        {
+          "name": "actor",
+          "line": 13
+        },
+        {
+          "name": "ipAddress",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/audit/AuditRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.audit",
+      "classes": [
+        {
+          "name": "AuditRepository",
+          "kind": "interface",
+          "line": 7
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByEntityType",
+          "line": 9
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/audit/AuditService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.audit",
+      "classes": [
+        {
+          "name": "AuditService",
+          "kind": "class",
+          "line": 11
+        }
+      ],
+      "functions": [
+        {
+          "name": "log",
+          "line": 13
+        },
+        {
+          "name": "list",
+          "line": 20
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 12
+        },
+        {
+          "name": "actor",
+          "line": 15
+        },
+        {
+          "name": "ev",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/browser/BrowserController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.browser",
+      "classes": [
+        {
+          "name": "BrowserController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/browser/BrowserExtension.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.browser",
+      "classes": [
+        {
+          "name": "BrowserExtension",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/browser/BrowserRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.browser",
+      "classes": [
+        {
+          "name": "BrowserRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 5
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/browser/BrowserService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.browser",
+      "classes": [
+        {
+          "name": "BrowserService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "delete",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/campaign/CampaignController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.campaign",
+      "classes": [
+        {
+          "name": "CampaignController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/campaign/CampaignRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.campaign",
+      "classes": [
+        {
+          "name": "CampaignRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/campaign/CampaignService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.campaign",
+      "classes": [
+        {
+          "name": "CampaignService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/campaign/SecurityCampaign.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.campaign",
+      "classes": [
+        {
+          "name": "SecurityCampaign",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/cicd/CicdController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.cicd",
+      "classes": [
+        {
+          "name": "CicdController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/cicd/CicdPipeline.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.cicd",
+      "classes": [
+        {
+          "name": "CicdPipeline",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/cicd/CicdRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.cicd",
+      "classes": [
+        {
+          "name": "CicdRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 5
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/cicd/CicdService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.cicd",
+      "classes": [
+        {
+          "name": "CicdService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "delete",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/cloud/CloudController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.cloud",
+      "classes": [
+        {
+          "name": "CloudController",
+          "kind": "class",
+          "line": 9
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/cloud/CloudRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.cloud",
+      "classes": [
+        {
+          "name": "CloudRepository",
+          "kind": "interface",
+          "line": 5
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/cloud/CloudResource.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.cloud",
+      "classes": [
+        {
+          "name": "CloudResource",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "name",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/cloud/CloudService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.cloud",
+      "classes": [
+        {
+          "name": "CloudService",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 10
+        },
+        {
+          "name": "if",
+          "line": 11
+        },
+        {
+          "name": "if",
+          "line": 12
+        },
+        {
+          "name": "list",
+          "line": 15
+        },
+        {
+          "name": "get",
+          "line": 16
+        },
+        {
+          "name": "scanMock",
+          "line": 17
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 9
+        },
+        {
+          "name": "mocks",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/compliance/ComplianceAssessment.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.compliance",
+      "classes": [
+        {
+          "name": "ComplianceAssessment",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/compliance/ComplianceAssessmentRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.compliance",
+      "classes": [
+        {
+          "name": "ComplianceAssessmentRepository",
+          "kind": "interface",
+          "line": 5
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/compliance/ComplianceController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.compliance",
+      "classes": [
+        {
+          "name": "ComplianceController",
+          "kind": "class",
+          "line": 9
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/compliance/ComplianceFramework.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.compliance",
+      "classes": [
+        {
+          "name": "ComplianceFramework",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/compliance/ComplianceFrameworkRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.compliance",
+      "classes": [
+        {
+          "name": "ComplianceFrameworkRepository",
+          "kind": "interface",
+          "line": 5
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/compliance/ComplianceService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.compliance",
+      "classes": [
+        {
+          "name": "ComplianceService",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [
+        {
+          "name": "frameworks",
+          "line": 11
+        },
+        {
+          "name": "getFramework",
+          "line": 13
+        },
+        {
+          "name": "assess",
+          "line": 14
+        },
+        {
+          "name": "list",
+          "line": 27
+        },
+        {
+          "name": "get",
+          "line": 28
+        }
+      ],
+      "data_members": [
+        {
+          "name": "fwRepo",
+          "line": 9
+        },
+        {
+          "name": "asRepo",
+          "line": 10
+        },
+        {
+          "name": "r",
+          "line": 16
+        },
+        {
+          "name": "total",
+          "line": 17
+        },
+        {
+          "name": "a",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/container/ContainerController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.container",
+      "classes": [
+        {
+          "name": "ContainerController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/container/ContainerImage.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.container",
+      "classes": [
+        {
+          "name": "ContainerImage",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "digest",
+          "line": 12
+        },
+        {
+          "name": "baseImage",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/container/ContainerRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.container",
+      "classes": [
+        {
+          "name": "ContainerRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/container/ContainerService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.container",
+      "classes": [
+        {
+          "name": "ContainerService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "scanMock",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/dashboard/DashboardController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.dashboard",
+      "classes": [
+        {
+          "name": "DashboardController",
+          "kind": "class",
+          "line": 12
+        }
+      ],
+      "functions": [
+        {
+          "name": "posture",
+          "line": 15
+        },
+        {
+          "name": "appDash",
+          "line": 19
+        }
+      ],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/dashboard/DashboardService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.dashboard",
+      "classes": [
+        {
+          "name": "DashboardService",
+          "kind": "class",
+          "line": 13
+        }
+      ],
+      "functions": [
+        {
+          "name": "securityPosture",
+          "line": 17
+        },
+        {
+          "name": "applicationDashboard",
+          "line": 52
+        }
+      ],
+      "data_members": [
+        {
+          "name": "findingRepo",
+          "line": 14
+        },
+        {
+          "name": "assetRepo",
+          "line": 15
+        },
+        {
+          "name": "scanRepo",
+          "line": 16
+        },
+        {
+          "name": "totalAssets",
+          "line": 19
+        },
+        {
+          "name": "totalFindings",
+          "line": 20
+        },
+        {
+          "name": "critical",
+          "line": 21
+        },
+        {
+          "name": "high",
+          "line": 22
+        },
+        {
+          "name": "exposed",
+          "line": 23
+        },
+        {
+          "name": "kev",
+          "line": 24
+        },
+        {
+          "name": "findings",
+          "line": 27
+        },
+        {
+          "name": "avgRisk",
+          "line": 28
+        },
+        {
+          "name": "score",
+          "line": 31
+        },
+        {
+          "name": "posture",
+          "line": 32
+        },
+        {
+          "name": "m",
+          "line": 54
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/database/DatabaseAsset.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.database",
+      "classes": [
+        {
+          "name": "DatabaseAsset",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "version",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/database/DatabaseController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.database",
+      "classes": [
+        {
+          "name": "DatabaseController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/database/DatabaseRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.database",
+      "classes": [
+        {
+          "name": "DatabaseRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 5
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/database/DatabaseService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.database",
+      "classes": [
+        {
+          "name": "DatabaseService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "delete",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/finding/Evidence.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.finding",
+      "classes": [
+        {
+          "name": "Evidence",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "assetId",
+          "line": 12
+        },
+        {
+          "name": "scanId",
+          "line": 13
+        },
+        {
+          "name": "fileName",
+          "line": 16
+        },
+        {
+          "name": "mimeType",
+          "line": 17
+        },
+        {
+          "name": "sha256",
+          "line": 18
+        },
+        {
+          "name": "author",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/finding/EvidenceRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.finding",
+      "classes": [
+        {
+          "name": "EvidenceRepository",
+          "kind": "interface",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByFindingId",
+          "line": 8
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/finding/Finding.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.finding",
+      "classes": [
+        {
+          "name": "Finding",
+          "kind": "class",
+          "line": 12
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "projectId",
+          "line": 22
+        },
+        {
+          "name": "assetId",
+          "line": 24
+        },
+        {
+          "name": "assetName",
+          "line": 25
+        },
+        {
+          "name": "environment",
+          "line": 26
+        },
+        {
+          "name": "source",
+          "line": 27
+        },
+        {
+          "name": "scanId",
+          "line": 29
+        },
+        {
+          "name": "cwe",
+          "line": 32
+        },
+        {
+          "name": "owasp",
+          "line": 33
+        },
+        {
+          "name": "masvs",
+          "line": 34
+        },
+        {
+          "name": "asvs",
+          "line": 35
+        },
+        {
+          "name": "cvss",
+          "line": 36
+        },
+        {
+          "name": "epss",
+          "line": 38
+        },
+        {
+          "name": "businessCriticality",
+          "line": 42
+        },
+        {
+          "name": "owner",
+          "line": 43
+        },
+        {
+          "name": "filePath",
+          "line": 44
+        },
+        {
+          "name": "lineNumber",
+          "line": 45
+        },
+        {
+          "name": "functionName",
+          "line": 46
+        },
+        {
+          "name": "riskScore",
+          "line": 50
+        },
+        {
+          "name": "riskLevel",
+          "line": 52
+        },
+        {
+          "name": "fingerprint",
+          "line": 53
+        },
+        {
+          "name": "parentFindingId",
+          "line": 57
+        },
+        {
+          "name": "slaDueAt",
+          "line": 59
+        },
+        {
+          "name": "slaStatus",
+          "line": 60
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/finding/FindingController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.finding",
+      "classes": [
+        {
+          "name": "FindingController",
+          "kind": "class",
+          "line": 15
+        }
+      ],
+      "functions": [
+        {
+          "name": "list",
+          "line": 19
+        },
+        {
+          "name": "get",
+          "line": 30
+        },
+        {
+          "name": "create",
+          "line": 33
+        },
+        {
+          "name": "updateStatus",
+          "line": 36
+        },
+        {
+          "name": "evidences",
+          "line": 41
+        },
+        {
+          "name": "instances",
+          "line": 44
+        },
+        {
+          "name": "stats",
+          "line": 47
+        },
+        {
+          "name": "correlation",
+          "line": 50
+        }
+      ],
+      "data_members": [
+        {
+          "name": "service",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/finding/FindingInstance.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.finding",
+      "classes": [
+        {
+          "name": "FindingInstance",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "location",
+          "line": 13
+        },
+        {
+          "name": "scanner",
+          "line": 14
+        },
+        {
+          "name": "fingerprint",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/finding/FindingInstanceRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.finding",
+      "classes": [
+        {
+          "name": "FindingInstanceRepository",
+          "kind": "interface",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByFindingId",
+          "line": 8
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/finding/FindingRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.finding",
+      "classes": [
+        {
+          "name": "FindingRepository",
+          "kind": "interface",
+          "line": 9
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 11
+        },
+        {
+          "name": "findByAssetId",
+          "line": 12
+        },
+        {
+          "name": "findByProjectId",
+          "line": 13
+        },
+        {
+          "name": "findByFindingId",
+          "line": 14
+        },
+        {
+          "name": "countByProjectIdAndSeverity",
+          "line": 15
+        },
+        {
+          "name": "countByStatus",
+          "line": 16
+        },
+        {
+          "name": "countBySeverity",
+          "line": 18
+        },
+        {
+          "name": "countByStatusAgg",
+          "line": 20
+        },
+        {
+          "name": "countByRiskLevel",
+          "line": 22
+        },
+        {
+          "name": "findByFingerprint",
+          "line": 23
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/finding/FindingService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.finding",
+      "classes": [
+        {
+          "name": "FindingService",
+          "kind": "class",
+          "line": 20
+        }
+      ],
+      "functions": [
+        {
+          "name": "list",
+          "line": 28
+        },
+        {
+          "name": "if",
+          "line": 30
+        },
+        {
+          "name": "if",
+          "line": 31
+        },
+        {
+          "name": "get",
+          "line": 34
+        },
+        {
+          "name": "create",
+          "line": 38
+        },
+        {
+          "name": "if",
+          "line": 39
+        },
+        {
+          "name": "if",
+          "line": 43
+        },
+        {
+          "name": "updateStatus",
+          "line": 74
+        },
+        {
+          "name": "if",
+          "line": 78
+        },
+        {
+          "name": "if",
+          "line": 83
+        },
+        {
+          "name": "evidences",
+          "line": 86
+        },
+        {
+          "name": "instances",
+          "line": 88
+        },
+        {
+          "name": "stats",
+          "line": 89
+        },
+        {
+          "name": "toMap",
+          "line": 101
+        },
+        {
+          "name": "for",
+          "line": 104
+        },
+        {
+          "name": "generateMockFindings",
+          "line": 110
+        },
+        {
+          "name": "for",
+          "line": 123
+        },
+        {
+          "name": "create",
+          "line": 154
+        },
+        {
+          "name": "correlation",
+          "line": 159
+        }
+      ],
+      "data_members": [
+        {
+          "name": "findingRepo",
+          "line": 21
+        },
+        {
+          "name": "evidenceRepo",
+          "line": 22
+        },
+        {
+          "name": "instanceRepo",
+          "line": 23
+        },
+        {
+          "name": "riskEngine",
+          "line": 24
+        },
+        {
+          "name": "auditService",
+          "line": 25
+        },
+        {
+          "name": "counter",
+          "line": 26
+        },
+        {
+          "name": "existing",
+          "line": 42
+        },
+        {
+          "name": "parent",
+          "line": 45
+        },
+        {
+          "name": "inst",
+          "line": 46
+        },
+        {
+          "name": "saved",
+          "line": 59
+        },
+        {
+          "name": "ev",
+          "line": 61
+        },
+        {
+          "name": "f",
+          "line": 75
+        },
+        {
+          "name": "old",
+          "line": 76
+        },
+        {
+          "name": "bySeverity",
+          "line": 91
+        },
+        {
+          "name": "byStatus",
+          "line": 92
+        },
+        {
+          "name": "byRisk",
+          "line": 93
+        },
+        {
+          "name": "m",
+          "line": 94
+        },
+        {
+          "name": "rnd",
+          "line": 111
+        },
+        {
+          "name": "titles",
+          "line": 112
+        },
+        {
+          "name": "severities",
+          "line": 119
+        },
+        {
+          "name": "cwes",
+          "line": 120
+        },
+        {
+          "name": "types",
+          "line": 121
+        },
+        {
+          "name": "n",
+          "line": 122
+        },
+        {
+          "name": "idx",
+          "line": 124
+        },
+        {
+          "name": "sameAsset",
+          "line": 162
+        },
+        {
+          "name": "correlated",
+          "line": 163
+        },
+        {
+          "name": "res",
+          "line": 164
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/firmware/FirmwareAsset.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.firmware",
+      "classes": [
+        {
+          "name": "FirmwareAsset",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "version",
+          "line": 11
+        },
+        {
+          "name": "fileSize",
+          "line": 13
+        },
+        {
+          "name": "sha256",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/firmware/FirmwareController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.firmware",
+      "classes": [
+        {
+          "name": "FirmwareController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/firmware/FirmwareRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.firmware",
+      "classes": [
+        {
+          "name": "FirmwareRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 5
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/firmware/FirmwareService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.firmware",
+      "classes": [
+        {
+          "name": "FirmwareService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "delete",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/graph/GraphController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.graph",
+      "classes": [
+        {
+          "name": "GraphController",
+          "kind": "class",
+          "line": 12
+        }
+      ],
+      "functions": [
+        {
+          "name": "graph",
+          "line": 15
+        },
+        {
+          "name": "attackPaths",
+          "line": 17
+        }
+      ],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/graph/SecurityGraphService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.graph",
+      "classes": [
+        {
+          "name": "SecurityGraphService",
+          "kind": "class",
+          "line": 14
+        }
+      ],
+      "functions": [
+        {
+          "name": "graphForProject",
+          "line": 17
+        },
+        {
+          "name": "for",
+          "line": 23
+        },
+        {
+          "name": "for",
+          "line": 26
+        },
+        {
+          "name": "if",
+          "line": 29
+        },
+        {
+          "name": "if",
+          "line": 32
+        },
+        {
+          "name": "for",
+          "line": 33
+        },
+        {
+          "name": "attackPaths",
+          "line": 43
+        },
+        {
+          "name": "for",
+          "line": 51
+        }
+      ],
+      "data_members": [
+        {
+          "name": "assetRepo",
+          "line": 15
+        },
+        {
+          "name": "findingRepo",
+          "line": 16
+        },
+        {
+          "name": "assets",
+          "line": 19
+        },
+        {
+          "name": "findings",
+          "line": 20
+        },
+        {
+          "name": "nodes",
+          "line": 21
+        },
+        {
+          "name": "edges",
+          "line": 22
+        },
+        {
+          "name": "fid",
+          "line": 27
+        },
+        {
+          "name": "g",
+          "line": 37
+        },
+        {
+          "name": "critical",
+          "line": 45
+        },
+        {
+          "name": "paths",
+          "line": 50
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/iac/IacController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.iac",
+      "classes": [
+        {
+          "name": "IacController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/iac/IacScan.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.iac",
+      "classes": [
+        {
+          "name": "IacScan",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "repository",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/iac/IacScanRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.iac",
+      "classes": [
+        {
+          "name": "IacScanRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 5
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/iac/IacService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.iac",
+      "classes": [
+        {
+          "name": "IacService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "delete",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/iam/IamController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.iam",
+      "classes": [
+        {
+          "name": "IamController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/iam/IamRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.iam",
+      "classes": [
+        {
+          "name": "IamRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 5
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/iam/IamResource.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.iam",
+      "classes": [
+        {
+          "name": "IamResource",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/iam/IamService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.iam",
+      "classes": [
+        {
+          "name": "IamService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "delete",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/identity/AuthController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.identity",
+      "classes": [
+        {
+          "name": "AuthController",
+          "kind": "class",
+          "line": 17
+        }
+      ],
+      "functions": [
+        {
+          "name": "register",
+          "line": 22
+        },
+        {
+          "name": "login",
+          "line": 27
+        },
+        {
+          "name": "me",
+          "line": 32
+        }
+      ],
+      "data_members": [
+        {
+          "name": "authService",
+          "line": 18
+        },
+        {
+          "name": "role",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/identity/AuthService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.identity",
+      "classes": [
+        {
+          "name": "AuthService",
+          "kind": "class",
+          "line": 13
+        }
+      ],
+      "functions": [
+        {
+          "name": "register",
+          "line": 20
+        },
+        {
+          "name": "if",
+          "line": 21
+        },
+        {
+          "name": "login",
+          "line": 33
+        },
+        {
+          "name": "if",
+          "line": 36
+        },
+        {
+          "name": "me",
+          "line": 41
+        }
+      ],
+      "data_members": [
+        {
+          "name": "userRepository",
+          "line": 14
+        },
+        {
+          "name": "encoder",
+          "line": 16
+        },
+        {
+          "name": "jwt",
+          "line": 17
+        },
+        {
+          "name": "u",
+          "line": 22
+        },
+        {
+          "name": "token",
+          "line": 29
+        },
+        {
+          "name": "refresh",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/identity/JwtAuthFilter.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.identity",
+      "classes": [
+        {
+          "name": "JwtAuthFilter",
+          "kind": "class",
+          "line": 20
+        }
+      ],
+      "functions": [
+        {
+          "name": "doFilterInternal",
+          "line": 26
+        },
+        {
+          "name": "if",
+          "line": 29
+        },
+        {
+          "name": "resolveToken",
+          "line": 39
+        },
+        {
+          "name": "if",
+          "line": 42
+        }
+      ],
+      "data_members": [
+        {
+          "name": "tokenProvider",
+          "line": 21
+        },
+        {
+          "name": "userRepository",
+          "line": 23
+        },
+        {
+          "name": "token",
+          "line": 28
+        },
+        {
+          "name": "email",
+          "line": 30
+        },
+        {
+          "name": "auth",
+          "line": 32
+        },
+        {
+          "name": "bearer",
+          "line": 41
+        },
+        {
+          "name": "null",
+          "line": 43
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/identity/JwtTokenProvider.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.identity",
+      "classes": [
+        {
+          "name": "JwtTokenProvider",
+          "kind": "class",
+          "line": 13
+        }
+      ],
+      "functions": [
+        {
+          "name": "JwtTokenProvider",
+          "line": 18
+        },
+        {
+          "name": "generateToken",
+          "line": 26
+        },
+        {
+          "name": "generateRefreshToken",
+          "line": 37
+        },
+        {
+          "name": "getEmailFromToken",
+          "line": 48
+        },
+        {
+          "name": "validateToken",
+          "line": 52
+        }
+      ],
+      "data_members": [
+        {
+          "name": "key",
+          "line": 14
+        },
+        {
+          "name": "expirationMs",
+          "line": 16
+        },
+        {
+          "name": "refreshExpirationMs",
+          "line": 17
+        },
+        {
+          "name": "now",
+          "line": 28
+        },
+        {
+          "name": "true",
+          "line": 56
+        },
+        {
+          "name": "false",
+          "line": 58
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/identity/MfaController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.identity",
+      "classes": [
+        {
+          "name": "MfaController",
+          "kind": "class",
+          "line": 14
+        }
+      ],
+      "functions": [
+        {
+          "name": "setup",
+          "line": 18
+        },
+        {
+          "name": "verify",
+          "line": 29
+        },
+        {
+          "name": "disable",
+          "line": 36
+        }
+      ],
+      "data_members": [
+        {
+          "name": "userRepo",
+          "line": 15
+        },
+        {
+          "name": "user",
+          "line": 19
+        },
+        {
+          "name": "secret",
+          "line": 20
+        },
+        {
+          "name": "otpauth",
+          "line": 24
+        },
+        {
+          "name": "ok",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/identity/SsoController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.identity",
+      "classes": [
+        {
+          "name": "SsoController",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [
+        {
+          "name": "providers",
+          "line": 13
+        },
+        {
+          "name": "samlMetadata",
+          "line": 18
+        },
+        {
+          "name": "oidc",
+          "line": 23
+        },
+        {
+          "name": "scimCreate",
+          "line": 28
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/identity/User.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.identity",
+      "classes": [
+        {
+          "name": "User",
+          "kind": "class",
+          "line": 13
+        },
+        {
+          "name": "Role",
+          "kind": "enum",
+          "line": 45
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "email",
+          "line": 16
+        },
+        {
+          "name": "passwordHash",
+          "line": 19
+        },
+        {
+          "name": "fullName",
+          "line": 22
+        },
+        {
+          "name": "role",
+          "line": 26
+        },
+        {
+          "name": "mfaEnabled",
+          "line": 30
+        },
+        {
+          "name": "mfaSecret",
+          "line": 31
+        },
+        {
+          "name": "ssoProvider",
+          "line": 33
+        },
+        {
+          "name": "active",
+          "line": 38
+        },
+        {
+          "name": "authorities",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/identity/UserRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.identity",
+      "classes": [
+        {
+          "name": "UserRepository",
+          "kind": "interface",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByEmail",
+          "line": 8
+        },
+        {
+          "name": "existsByEmail",
+          "line": 9
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/integration/Integration.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.integration",
+      "classes": [
+        {
+          "name": "Integration",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/integration/IntegrationController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.integration",
+      "classes": [
+        {
+          "name": "IntegrationController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/integration/IntegrationRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.integration",
+      "classes": [
+        {
+          "name": "IntegrationRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByOrganizationId",
+          "line": 5
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/integration/IntegrationService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.integration",
+      "classes": [
+        {
+          "name": "IntegrationService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "testConnection",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        },
+        {
+          "name": "i",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/k8s/K8sRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.k8s",
+      "classes": [
+        {
+          "name": "K8sRepository",
+          "kind": "interface",
+          "line": 5
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/k8s/K8sResource.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.k8s",
+      "classes": [
+        {
+          "name": "K8sResource",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/k8s/K8sService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.k8s",
+      "classes": [
+        {
+          "name": "K8sService",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 10
+        },
+        {
+          "name": "if",
+          "line": 11
+        },
+        {
+          "name": "list",
+          "line": 14
+        },
+        {
+          "name": "get",
+          "line": 15
+        },
+        {
+          "name": "scanMock",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/mobile/MobileAnalysis.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.mobile",
+      "classes": [
+        {
+          "name": "MobileAnalysis",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "assetId",
+          "line": 12
+        },
+        {
+          "name": "fileSha256",
+          "line": 15
+        },
+        {
+          "name": "fileSize",
+          "line": 16
+        },
+        {
+          "name": "status",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/mobile/MobileController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.mobile",
+      "classes": [
+        {
+          "name": "MobileController",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [
+        {
+          "name": "upload",
+          "line": 13
+        },
+        {
+          "name": "list",
+          "line": 18
+        },
+        {
+          "name": "get",
+          "line": 20
+        },
+        {
+          "name": "workspace",
+          "line": 22
+        }
+      ],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/mobile/MobileRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.mobile",
+      "classes": [
+        {
+          "name": "MobileRepository",
+          "kind": "interface",
+          "line": 6
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/mobile/MobileService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.mobile",
+      "classes": [
+        {
+          "name": "MobileService",
+          "kind": "class",
+          "line": 17
+        }
+      ],
+      "functions": [
+        {
+          "name": "upload",
+          "line": 19
+        },
+        {
+          "name": "if",
+          "line": 33
+        },
+        {
+          "name": "try",
+          "line": 35
+        },
+        {
+          "name": "while",
+          "line": 37
+        },
+        {
+          "name": "if",
+          "line": 39
+        },
+        {
+          "name": "if",
+          "line": 44
+        },
+        {
+          "name": "if",
+          "line": 46
+        },
+        {
+          "name": "if",
+          "line": 50
+        },
+        {
+          "name": "while",
+          "line": 61
+        },
+        {
+          "name": "for",
+          "line": 64
+        },
+        {
+          "name": "if",
+          "line": 68
+        },
+        {
+          "name": "if",
+          "line": 70
+        },
+        {
+          "name": "if",
+          "line": 72
+        },
+        {
+          "name": "if",
+          "line": 74
+        },
+        {
+          "name": "if",
+          "line": 77
+        },
+        {
+          "name": "if",
+          "line": 80
+        },
+        {
+          "name": "RuntimeException",
+          "line": 107
+        },
+        {
+          "name": "upload",
+          "line": 112
+        },
+        {
+          "name": "upload",
+          "line": 113
+        },
+        {
+          "name": "sha256",
+          "line": 115
+        },
+        {
+          "name": "for",
+          "line": 121
+        },
+        {
+          "name": "list",
+          "line": 125
+        },
+        {
+          "name": "get",
+          "line": 127
+        },
+        {
+          "name": "workspace",
+          "line": 128
+        },
+        {
+          "name": "if",
+          "line": 140
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 18
+        },
+        {
+          "name": "bytes",
+          "line": 22
+        },
+        {
+          "name": "sha256",
+          "line": 23
+        },
+        {
+          "name": "size",
+          "line": 24
+        },
+        {
+          "name": "entries",
+          "line": 26
+        },
+        {
+          "name": "strings",
+          "line": 27
+        },
+        {
+          "name": "manifest",
+          "line": 28
+        },
+        {
+          "name": "certInfo",
+          "line": 29
+        },
+        {
+          "name": "exportedCount",
+          "line": 30
+        },
+        {
+          "name": "endpoints",
+          "line": 31
+        },
+        {
+          "name": "findings",
+          "line": 32
+        },
+        {
+          "name": "e",
+          "line": 36
+        },
+        {
+          "name": "mfBytes",
+          "line": 40
+        },
+        {
+          "name": "mfStr",
+          "line": 41
+        },
+        {
+          "name": "raw",
+          "line": 57
+        },
+        {
+          "name": "urlPat",
+          "line": 59
+        },
+        {
+          "name": "m",
+          "line": 60
+        },
+        {
+          "name": "secs",
+          "line": 63
+        },
+        {
+          "name": "masvsScore",
+          "line": 84
+        },
+        {
+          "name": "findingsJson",
+          "line": 87
+        },
+        {
+          "name": "stringsJson",
+          "line": 88
+        },
+        {
+          "name": "manifestJson",
+          "line": 89
+        },
+        {
+          "name": "ma",
+          "line": 90
+        },
+        {
+          "name": "md",
+          "line": 118
+        },
+        {
+          "name": "h",
+          "line": 119
+        },
+        {
+          "name": "sb",
+          "line": 120
+        },
+        {
+          "name": "masvs",
+          "line": 131
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/network/NetworkAsset.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.network",
+      "classes": [
+        {
+          "name": "NetworkAsset",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "ip",
+          "line": 11
+        },
+        {
+          "name": "service",
+          "line": 13
+        },
+        {
+          "name": "version",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/network/NetworkController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.network",
+      "classes": [
+        {
+          "name": "NetworkController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/network/NetworkRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.network",
+      "classes": [
+        {
+          "name": "NetworkRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 5
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/network/NetworkService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.network",
+      "classes": [
+        {
+          "name": "NetworkService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "delete",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/notification/Notification.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.notification",
+      "classes": [
+        {
+          "name": "Notification",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "organizationId",
+          "line": 11
+        },
+        {
+          "name": "projectId",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/notification/NotificationController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.notification",
+      "classes": [
+        {
+          "name": "NotificationController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/notification/NotificationRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.notification",
+      "classes": [
+        {
+          "name": "NotificationRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 5
+        },
+        {
+          "name": "findByOrganizationId",
+          "line": 6
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/notification/NotificationService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.notification",
+      "classes": [
+        {
+          "name": "NotificationService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "send",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 12
+        },
+        {
+          "name": "get",
+          "line": 13
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/organization/Organization.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.organization",
+      "classes": [
+        {
+          "name": "Organization",
+          "kind": "class",
+          "line": 9
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "description",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/organization/OrganizationController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.organization",
+      "classes": [
+        {
+          "name": "OrganizationController",
+          "kind": "class",
+          "line": 14
+        }
+      ],
+      "functions": [
+        {
+          "name": "listOrgs",
+          "line": 18
+        },
+        {
+          "name": "createOrg",
+          "line": 21
+        },
+        {
+          "name": "getOrg",
+          "line": 24
+        },
+        {
+          "name": "createWs",
+          "line": 27
+        },
+        {
+          "name": "listWs",
+          "line": 30
+        },
+        {
+          "name": "createProject",
+          "line": 33
+        },
+        {
+          "name": "listProjects",
+          "line": 36
+        },
+        {
+          "name": "getProject",
+          "line": 39
+        }
+      ],
+      "data_members": [
+        {
+          "name": "service",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/organization/OrganizationRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.organization",
+      "classes": [
+        {
+          "name": "OrganizationRepository",
+          "kind": "interface",
+          "line": 5
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/organization/OrganizationService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.organization",
+      "classes": [
+        {
+          "name": "OrganizationService",
+          "kind": "class",
+          "line": 14
+        }
+      ],
+      "functions": [
+        {
+          "name": "listOrgs",
+          "line": 18
+        },
+        {
+          "name": "getOrg",
+          "line": 20
+        },
+        {
+          "name": "createOrg",
+          "line": 22
+        },
+        {
+          "name": "listWorkspaces",
+          "line": 26
+        },
+        {
+          "name": "createWorkspace",
+          "line": 28
+        },
+        {
+          "name": "listProjects",
+          "line": 29
+        },
+        {
+          "name": "createProject",
+          "line": 31
+        },
+        {
+          "name": "getProject",
+          "line": 32
+        }
+      ],
+      "data_members": [
+        {
+          "name": "orgRepo",
+          "line": 15
+        },
+        {
+          "name": "wsRepo",
+          "line": 16
+        },
+        {
+          "name": "projectRepo",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/organization/Project.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.organization",
+      "classes": [
+        {
+          "name": "Project",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "description",
+          "line": 14
+        },
+        {
+          "name": "businessUnit",
+          "line": 17
+        },
+        {
+          "name": "techLead",
+          "line": 18
+        },
+        {
+          "name": "securityChampion",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/organization/ProjectRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.organization",
+      "classes": [
+        {
+          "name": "ProjectRepository",
+          "kind": "interface",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByWorkspaceId",
+          "line": 8
+        },
+        {
+          "name": "findByOrganizationId",
+          "line": 9
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/organization/Workspace.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.organization",
+      "classes": [
+        {
+          "name": "Workspace",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "description",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/organization/WorkspaceRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.organization",
+      "classes": [
+        {
+          "name": "WorkspaceRepository",
+          "kind": "interface",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByOrganizationId",
+          "line": 8
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/pentest/PentestController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.pentest",
+      "classes": [
+        {
+          "name": "PentestController",
+          "kind": "class",
+          "line": 9
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/pentest/PentestEngagement.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.pentest",
+      "classes": [
+        {
+          "name": "PentestEngagement",
+          "kind": "class",
+          "line": 11
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "testWindowStart",
+          "line": 16
+        },
+        {
+          "name": "testWindowEnd",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/pentest/PentestRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.pentest",
+      "classes": [
+        {
+          "name": "PentestRepository",
+          "kind": "interface",
+          "line": 5
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/pentest/PentestService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.pentest",
+      "classes": [
+        {
+          "name": "PentestService",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 10
+        },
+        {
+          "name": "list",
+          "line": 11
+        },
+        {
+          "name": "get",
+          "line": 12
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/policy/PolicyController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.policy",
+      "classes": [
+        {
+          "name": "PolicyController",
+          "kind": "class",
+          "line": 9
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/policy/PolicyException.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.policy",
+      "classes": [
+        {
+          "name": "PolicyException",
+          "kind": "class",
+          "line": 11
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "findingId",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/policy/PolicyExceptionRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.policy",
+      "classes": [
+        {
+          "name": "PolicyExceptionRepository",
+          "kind": "interface",
+          "line": 5
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/policy/PolicyRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.policy",
+      "classes": [
+        {
+          "name": "PolicyRepository",
+          "kind": "interface",
+          "line": 5
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/policy/PolicyService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.policy",
+      "classes": [
+        {
+          "name": "PolicyService",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 11
+        },
+        {
+          "name": "if",
+          "line": 13
+        },
+        {
+          "name": "list",
+          "line": 16
+        },
+        {
+          "name": "get",
+          "line": 17
+        },
+        {
+          "name": "createException",
+          "line": 18
+        },
+        {
+          "name": "listExceptions",
+          "line": 20
+        },
+        {
+          "name": "evaluate",
+          "line": 21
+        },
+        {
+          "name": "defaults",
+          "line": 28
+        }
+      ],
+      "data_members": [
+        {
+          "name": "policyRepo",
+          "line": 9
+        },
+        {
+          "name": "exRepo",
+          "line": 10
+        },
+        {
+          "name": "p",
+          "line": 23
+        },
+        {
+          "name": "pass",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/policy/SecurityPolicy.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.policy",
+      "classes": [
+        {
+          "name": "SecurityPolicy",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/reporting/Report.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.reporting",
+      "classes": [
+        {
+          "name": "Report",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "format",
+          "line": 14
+        },
+        {
+          "name": "generatedBy",
+          "line": 17
+        },
+        {
+          "name": "filePath",
+          "line": 18
+        },
+        {
+          "name": "classification",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/reporting/ReportController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.reporting",
+      "classes": [
+        {
+          "name": "ReportController",
+          "kind": "class",
+          "line": 13
+        }
+      ],
+      "functions": [
+        {
+          "name": "list",
+          "line": 17
+        },
+        {
+          "name": "get",
+          "line": 20
+        },
+        {
+          "name": "generate",
+          "line": 23
+        },
+        {
+          "name": "export",
+          "line": 26
+        }
+      ],
+      "data_members": [
+        {
+          "name": "service",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/reporting/ReportRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.reporting",
+      "classes": [
+        {
+          "name": "ReportRepository",
+          "kind": "interface",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 8
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/reporting/ReportService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.reporting",
+      "classes": [
+        {
+          "name": "ReportService",
+          "kind": "class",
+          "line": 14
+        }
+      ],
+      "functions": [
+        {
+          "name": "generate",
+          "line": 21
+        },
+        {
+          "name": "list",
+          "line": 47
+        },
+        {
+          "name": "if",
+          "line": 49
+        },
+        {
+          "name": "get",
+          "line": 52
+        },
+        {
+          "name": "export",
+          "line": 54
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 15
+        },
+        {
+          "name": "findingRepo",
+          "line": 16
+        },
+        {
+          "name": "assetRepo",
+          "line": 17
+        },
+        {
+          "name": "aiService",
+          "line": 18
+        },
+        {
+          "name": "draft",
+          "line": 22
+        },
+        {
+          "name": "totalFindings",
+          "line": 23
+        },
+        {
+          "name": "totalAssets",
+          "line": 24
+        },
+        {
+          "name": "content",
+          "line": 25
+        },
+        {
+          "name": "json",
+          "line": 32
+        },
+        {
+          "name": "r",
+          "line": 34
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/retest/Retest.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.retest",
+      "classes": [
+        {
+          "name": "Retest",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "findingId",
+          "line": 12
+        },
+        {
+          "name": "assetId",
+          "line": 13
+        },
+        {
+          "name": "scanId",
+          "line": 14
+        },
+        {
+          "name": "requestedBy",
+          "line": 17
+        },
+        {
+          "name": "result",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/retest/RetestController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.retest",
+      "classes": [
+        {
+          "name": "RetestController",
+          "kind": "class",
+          "line": 9
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/retest/RetestRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.retest",
+      "classes": [
+        {
+          "name": "RetestRepository",
+          "kind": "interface",
+          "line": 5
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/retest/RetestService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.retest",
+      "classes": [
+        {
+          "name": "RetestService",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [
+        {
+          "name": "request",
+          "line": 10
+        },
+        {
+          "name": "Thread",
+          "line": 14
+        },
+        {
+          "name": "list",
+          "line": 24
+        },
+        {
+          "name": "get",
+          "line": 25
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/risk/RiskEngine.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.risk",
+      "classes": [
+        {
+          "name": "RiskEngine",
+          "kind": "class",
+          "line": 15
+        }
+      ],
+      "functions": [
+        {
+          "name": "calculate",
+          "line": 16
+        },
+        {
+          "name": "if",
+          "line": 21
+        },
+        {
+          "name": "if",
+          "line": 22
+        },
+        {
+          "name": "if",
+          "line": 32
+        },
+        {
+          "name": "if",
+          "line": 33
+        },
+        {
+          "name": "if",
+          "line": 34
+        },
+        {
+          "name": "if",
+          "line": 55
+        },
+        {
+          "name": "if",
+          "line": 57
+        },
+        {
+          "name": "level",
+          "line": 65
+        },
+        {
+          "name": "if",
+          "line": 67
+        },
+        {
+          "name": "if",
+          "line": 68
+        },
+        {
+          "name": "if",
+          "line": 69
+        },
+        {
+          "name": "if",
+          "line": 70
+        },
+        {
+          "name": "enrich",
+          "line": 73
+        },
+        {
+          "name": "if",
+          "line": 85
+        },
+        {
+          "name": "if",
+          "line": 86
+        }
+      ],
+      "data_members": [
+        {
+          "name": "cvssScore",
+          "line": 18
+        },
+        {
+          "name": "epssScore",
+          "line": 19
+        },
+        {
+          "name": "criticalityScore",
+          "line": 23
+        },
+        {
+          "name": "exposureScore",
+          "line": 30
+        },
+        {
+          "name": "confidenceScore",
+          "line": 35
+        },
+        {
+          "name": "severityScore",
+          "line": 45
+        },
+        {
+          "name": "ageScore",
+          "line": 54
+        },
+        {
+          "name": "days",
+          "line": 56
+        },
+        {
+          "name": "total",
+          "line": 59
+        },
+        {
+          "name": "score",
+          "line": 75
+        },
+        {
+          "name": "slaDays",
+          "line": 79
+        },
+        {
+          "name": "fp",
+          "line": 90
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/sbom/Sbom.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.sbom",
+      "classes": [
+        {
+          "name": "Sbom",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "assetId",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/sbom/SbomController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.sbom",
+      "classes": [
+        {
+          "name": "SbomController",
+          "kind": "class",
+          "line": 9
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/sbom/SbomRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.sbom",
+      "classes": [
+        {
+          "name": "SbomRepository",
+          "kind": "interface",
+          "line": 6
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/sbom/SbomService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.sbom",
+      "classes": [
+        {
+          "name": "SbomService",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 10
+        },
+        {
+          "name": "if",
+          "line": 12
+        },
+        {
+          "name": "list",
+          "line": 17
+        },
+        {
+          "name": "get",
+          "line": 18
+        },
+        {
+          "name": "diff",
+          "line": 19
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 9
+        },
+        {
+          "name": "sa",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/scan/analyzers/SastAnalyzer.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.scan.analyzers",
+      "classes": [
+        {
+          "name": "SastAnalyzer",
+          "kind": "class",
+          "line": 5
+        }
+      ],
+      "functions": [
+        {
+          "name": "Rule",
+          "line": 9
+        },
+        {
+          "name": "Rule",
+          "line": 10
+        },
+        {
+          "name": "Rule",
+          "line": 11
+        },
+        {
+          "name": "Rule",
+          "line": 12
+        },
+        {
+          "name": "Rule",
+          "line": 13
+        },
+        {
+          "name": "Rule",
+          "line": 14
+        },
+        {
+          "name": "Rule",
+          "line": 15
+        },
+        {
+          "name": "Rule",
+          "line": 16
+        },
+        {
+          "name": "Rule",
+          "line": 17
+        },
+        {
+          "name": "Rule",
+          "line": 18
+        },
+        {
+          "name": "Rule",
+          "line": 19
+        },
+        {
+          "name": "analyze",
+          "line": 21
+        },
+        {
+          "name": "if",
+          "line": 24
+        },
+        {
+          "name": "for",
+          "line": 25
+        },
+        {
+          "name": "if",
+          "line": 27
+        },
+        {
+          "name": "lineNumber",
+          "line": 42
+        },
+        {
+          "name": "return",
+          "line": 44
+        },
+        {
+          "name": "snippet",
+          "line": 46
+        },
+        {
+          "name": "if",
+          "line": 49
+        },
+        {
+          "name": "Rule",
+          "line": 53
+        }
+      ],
+      "data_members": [
+        {
+          "name": "RULES",
+          "line": 7
+        },
+        {
+          "name": "out",
+          "line": 23
+        },
+        {
+          "name": "m",
+          "line": 26
+        },
+        {
+          "name": "start",
+          "line": 47
+        },
+        {
+          "name": "end",
+          "line": 48
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/scan/analyzers/ScaAnalyzer.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.scan.analyzers",
+      "classes": [
+        {
+          "name": "ScaAnalyzer",
+          "kind": "class",
+          "line": 11
+        }
+      ],
+      "functions": [
+        {
+          "name": "Vuln",
+          "line": 15
+        },
+        {
+          "name": "Vuln",
+          "line": 16
+        },
+        {
+          "name": "Vuln",
+          "line": 17
+        },
+        {
+          "name": "Vuln",
+          "line": 18
+        },
+        {
+          "name": "Vuln",
+          "line": 19
+        },
+        {
+          "name": "Vuln",
+          "line": 20
+        },
+        {
+          "name": "Vuln",
+          "line": 21
+        },
+        {
+          "name": "analyze",
+          "line": 23
+        },
+        {
+          "name": "if",
+          "line": 26
+        },
+        {
+          "name": "if",
+          "line": 29
+        },
+        {
+          "name": "for",
+          "line": 39
+        },
+        {
+          "name": "if",
+          "line": 40
+        },
+        {
+          "name": "scanMaven",
+          "line": 47
+        },
+        {
+          "name": "while",
+          "line": 52
+        },
+        {
+          "name": "for",
+          "line": 55
+        },
+        {
+          "name": "if",
+          "line": 56
+        },
+        {
+          "name": "scanNpm",
+          "line": 63
+        },
+        {
+          "name": "while",
+          "line": 67
+        },
+        {
+          "name": "for",
+          "line": 70
+        },
+        {
+          "name": "if",
+          "line": 71
+        },
+        {
+          "name": "scanPip",
+          "line": 78
+        },
+        {
+          "name": "for",
+          "line": 80
+        },
+        {
+          "name": "if",
+          "line": 82
+        },
+        {
+          "name": "if",
+          "line": 84
+        },
+        {
+          "name": "for",
+          "line": 87
+        },
+        {
+          "name": "scanGo",
+          "line": 92
+        },
+        {
+          "name": "toFinding",
+          "line": 96
+        },
+        {
+          "name": "Vuln",
+          "line": 113
+        }
+      ],
+      "data_members": [
+        {
+          "name": "DB",
+          "line": 14
+        },
+        {
+          "name": "out",
+          "line": 25
+        },
+        {
+          "name": "lower",
+          "line": 27
+        },
+        {
+          "name": "r",
+          "line": 49
+        },
+        {
+          "name": "p",
+          "line": 50
+        },
+        {
+          "name": "m",
+          "line": 51
+        },
+        {
+          "name": "art",
+          "line": 53
+        },
+        {
+          "name": "ver",
+          "line": 54
+        },
+        {
+          "name": "name",
+          "line": 68
+        },
+        {
+          "name": "line",
+          "line": 81
+        },
+        {
+          "name": "parts",
+          "line": 83
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/scan/analyzers/SecretAnalyzer.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.scan.analyzers",
+      "classes": [
+        {
+          "name": "SecretAnalyzer",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [
+        {
+          "name": "Rule",
+          "line": 13
+        },
+        {
+          "name": "Rule",
+          "line": 14
+        },
+        {
+          "name": "Rule",
+          "line": 15
+        },
+        {
+          "name": "Rule",
+          "line": 16
+        },
+        {
+          "name": "Rule",
+          "line": 17
+        },
+        {
+          "name": "Rule",
+          "line": 18
+        },
+        {
+          "name": "analyze",
+          "line": 20
+        },
+        {
+          "name": "if",
+          "line": 23
+        },
+        {
+          "name": "for",
+          "line": 24
+        },
+        {
+          "name": "while",
+          "line": 26
+        },
+        {
+          "name": "if",
+          "line": 39
+        },
+        {
+          "name": "lineNumber",
+          "line": 44
+        },
+        {
+          "name": "return",
+          "line": 46
+        },
+        {
+          "name": "Rule",
+          "line": 48
+        }
+      ],
+      "data_members": [
+        {
+          "name": "RULES",
+          "line": 11
+        },
+        {
+          "name": "findings",
+          "line": 22
+        },
+        {
+          "name": "m",
+          "line": 25
+        },
+        {
+          "name": "match",
+          "line": 27
+        },
+        {
+          "name": "masked",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/scan/Scan.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.scan",
+      "classes": [
+        {
+          "name": "Scan",
+          "kind": "class",
+          "line": 12
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "assetId",
+          "line": 14
+        },
+        {
+          "name": "target",
+          "line": 18
+        },
+        {
+          "name": "startedAt",
+          "line": 19
+        },
+        {
+          "name": "finishedAt",
+          "line": 20
+        },
+        {
+          "name": "initiatedBy",
+          "line": 21
+        },
+        {
+          "name": "findingsCount",
+          "line": 24
+        },
+        {
+          "name": "durationMs",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/scan/ScanController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.scan",
+      "classes": [
+        {
+          "name": "ScanController",
+          "kind": "class",
+          "line": 17
+        }
+      ],
+      "functions": [
+        {
+          "name": "list",
+          "line": 21
+        },
+        {
+          "name": "get",
+          "line": 25
+        },
+        {
+          "name": "jobs",
+          "line": 27
+        },
+        {
+          "name": "create",
+          "line": 29
+        },
+        {
+          "name": "upload",
+          "line": 34
+        },
+        {
+          "name": "cancel",
+          "line": 55
+        }
+      ],
+      "data_members": [
+        {
+          "name": "service",
+          "line": 18
+        },
+        {
+          "name": "content",
+          "line": 40
+        },
+        {
+          "name": "escaped",
+          "line": 42
+        },
+        {
+          "name": "cfg",
+          "line": 43
+        },
+        {
+          "name": "s",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/scan/ScanJob.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.scan",
+      "classes": [
+        {
+          "name": "ScanJob",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "workerId",
+          "line": 14
+        },
+        {
+          "name": "logs",
+          "line": 15
+        },
+        {
+          "name": "progress",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/scan/ScanJobRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.scan",
+      "classes": [
+        {
+          "name": "ScanJobRepository",
+          "kind": "interface",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByScanId",
+          "line": 8
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/scan/ScanRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.scan",
+      "classes": [
+        {
+          "name": "ScanRepository",
+          "kind": "interface",
+          "line": 7
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 9
+        },
+        {
+          "name": "findByStatus",
+          "line": 10
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/scan/ScanService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.scan",
+      "classes": [
+        {
+          "name": "ScanService",
+          "kind": "class",
+          "line": 23
+        }
+      ],
+      "functions": [
+        {
+          "name": "list",
+          "line": 27
+        },
+        {
+          "name": "if",
+          "line": 29
+        },
+        {
+          "name": "get",
+          "line": 32
+        },
+        {
+          "name": "jobs",
+          "line": 33
+        },
+        {
+          "name": "create",
+          "line": 36
+        },
+        {
+          "name": "for",
+          "line": 42
+        },
+        {
+          "name": "executeAsync",
+          "line": 47
+        },
+        {
+          "name": "pluginsFor",
+          "line": 50
+        },
+        {
+          "name": "if",
+          "line": 52
+        },
+        {
+          "name": "switch",
+          "line": 53
+        },
+        {
+          "name": "executeAsync",
+          "line": 67
+        },
+        {
+          "name": "for",
+          "line": 76
+        },
+        {
+          "name": "for",
+          "line": 94
+        },
+        {
+          "name": "runRealAnalyzers",
+          "line": 109
+        },
+        {
+          "name": "if",
+          "line": 115
+        },
+        {
+          "name": "if",
+          "line": 120
+        },
+        {
+          "name": "if",
+          "line": 124
+        },
+        {
+          "name": "if",
+          "line": 137
+        },
+        {
+          "name": "for",
+          "line": 139
+        },
+        {
+          "name": "if",
+          "line": 155
+        },
+        {
+          "name": "for",
+          "line": 157
+        },
+        {
+          "name": "if",
+          "line": 174
+        },
+        {
+          "name": "for",
+          "line": 176
+        },
+        {
+          "name": "if",
+          "line": 192
+        },
+        {
+          "name": "cancel",
+          "line": 202
+        },
+        {
+          "name": "jobs",
+          "line": 206
+        }
+      ],
+      "data_members": [
+        {
+          "name": "scanRepo",
+          "line": 24
+        },
+        {
+          "name": "jobRepo",
+          "line": 25
+        },
+        {
+          "name": "findingService",
+          "line": 26
+        },
+        {
+          "name": "saved",
+          "line": 39
+        },
+        {
+          "name": "plugins",
+          "line": 41
+        },
+        {
+          "name": "j",
+          "line": 43
+        },
+        {
+          "name": "scan",
+          "line": 70
+        },
+        {
+          "name": "jobs",
+          "line": 74
+        },
+        {
+          "name": "rnd",
+          "line": 75
+        },
+        {
+          "name": "created",
+          "line": 88
+        },
+        {
+          "name": "s",
+          "line": 103
+        },
+        {
+          "name": "content",
+          "line": 111
+        },
+        {
+          "name": "fileContent",
+          "line": 113
+        },
+        {
+          "name": "fileName",
+          "line": 114
+        },
+        {
+          "name": "cfg",
+          "line": 118
+        },
+        {
+          "name": "idx",
+          "line": 119
+        },
+        {
+          "name": "start",
+          "line": 121
+        },
+        {
+          "name": "firstQuote",
+          "line": 122
+        },
+        {
+          "name": "lastQuote",
+          "line": 123
+        },
+        {
+          "name": "toAnalyze",
+          "line": 130
+        },
+        {
+          "name": "type",
+          "line": 131
+        },
+        {
+          "name": "total",
+          "line": 132
+        },
+        {
+          "name": "secrets",
+          "line": 133
+        },
+        {
+          "name": "sasts",
+          "line": 134
+        },
+        {
+          "name": "scas",
+          "line": 135
+        },
+        {
+          "name": "fd",
+          "line": 140
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/search/SearchController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.search",
+      "classes": [
+        {
+          "name": "SearchController",
+          "kind": "class",
+          "line": 14
+        }
+      ],
+      "functions": [
+        {
+          "name": "search",
+          "line": 19
+        }
+      ],
+      "data_members": [
+        {
+          "name": "assetRepo",
+          "line": 15
+        },
+        {
+          "name": "findingRepo",
+          "line": 16
+        },
+        {
+          "name": "lower",
+          "line": 20
+        },
+        {
+          "name": "assets",
+          "line": 21
+        },
+        {
+          "name": "findings",
+          "line": 24
+        },
+        {
+          "name": "combined",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/supplychain/ArtifactProvenance.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.supplychain",
+      "classes": [
+        {
+          "name": "ArtifactProvenance",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "sbomId",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/supplychain/EpssScheduler.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.supplychain",
+      "classes": [
+        {
+          "name": "EpssScheduler",
+          "kind": "class",
+          "line": 15
+        }
+      ],
+      "functions": [
+        {
+          "name": "refreshEpss",
+          "line": 20
+        },
+        {
+          "name": "for",
+          "line": 23
+        },
+        {
+          "name": "if",
+          "line": 24
+        },
+        {
+          "name": "if",
+          "line": 28
+        },
+        {
+          "name": "if",
+          "line": 34
+        },
+        {
+          "name": "checkKevCatalog",
+          "line": 38
+        }
+      ],
+      "data_members": [
+        {
+          "name": "findingRepo",
+          "line": 16
+        },
+        {
+          "name": "rnd",
+          "line": 17
+        },
+        {
+          "name": "findings",
+          "line": 21
+        },
+        {
+          "name": "updated",
+          "line": 22
+        },
+        {
+          "name": "old",
+          "line": 25
+        },
+        {
+          "name": "next",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/supplychain/ProvenanceController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.supplychain",
+      "classes": [
+        {
+          "name": "ProvenanceController",
+          "kind": "class",
+          "line": 7
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/supplychain/ProvenanceRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.supplychain",
+      "classes": [
+        {
+          "name": "ProvenanceRepository",
+          "kind": "interface",
+          "line": 4
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 5
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/supplychain/ProvenanceService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.supplychain",
+      "classes": [
+        {
+          "name": "ProvenanceService",
+          "kind": "class",
+          "line": 6
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 8
+        },
+        {
+          "name": "list",
+          "line": 9
+        },
+        {
+          "name": "get",
+          "line": 10
+        },
+        {
+          "name": "verify",
+          "line": 11
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 7
+        },
+        {
+          "name": "a",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/threatmodel/ThreatModel.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.threatmodel",
+      "classes": [
+        {
+          "name": "ThreatModel",
+          "kind": "class",
+          "line": 10
+        }
+      ],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/threatmodel/ThreatModelController.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.threatmodel",
+      "classes": [
+        {
+          "name": "ThreatModelController",
+          "kind": "class",
+          "line": 9
+        }
+      ],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "svc",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/threatmodel/ThreatModelRepository.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.threatmodel",
+      "classes": [
+        {
+          "name": "ThreatModelRepository",
+          "kind": "interface",
+          "line": 5
+        }
+      ],
+      "functions": [
+        {
+          "name": "findByProjectId",
+          "line": 6
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/modules/threatmodel/ThreatModelService.java",
+      "language": "java",
+      "package": "com.vulnerax.modules.threatmodel",
+      "classes": [
+        {
+          "name": "ThreatModelService",
+          "kind": "class",
+          "line": 8
+        }
+      ],
+      "functions": [
+        {
+          "name": "create",
+          "line": 10
+        },
+        {
+          "name": "if",
+          "line": 12
+        },
+        {
+          "name": "if",
+          "line": 13
+        },
+        {
+          "name": "if",
+          "line": 14
+        },
+        {
+          "name": "if",
+          "line": 15
+        },
+        {
+          "name": "if",
+          "line": 16
+        },
+        {
+          "name": "generateSTRIDE",
+          "line": 19
+        },
+        {
+          "name": "list",
+          "line": 28
+        },
+        {
+          "name": "get",
+          "line": 30
+        }
+      ],
+      "data_members": [
+        {
+          "name": "repo",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/seed/DataSeeder.java",
+      "language": "java",
+      "package": "com.vulnerax.seed",
+      "classes": [
+        {
+          "name": "DataSeeder",
+          "kind": "class",
+          "line": 30
+        }
+      ],
+      "functions": [
+        {
+          "name": "run",
+          "line": 40
+        },
+        {
+          "name": "if",
+          "line": 41
+        }
+      ],
+      "data_members": [
+        {
+          "name": "userRepo",
+          "line": 31
+        },
+        {
+          "name": "orgRepo",
+          "line": 32
+        },
+        {
+          "name": "wsRepo",
+          "line": 33
+        },
+        {
+          "name": "projRepo",
+          "line": 34
+        },
+        {
+          "name": "assetRepo",
+          "line": 35
+        },
+        {
+          "name": "findingService",
+          "line": 36
+        },
+        {
+          "name": "encoder",
+          "line": 37
+        },
+        {
+          "name": "admin",
+          "line": 45
+        },
+        {
+          "name": "sec",
+          "line": 46
+        },
+        {
+          "name": "dev",
+          "line": 47
+        },
+        {
+          "name": "org",
+          "line": 50
+        },
+        {
+          "name": "ws",
+          "line": 51
+        },
+        {
+          "name": "proj",
+          "line": 52
+        },
+        {
+          "name": "proj2",
+          "line": 53
+        },
+        {
+          "name": "api",
+          "line": 56
+        },
+        {
+          "name": "repoAsset",
+          "line": 61
+        }
+      ]
+    },
+    {
+      "path": "backend/src/main/java/com/vulnerax/VulneraxApplication.java",
+      "language": "java",
+      "package": "com.vulnerax",
+      "classes": [
+        {
+          "name": "VulneraxApplication",
+          "kind": "class",
+          "line": 13
+        }
+      ],
+      "functions": [
+        {
+          "name": "main",
+          "line": 14
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "frontend/postcss.config.js",
+      "language": "javascript",
+      "package": "",
+      "classes": [],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "frontend/src/api/client.ts",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "baseURL",
+          "line": 4
+        },
+        {
+          "name": "headers",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/App.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "Guard",
+          "line": 38
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "frontend/src/components/Layout.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "frontend/src/main.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "frontend/src/pages/AiLlm.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Assets.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "create",
+          "line": 19
+        },
+        {
+          "name": "discover",
+          "line": 26
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 14
+        },
+        {
+          "name": "queryFn",
+          "line": 15
+        },
+        {
+          "name": "enabled",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/BrowserExt.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Campaigns.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Cicd.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Cloud.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Compliance.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/ContainerPage.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Coverage.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Dashboard.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 7
+        },
+        {
+          "name": "queryFn",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/DatabasePage.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/FindingDetail.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "frontend/src/pages/Findings.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "act",
+          "line": 18
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 14
+        },
+        {
+          "name": "queryFn",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Firmware.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Graph.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "frontend/src/pages/Iac.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Iam.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Integrations.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/K8s.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Login.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "submit",
+          "line": 16
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "frontend/src/pages/Mobile.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "upload",
+          "line": 15
+        },
+        {
+          "name": "openWs",
+          "line": 20
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "frontend/src/pages/Network.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Notifications.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Pentest.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Policies.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Projects.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "createProject",
+          "line": 12
+        },
+        {
+          "name": "createOrg",
+          "line": 24
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "frontend/src/pages/Reports.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "generate",
+          "line": 15
+        }
+      ],
+      "data_members": [
+        {
+          "name": "Trend",
+          "line": 70
+        },
+        {
+          "name": "Recommendations",
+          "line": 72
+        },
+        {
+          "name": "MASVS",
+          "line": 79
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Retest.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/Scans.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "start",
+          "line": 14
+        }
+      ],
+      "data_members": []
+    },
+    {
+      "path": "frontend/src/pages/SupplyChain.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/pages/ThreatModel.tsx",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [
+        {
+          "name": "projList",
+          "line": 8
+        },
+        {
+          "name": "create",
+          "line": 16
+        }
+      ],
+      "data_members": [
+        {
+          "name": "queryKey",
+          "line": 11
+        },
+        {
+          "name": "queryFn",
+          "line": 12
+        },
+        {
+          "name": "enabled",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "frontend/src/store/auth.ts",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "user",
+          "line": 6
+        },
+        {
+          "name": "token",
+          "line": 7
+        },
+        {
+          "name": "login",
+          "line": 8
+        },
+        {
+          "name": "logout",
+          "line": 9
+        },
+        {
+          "name": "setUser",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "frontend/tailwind.config.js",
+      "language": "javascript",
+      "package": "",
+      "classes": [],
+      "functions": [],
+      "data_members": []
+    },
+    {
+      "path": "frontend/vite.config.ts",
+      "language": "typescript",
+      "package": "",
+      "classes": [],
+      "functions": [],
+      "data_members": [
+        {
+          "name": "plugins",
+          "line": 5
+        },
+        {
+          "name": "server",
+          "line": 6
+        },
+        {
+          "name": "port",
+          "line": 7
+        },
+        {
+          "name": "host",
+          "line": 8
+        },
+        {
+          "name": "proxy",
+          "line": 9
+        },
+        {
+          "name": "target",
+          "line": 11
+        },
+        {
+          "name": "changeOrigin",
+          "line": 12
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-09-10T14:17:03.225613+00:00"
+}

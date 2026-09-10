@@ -1,0 +1,46 @@
+{
+  "changes": [
+    {
+      "run_id": "bootstrap::vulnerax-app",
+      "final_status": "registered",
+      "summary": "Bootstrapped AI_AGENT_CORE memory from existing project registration (project_registration).",
+      "changed_artifacts": [
+        "backend/src/main/java/com/vulnerax/common/ApiResponse.java",
+        "backend/src/main/java/com/vulnerax/common/BaseEntity.java",
+        "backend/src/main/java/com/vulnerax/common/exception/BusinessException.java",
+        "backend/src/main/java/com/vulnerax/common/exception/GlobalExceptionHandler.java",
+        "backend/src/main/java/com/vulnerax/common/exception/ResourceNotFoundException.java",
+        "backend/src/main/java/com/vulnerax/common/PageResponse.java",
+        "backend/src/main/java/com/vulnerax/config/AuditingConfig.java",
+        "backend/src/main/java/com/vulnerax/config/OpenApiConfig.java",
+        "backend/src/main/java/com/vulnerax/config/SecurityConfig.java",
+        "backend/src/main/java/com/vulnerax/modules/ai/AiAnalystService.java",
+        "backend/src/main/java/com/vulnerax/modules/ai/AiController.java",
+        "backend/src/main/java/com/vulnerax/modules/aillm/AiAsset.java",
+        "backend/src/main/java/com/vulnerax/modules/aillm/AiLlmController.java",
+        "backend/src/main/java/com/vulnerax/modules/aillm/AiLlmService.java",
+        "backend/src/main/java/com/vulnerax/modules/aillm/AiRepository.java",
+        "backend/src/main/java/com/vulnerax/modules/assessment/AssessmentController.java",
+        "backend/src/main/java/com/vulnerax/modules/asset/Asset.java",
+        "backend/src/main/java/com/vulnerax/modules/asset/AssetController.java",
+        "backend/src/main/java/com/vulnerax/modules/asset/AssetRepository.java",
+        "backend/src/main/java/com/vulnerax/modules/asset/AssetService.java",
+        "backend/src/main/java/com/vulnerax/modules/audit/AuditController.java",
+        "backend/src/main/java/com/vulnerax/modules/audit/AuditEvent.java",
+        "backend/src/main/java/com/vulnerax/modules/audit/AuditRepository.java",
+        "backend/src/main/java/com/vulnerax/modules/audit/AuditService.java"
+      ],
+      "features": [
+        "create",
+        "delete",
+        "list",
+        "login",
+        "return",
+        "run",
+        "start",
+        "update"
+      ],
+      "recorded_at": "2026-09-10T14:17:03.692669+00:00"
+    }
+  ]
+}

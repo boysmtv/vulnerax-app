@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "project_root": "D:\\Work\\Pribadi\\WebProject\\vulnerax-app",
+  "updated_at": "2026-09-10T14:17:03.810953+00:00",
+  "memory_completeness_score": 0.947,
+  "graph_coverage_score": 1.0,
+  "symbol_extraction_confidence": 1.0,
+  "api_contract_coverage": 1.0,
+  "flow_completeness_score": 1.0,
+  "test_mapping_score": 0.0,
+  "runtime_proof_score": 0.25,
+  "security_readiness_score": 0.55,
+  "hotspot_risk": "medium",
+  "blast_radius_risk": "high",
+  "release_readiness_score": 0.686,
+  "release_readiness": "ready"
+}
