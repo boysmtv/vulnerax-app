@@ -15,5 +15,39 @@
     },
     "read_only": 14,
     "with_token": 0
+  },
+  "2026-09-11": {
+    "total": 30,
+    "by_tool": {
+      "parallel_context": 5,
+      "project_status": 2,
+      "project_brain": 1,
+      "history_recent": 1,
+      "history_stats": 1,
+      "project_memory_list": 1,
+      "task_queue_stats": 1,
+      "approval_status": 1,
+      "mcp_dashboard": 1,
+      "project_contracts": 1,
+      "project_validate": 1,
+      "test_coverage_analysis": 1,
+      "test_evidence_collect": 2,
+      "prd_quality_validate": 1,
+      "project_scan": 1,
+      "security_hint": 1,
+      "development_plan_generate": 1,
+      "nfr_generate": 1,
+      "deployment_generate": 1,
+      "observability_generate": 1,
+      "testing_generate": 1,
+      "predict_bug": 1,
+      "project_memory_inspect": 1,
+      "commit_msg": 1
+    },
+    "by_agent": {
+      "opencode": 30
+    },
+    "read_only": 30,
+    "with_token": 0
   }
 }

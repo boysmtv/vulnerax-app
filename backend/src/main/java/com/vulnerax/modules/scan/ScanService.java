@@ -3,11 +3,16 @@ package com.vulnerax.modules.scan;
 import com.vulnerax.common.exception.ResourceNotFoundException;
 import com.vulnerax.modules.finding.Finding;
 import com.vulnerax.modules.finding.FindingService;
+import com.vulnerax.modules.scan.analyzers.ApiAnalyzer;
+import com.vulnerax.modules.scan.analyzers.ContainerAnalyzer;
+import com.vulnerax.modules.scan.analyzers.DastAnalyzer;
+import com.vulnerax.modules.scan.analyzers.IaCAnalyzer;
+import com.vulnerax.modules.scan.analyzers.MobileAnalyzer;
 import com.vulnerax.modules.scan.analyzers.SastAnalyzer;
 import com.vulnerax.modules.scan.analyzers.ScaAnalyzer;
 import com.vulnerax.modules.scan.analyzers.SecretAnalyzer;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -19,11 +24,15 @@ import java.util.*;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ScanService {
     private final ScanRepository scanRepo;
     private final ScanJobRepository jobRepo;
     private final FindingService findingService;
+    private final ApplicationContext ctx;
+
+    public ScanService(ScanRepository scanRepo, ScanJobRepository jobRepo, FindingService findingService, ApplicationContext ctx) {
+        this.scanRepo = scanRepo; this.jobRepo = jobRepo; this.findingService = findingService; this.ctx = ctx;
+    }
 
     public Page<Scan> list(UUID projectId, Pageable p) {
         if (projectId != null) return scanRepo.findByProjectId(projectId, p);
@@ -43,8 +52,8 @@ public class ScanService {
             ScanJob j = ScanJob.builder().scanId(saved.getId()).scannerPlugin(pl).status("QUEUED").progress(0).build();
             jobRepo.save(j);
         }
-        // async execution
-        executeAsync(saved.getId());
+        // async execution — go through proxy to trigger @Async
+        ctx.getBean(ScanService.class).executeAsync(saved.getId());
         return saved;
     }
 
@@ -134,7 +143,7 @@ public class ScanService {
         List<Map<String,Object>> sasts = List.of();
         List<Map<String,Object>> scas = List.of();
         try {
-            if ("SECRET".equals(type) || "ALL".equals(type)) {
+            if ("SECRET".equals(type) || "IAC".equals(type) || "CONTAINER".equals(type) || "ALL".equals(type)) {
                 secrets = SecretAnalyzer.analyze(toAnalyze, fileName);
                 for (var f : secrets) {
                     Finding fd = Finding.builder()
@@ -152,7 +161,7 @@ public class ScanService {
                     total++;
                 }
             }
-            if ("SAST".equals(type) || "ALL".equals(type) || "DAST".equals(type) || "API".equals(type)) {
+            if ("SAST".equals(type) || "IAC".equals(type) || "ALL".equals(type)) {
                 sasts = SastAnalyzer.analyze(toAnalyze, fileName);
                 for (var f : sasts) {
                     Finding fd = Finding.builder()
@@ -166,6 +175,26 @@ public class ScanService {
                         .codeSnippet((String)f.get("snippet"))
                         .recommendation((String)f.get("recommendation"))
                         .dataFlow("source: user input -> sink: vulnerable function")
+                        .build();
+                    findingService.create(fd);
+                    total++;
+                }
+            }
+            if ("DAST".equals(type) || "API".equals(type) || "ALL".equals(type)) {
+                // Real DAST: fetch live URL, check headers, XSS, SQLi, etc. — not mock, takes 5-10s
+                List<Map<String,Object>> dasts = DastAnalyzer.analyze(scan.getTarget(), fileName);
+                for (var f : dasts) {
+                    Finding fd = Finding.builder()
+                        .title((String)f.get("title"))
+                        .description((String)f.get("snippet"))
+                        .type("DAST").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
+                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                        .source("dast-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(6.0)
+                        .businessCriticality("HIGH").owner("Security Team")
+                        .filePath((String)f.get("file")).lineNumber((Integer)f.get("line"))
+                        .codeSnippet((String)f.get("match"))
+                        .recommendation((String)f.get("recommendation"))
+                        .dataFlow("DAST: live site " + scan.getTarget())
                         .build();
                     findingService.create(fd);
                     total++;
@@ -186,6 +215,65 @@ public class ScanService {
                         .build();
                     findingService.create(fd);
                     total++;
+                }
+            }
+            // Container analysis
+            if ("CONTAINER".equals(type) || "ALL".equals(type)) {
+                List<Map<String,Object>> containers = ContainerAnalyzer.analyze(scan.getTarget(), scan.getConfigJson());
+                for (var f : containers) {
+                    Finding fd = Finding.builder()
+                        .title((String)f.get("title")).description((String)f.get("snippet"))
+                        .type("CONTAINER").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
+                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                        .source("container-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(7.0)
+                        .businessCriticality("HIGH").owner("DevOps Team").filePath((String)f.get("file"))
+                        .recommendation((String)f.get("recommendation")).build();
+                    findingService.create(fd); total++;
+                }
+            }
+            // IaC analysis
+            if ("IAC".equals(type) || "ALL".equals(type)) {
+                List<Map<String,Object>> iacs = IaCAnalyzer.analyze(toAnalyze, fileName);
+                for (var f : iacs) {
+                    Finding fd = Finding.builder()
+                        .title((String)f.get("title")).description((String)f.get("snippet"))
+                        .type("IAC").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
+                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                        .source("iac-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(7.0)
+                        .businessCriticality("HIGH").owner("Platform Team").filePath((String)f.get("file"))
+                        .recommendation((String)f.get("recommendation")).build();
+                    findingService.create(fd); total++;
+                }
+            }
+            // API analysis (live HTTP for API targets)
+            if ("API".equals(type) || "ALL".equals(type)) {
+                // ApiAnalyzer runs live HTTP checks — only for http targets
+                if (scan.getTarget() != null && scan.getTarget().startsWith("http")) {
+                    List<Map<String,Object>> apis = ApiAnalyzer.analyze(scan.getTarget());
+                    for (var f : apis) {
+                        Finding fd = Finding.builder()
+                            .title((String)f.get("title")).description((String)f.get("snippet"))
+                            .type("API").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
+                            .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                            .source("api-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(6.5)
+                            .businessCriticality("HIGH").owner("Security Team").filePath((String)f.get("file"))
+                            .recommendation((String)f.get("recommendation")).build();
+                        findingService.create(fd); total++;
+                    }
+                }
+            }
+            // Mobile analysis
+            if ("MOBILE".equals(type) || "ALL".equals(type)) {
+                List<Map<String,Object>> mobiles = MobileAnalyzer.analyze(scan.getTarget(), scan.getConfigJson());
+                for (var f : mobiles) {
+                    Finding fd = Finding.builder()
+                        .title((String)f.get("title")).description((String)f.get("snippet"))
+                        .type("MOBILE").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
+                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                        .source("mobile-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(7.0)
+                        .businessCriticality("HIGH").owner("Mobile Team").filePath((String)f.get("file"))
+                        .recommendation((String)f.get("recommendation")).build();
+                    findingService.create(fd); total++;
                 }
             }
             // If no real finding and scanner is SAST/SECRET/SCA, do NOT create mock - return 0. This proves no fake data.

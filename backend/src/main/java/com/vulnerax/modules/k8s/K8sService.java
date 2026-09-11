@@ -14,9 +14,6 @@ public class K8sService {
     public List<K8sResource> list(UUID projectId){ return projectId!=null? repo.findByProjectId(projectId): repo.findAll(); }
     public K8sResource get(UUID id){ return repo.findById(id).orElseThrow(); }
     public List<K8sResource> scanMock(UUID projectId){
-        return List.of(
-            K8sResource.builder().projectId(projectId).clusterName("prod-eks").namespace("production").kind("Deployment").name("payment-service").configurationJson("{\"privileged\":true,\"runAsRoot\":true}").build(),
-            K8sResource.builder().projectId(projectId).clusterName("prod-eks").namespace("kube-system").kind("ClusterRole").name("cluster-admin").build()
-        ).stream().map(this::create).toList();
+        throw new com.vulnerax.common.exception.BusinessException("Real K8s discovery required: configure kubeconfig and RBAC. Mock scan disabled.");
     }
 }

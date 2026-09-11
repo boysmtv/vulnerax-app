@@ -74,18 +74,13 @@ public class AssetService {
     }
 
     public List<Asset> discoverMock(UUID projectId, String source) {
-        UUID orgId = null;
-        try {
-            orgId = projectRepo.findById(projectId).map(p -> p.getOrganizationId()).orElse(null);
-            if (orgId == null) {
-                var any = repo.findByProjectId(projectId);
-                if (!any.isEmpty()) orgId = any.get(0).getOrganizationId();
-            }
-            if (orgId == null) orgId = projectRepo.findAll().stream().findFirst().map(p -> p.getOrganizationId()).orElse(null);
-        } catch (Exception e) {}
-        List<Asset> discovered = new ArrayList<>();
-        discovered.add(Asset.builder().projectId(projectId).organizationId(orgId).name("api-"+UUID.randomUUID().toString().substring(0,4)+".example.com").type("SUBDOMAIN").identifier("api.example.com").internetExposed(true).discoverySource(source).criticality("HIGH").environment("PRODUCTION").build());
-        discovered.add(Asset.builder().projectId(projectId).organizationId(orgId).name("admin-preview.example.com").type("SUBDOMAIN").identifier("admin-preview.example.com").internetExposed(true).discoverySource(source).criticality("CRITICAL").environment("STAGING").status("SHADOW").build());
-        return discovered.stream().map(this::create).collect(Collectors.toList());
+        // Mock removed per request "hilangkan semua data mock" — real discovery must be performed via authorized connectors
+        // Return empty and require caller to integrate real discovery sources (GitHub/AWS/DNS/K8s). No example.com dummy.
+        if (!"REAL".equalsIgnoreCase(source)) {
+            throw new com.vulnerax.common.exception.BusinessException("Real discovery required: provide source=REAL with valid connector credentials (GitHub/AWS/DNS/K8s). Mock discovery disabled.");
+        }
+        // REAL path: if source==REAL, perform actual discovery (currently returns empty until connectors configured)
+        // Future: query GitHub API, AWS Resource Groups, DNS enumeration, K8s API
+        return List.of();
     }
 }

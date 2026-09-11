@@ -1,0 +1,414 @@
+{
+  "session_id": "mcp-21928",
+  "created_at": "2026-09-11T07:31:39.179463+00:00",
+  "last_active": "2026-09-11T15:08:54.130529+00:00",
+  "tool_call_count": 31,
+  "context": {
+    "client_info": "{'name': 'opencode', 'version': '1.18.30'}",
+    "client_name": "opencode",
+    "last_tool": "tools/call",
+    "last_args": "{'diff': '8 real security analyzers (SAST 30+ patterns, SCA, Secret, DAST 25+ checks, API, Container, IaC, Mobile), 1-click test wizard 3-step, @Async rollback fix, 125 backend + 44 frontend tests, mo"
+  },
+  "stream_buffer": [
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_memory_list",
+        "success": true
+      },
+      "timestamp": "2026-09-11T07:50:48.118933+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 22,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T07:50:49.116465+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "task_queue_stats",
+        "success": true
+      },
+      "timestamp": "2026-09-11T07:50:51.177618+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 23,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T07:50:52.153787+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "approval_status",
+        "success": true
+      },
+      "timestamp": "2026-09-11T07:50:54.969798+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 24,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T07:50:55.807987+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "mcp_dashboard",
+        "success": true
+      },
+      "timestamp": "2026-09-11T07:50:57.925646+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 25,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T07:50:58.902157+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "parallel_context",
+        "success": true
+      },
+      "timestamp": "2026-09-11T07:57:34.597979+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 26,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T07:57:35.583835+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_contracts",
+        "success": true
+      },
+      "timestamp": "2026-09-11T07:57:39.050539+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 27,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T07:57:39.860259+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_validate",
+        "success": true
+      },
+      "timestamp": "2026-09-11T07:57:43.688932+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 28,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T07:57:44.798949+00:00"
+    },
+    {
+      "type": "tool_error",
+      "data": {
+        "tool": "test_coverage_analysis",
+        "error": "Object of type TestingCompletenessSummary is not JSON serializable"
+      },
+      "timestamp": "2026-09-11T07:57:47.727104+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 29,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T07:57:48.761500+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "test_evidence_collect",
+        "success": true
+      },
+      "timestamp": "2026-09-11T07:57:51.463633+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 30,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T07:57:52.349152+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "prd_quality_validate",
+        "success": true
+      },
+      "timestamp": "2026-09-11T07:58:44.213156+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 31,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T07:58:44.965748+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "parallel_context",
+        "success": true
+      },
+      "timestamp": "2026-09-11T08:00:09.711560+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 32,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T08:00:10.463367+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_scan",
+        "success": true
+      },
+      "timestamp": "2026-09-11T08:10:52.539707+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 33,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T08:10:53.207658+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "test_evidence_collect",
+        "success": true
+      },
+      "timestamp": "2026-09-11T08:12:52.947730+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 34,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T08:12:53.658424+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "security_hint",
+        "success": true
+      },
+      "timestamp": "2026-09-11T08:12:57.488659+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 35,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T08:12:58.207901+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_status",
+        "success": true
+      },
+      "timestamp": "2026-09-11T08:13:03.399235+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 36,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T08:13:04.067836+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "development_plan_generate",
+        "success": true
+      },
+      "timestamp": "2026-09-11T10:14:57.007995+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 37,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T10:14:58.056384+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "nfr_generate",
+        "success": true
+      },
+      "timestamp": "2026-09-11T10:54:12.436539+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 38,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T10:54:13.308974+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "deployment_generate",
+        "success": true
+      },
+      "timestamp": "2026-09-11T10:54:15.771870+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 39,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T10:54:16.662176+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "observability_generate",
+        "success": true
+      },
+      "timestamp": "2026-09-11T10:54:20.459740+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 40,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T10:54:21.333693+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "testing_generate",
+        "success": true
+      },
+      "timestamp": "2026-09-11T10:54:24.959389+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 41,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T10:54:25.862894+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "parallel_context",
+        "success": true
+      },
+      "timestamp": "2026-09-11T11:04:38.925873+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 42,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T11:04:39.669283+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "predict_bug",
+        "success": true
+      },
+      "timestamp": "2026-09-11T11:07:58.379202+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 43,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T11:07:59.153624+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "parallel_context",
+        "success": true
+      },
+      "timestamp": "2026-09-11T12:05:58.057672+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 44,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T12:05:58.791960+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_memory_inspect",
+        "success": true
+      },
+      "timestamp": "2026-09-11T15:07:56.790610+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 45,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T15:07:58.419998+00:00"
+    },
+    {
+      "type": "tool_error",
+      "data": {
+        "tool": "commit_msg",
+        "error": "'bool' object is not iterable"
+      },
+      "timestamp": "2026-09-11T15:08:53.236567+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 46,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-11T15:08:54.130529+00:00"
+    }
+  ]
+}

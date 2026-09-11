@@ -105,54 +105,13 @@ public class FindingService {
         return m;
     }
 
-    // Called by ScanService after scan completes - generate mock findings
+    // Mock removed per request "hilangkan semua data mock" — previously generated random findings
+    // Now disabled: real findings only via ScanService.runRealAnalyzers (Sast/Sca/Secret). Keep method for backward compat but make no-op.
     @Transactional
     public void generateMockFindings(Scan scan) {
-        Random rnd = new Random();
-        String[] titles = {
-            "Broken Object Level Authorization", "SQL Injection via Unsanitized Input",
-            "Hardcoded AWS Secret in Source", "Vulnerable Dependency log4j 2.14.1 (CVE-2021-44228)",
-            "Cleartext Traffic Allowed (Android)", "Exported Activity Without Permission",
-            "SSRF in Image Fetch Handler", "Insecure Deserialization in API", "Missing Authentication on /admin",
-            "Container Running as Root", "Excessive IAM Wildcard Permission", "TLS 1.0 Enabled on Load Balancer"
-        };
-        String[] severities = {"CRITICAL","HIGH","HIGH","MEDIUM","LOW","INFO"};
-        String[] cwes = {"CWE-639","CWE-89","CWE-798","CWE-1104","CWE-319","CWE-926"};
-        String[] types = {"AUTHORIZATION","INJECTION","SECRET","SCA","CRYPTO","MOBILE","SSRF","DESERIALIZATION","AUTH","CONTAINER","IAM","TLS"};
-        int n = 2 + rnd.nextInt(5);
-        for (int i=0;i<n;i++) {
-            int idx = rnd.nextInt(titles.length);
-            Finding f = Finding.builder()
-                    .title(titles[idx])
-                    .description("Mock finding generated from scan " + scan.getId() + " via " + scan.getScannerType())
-                    .type(types[idx % types.length])
-                    .severity(severities[rnd.nextInt(severities.length)])
-                    .confidence(rnd.nextDouble()<0.7? "HIGH":"MEDIUM")
-                    .status("OPEN")
-                    .projectId(scan.getProjectId())
-                    .assetId(scan.getAssetId())
-                    .assetName(scan.getTarget()!=null? scan.getTarget():"unknown-asset")
-                    .environment("PRODUCTION")
-                    .source(scan.getScannerType()!=null? scan.getScannerType().toLowerCase()+"-engine":"mock")
-                    .scanId(scan.getId())
-                    .cwe(cwes[idx % cwes.length])
-                    .owasp(idx%2==0? "API1:2023":"A01:2021")
-                    .cvss(2.0 + rnd.nextDouble()*8)
-                    .epss(rnd.nextDouble())
-                    .kev(rnd.nextDouble()<0.08)
-                    .internetExposed(rnd.nextDouble()<0.4)
-                    .reachable(rnd.nextDouble()<0.6)
-                    .businessCriticality(rnd.nextDouble()<0.3? "CRITICAL":"HIGH")
-                    .owner("Platform Team")
-                    .filePath("src/main/java/com/example/Service.java")
-                    .lineNumber(42 + rnd.nextInt(200))
-                    .functionName("handleRequest")
-                    .codeSnippet("String query = \"SELECT * FROM users WHERE id=\" + input;")
-                    .dataFlow("source: request param -> sink: sql query")
-                    .recommendation("Use parameterized queries and validate ownership before access.")
-                    .build();
-            create(f);
-        }
+        // No-op: mock generation disabled. Real findings are created via ScanService.runRealAnalyzers only.
+        // If legacy call occurs, log and do nothing.
+        org.slf4j.LoggerFactory.getLogger(FindingService.class).warn("generateMockFindings called for scan {} but mock disabled — use real analyzers", scan.getId());
     }
 
     @Transactional

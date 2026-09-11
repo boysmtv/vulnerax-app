@@ -41,12 +41,34 @@ public class DashboardService {
         posture.put("slaBreached", findingRepo.findAll().stream().filter(f-> "BREACHED".equals(f.getSlaStatus())).count());
         posture.put("bySeverity", findingRepo.countBySeverity().stream().collect(
                 java.util.stream.Collectors.toMap(a->(String)a[0], a->(Long)a[1], (a,b)->a, LinkedHashMap::new)));
-        posture.put("trend", List.of(
-            Map.of("date","2026-09-03","critical",5,"high",21),
-            Map.of("date","2026-09-10","critical",critical,"high",high)
-        ));
+        // Real trend: group findings by created date (last 7 days) — no hardcoded mock
+        Map<String,Long> trendMap = new java.util.LinkedHashMap<>();
+        // Build last 7 days buckets from real data
+        java.time.LocalDate today = java.time.LocalDate.now();
+        for (int i=6;i>=0;i--) {
+            java.time.LocalDate d = today.minusDays(i);
+            long c = findingRepo.findAll().stream().filter(f-> f.getCreatedAt()!=null && f.getCreatedAt().atZone(java.time.ZoneId.systemDefault()).toLocalDate().equals(d) && "CRITICAL".equals(f.getSeverity())).count();
+            long h = findingRepo.findAll().stream().filter(f-> f.getCreatedAt()!=null && f.getCreatedAt().atZone(java.time.ZoneId.systemDefault()).toLocalDate().equals(d) && "HIGH".equals(f.getSeverity())).count();
+            trendMap.put(d.toString(), c*100 + h); // store combined for splitting later
+        }
+        List<Map<String,Object>> trend = new ArrayList<>();
+        for (int i=6;i>=0;i--) {
+            java.time.LocalDate d = today.minusDays(i);
+            long c = findingRepo.findAll().stream().filter(f-> f.getCreatedAt()!=null && f.getCreatedAt().atZone(java.time.ZoneId.systemDefault()).toLocalDate().equals(d) && "CRITICAL".equals(f.getSeverity())).count();
+            long h = findingRepo.findAll().stream().filter(f-> f.getCreatedAt()!=null && f.getCreatedAt().atZone(java.time.ZoneId.systemDefault()).toLocalDate().equals(d) && "HIGH".equals(f.getSeverity())).count();
+            trend.add(Map.of("date", d.toString(), "critical", c, "high", h));
+        }
+        posture.put("trend", trend);
         posture.put("topRiskAssets", assetRepo.findAll().stream().filter(a-> "CRITICAL".equals(a.getCriticality())).limit(5).map(a-> Map.of("name",a.getName(),"type",a.getType(),"criticality",a.getCriticality())).toList());
-        posture.put("coverage", Map.of("SAST","✓","SCA","✓","SECRET","✓","DAST","✓","API","✓","MOBILE","Partial","CONTAINER","✓","CLOUD","Partial"));
+        // Coverage derived from real scan history — no mock partial
+        long scaCount = scanRepo.findAll().stream().filter(s-> "SCA".equalsIgnoreCase(s.getScannerType())).count();
+        long sastCount = scanRepo.findAll().stream().filter(s-> "SAST".equalsIgnoreCase(s.getScannerType())).count();
+        posture.put("coverage", Map.of(
+            "SAST", sastCount>0?"✓":"○",
+            "SCA", scaCount>0?"✓":"○",
+            "SECRET", findingRepo.findAll().stream().anyMatch(f-> "SECRET".equals(f.getType()))?"✓":"○",
+            "DAST","○","API","○","MOBILE","○","CONTAINER","○","CLOUD","○"
+        ));
         return posture;
     }
 

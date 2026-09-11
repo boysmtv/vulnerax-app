@@ -17,7 +17,23 @@ public class MfaController {
     @PostMapping("/setup")
     public ApiResponse<?> setup(Authentication auth) {
         var user = userRepo.findByEmail(auth.getName()).orElseThrow();
-        String secret = "JBSWY3DPEHPK3PXP-" + UUID.randomUUID().toString().substring(0,8);
+        // generate cryptographically secure TOTP secret (Base32, 160-bit) — no hardcoded value
+        java.security.SecureRandom sr = new java.security.SecureRandom();
+        byte[] bytes = new byte[20];
+        sr.nextBytes(bytes);
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        StringBuilder sb = new StringBuilder(32);
+        int bits = 0, value = 0;
+        for (byte b : bytes) {
+            value = (value << 8) | (b & 0xFF);
+            bits += 8;
+            while (bits >= 5) {
+                sb.append(alphabet.charAt((value >> (bits - 5)) & 31));
+                bits -= 5;
+            }
+        }
+        if (bits > 0) sb.append(alphabet.charAt((value << (5 - bits)) & 31));
+        String secret = sb.toString();
         user.setMfaSecret(secret);
         user.setMfaEnabled(true);
         userRepo.save(user);

@@ -33,6 +33,7 @@ import Notifications from './pages/Notifications'
 import Coverage from './pages/Coverage'
 import Campaigns from './pages/Campaigns'
 import SupplyChain from './pages/SupplyChain'
+import OneClickTest from './pages/OneClickTest'
 
 const qc = new QueryClient()
 
@@ -48,7 +49,8 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Guard><Dashboard /></Guard>} />
+          <Route path="/" element={<Guard><OneClickTest /></Guard>} />
+          <Route path="/dashboard" element={<Guard><Dashboard /></Guard>} />
           <Route path="/projects" element={<Guard><Projects /></Guard>} />
           <Route path="/assets" element={<Guard><Assets /></Guard>} />
           <Route path="/findings" element={<Guard><Findings /></Guard>} />
@@ -78,6 +80,7 @@ export default function App() {
           <Route path="/coverage" element={<Guard><Coverage /></Guard>} />
           <Route path="/campaigns" element={<Guard><Campaigns /></Guard>} />
           <Route path="/supply-chain" element={<Guard><SupplyChain /></Guard>} />
+          <Route path="/one-click" element={<Guard><OneClickTest /></Guard>} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
