@@ -1,3 +1,4 @@
+import React from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
@@ -35,7 +36,7 @@ vi.mock('axios', () => ({
   },
 }))
 
-const renderWithRouter = (component) => {
+const renderWithRouter = (component: React.ReactNode) => {
   return render(<BrowserRouter>{component}</BrowserRouter>)
 }
 

@@ -1,82 +1,92 @@
-import { describe, it, expect } from 'vitest'
-import { RiskEngine } from '../../modules/risk/RiskEngine'
-import { Finding } from '../../modules/finding/Finding'
+package com.vulnerax.modules.risk;
 
-describe('RiskEngine', () => {
-  const engine = new RiskEngine()
+import com.vulnerax.modules.finding.Finding;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-  const baseFinding = {
-    cvss: 7.5,
-    epss: 0.5,
-    kev: false,
-    businessCriticality: 'HIGH',
-    internetExposed: false,
-    reachable: false,
-    environment: 'PRODUCTION',
-    confidence: 'HIGH',
-    severity: 'HIGH',
-    createdAt: new Date(),
-  } as Finding
+import java.time.Instant;
+import java.util.UUID;
 
-  it('calculates risk score with all factors', () => {
-    const score = engine.calculate(baseFinding)
-    expect(score).toBeGreaterThan(0)
-    expect(score).toBeLessThanOrEqual(100)
-  })
+import static org.junit.jupiter.api.Assertions.*;
 
-  it('returns higher score for critical severity', () => {
-    const critical = { ...baseFinding, severity: 'CRITICAL', cvss: 9.8 }
-    const low = { ...baseFinding, severity: 'LOW', cvss: 2.0 }
+class RiskEngineTest {
 
-    const criticalScore = engine.calculate(critical)
-    const lowScore = engine.calculate(low)
+    private RiskEngine engine;
 
-    expect(criticalScore).toBeGreaterThan(lowScore)
-  })
+    @BeforeEach
+    void setUp() {
+        engine = new RiskEngine();
+    }
 
-  it('increases score for KEV exploitation', () => {
-    const withKev = { ...baseFinding, kev: true }
-    const withoutKev = { ...baseFinding, kev: false }
+    private Finding buildFinding(String severity, Double cvss, Boolean kev, Boolean exposed, String crit) {
+        Finding f = Finding.builder()
+                .cvss(cvss).epss(0.5).kev(kev)
+                .businessCriticality(crit).internetExposed(exposed)
+                .reachable(false).environment("PRODUCTION")
+                .confidence("HIGH").severity(severity)
+                .build();
+        f.setCreatedAt(Instant.now());
+        return f;
+    }
 
-    const kevScore = engine.calculate(withKev)
-    const noKevScore = engine.calculate(withoutKev)
+    @Test
+    void calculatesRiskScoreWithAllFactors() {
+        Finding f = buildFinding("HIGH", 7.5, false, false, "HIGH");
+        double score = engine.calculate(f);
+        assertTrue(score > 0, "Score should be > 0");
+        assertTrue(score <= 100, "Score should be <= 100");
+    }
 
-    expect(kevScore).toBeGreaterThan(noKevScore)
-  })
+    @Test
+    void returnsHigherScoreForCriticalSeverity() {
+        Finding critical = buildFinding("CRITICAL", 9.8, false, true, "CRITICAL");
+        Finding low = buildFinding("LOW", 2.0, false, false, "LOW");
+        assertTrue(engine.calculate(critical) > engine.calculate(low));
+    }
 
-  it('increases score for internet exposed assets', () => {
-    const exposed = { ...baseFinding, internetExposed: true }
-    const notExposed = { ...baseFinding, internetExposed: false }
+    @Test
+    void increasesScoreForKevExploitation() {
+        Finding withKev = buildFinding("HIGH", 7.0, true, false, "HIGH");
+        Finding withoutKev = buildFinding("HIGH", 7.0, false, false, "HIGH");
+        assertTrue(engine.calculate(withKev) > engine.calculate(withoutKev));
+    }
 
-    const exposedScore = engine.calculate(exposed)
-    const notExposedScore = engine.calculate(notExposed)
+    @Test
+    void increasesScoreForInternetExposed() {
+        Finding exposed = buildFinding("HIGH", 7.0, false, true, "HIGH");
+        Finding notExposed = buildFinding("HIGH", 7.0, false, false, "HIGH");
+        assertTrue(engine.calculate(exposed) > engine.calculate(notExposed));
+    }
 
-    expect(exposedScore).toBeGreaterThan(notExposedScore)
-  })
+    @Test
+    void returnsCorrectRiskLevels() {
+        assertEquals("CRITICAL", engine.level(85));
+        assertEquals("VERY_HIGH", engine.level(65));
+        assertEquals("HIGH", engine.level(45));
+        assertEquals("MODERATE", engine.level(25));
+        assertEquals("LOW", engine.level(10));
+    }
 
-  it('returns correct risk level for high scores', () => {
-    expect(engine.level(85)).toBe('CRITICAL')
-    expect(engine.level(65)).toBe('VERY_HIGH')
-    expect(engine.level(45)).toBe('HIGH')
-    expect(engine.level(25)).toBe('MODERATE')
-    expect(engine.level(10)).toBe('LOW')
-  })
+    @Test
+    void enrichesFinding() {
+        Finding f = buildFinding("HIGH", 8.0, false, false, "HIGH");
+        engine.enrich(f);
+        assertTrue(f.getRiskScore() > 0);
+        assertNotNull(f.getRiskLevel());
+        assertNotNull(f.getSlaDueAt());
+        assertEquals("WITHIN_SLA", f.getSlaStatus());
+        assertNotNull(f.getFingerprint());
+    }
 
-  it('enriches finding with risk score and level', () => {
-    const finding = { ...baseFinding } as Finding
-    engine.enrich(finding)
-
-    expect(finding.riskScore).toBeGreaterThan(0)
-    expect(finding.riskLevel).toBeDefined()
-    expect(finding.slaDueAt).toBeDefined()
-    expect(finding.slaStatus).toBe('WITHIN_SLA')
-    expect(finding.fingerprint).toBeDefined()
-  })
-
-  it('generates fingerprint for dedup', () => {
-    const finding = { ...baseFinding, assetId: 'asset-1', type: 'SAST', cwe: 'CWE-89', filePath: 'test.java', lineNumber: 10 } as Finding
-    engine.enrich(finding)
-
-    expect(finding.fingerprint).toMatch(/^[a-f0-9]+$/)
-  })
-})
+    @Test
+    void generatesFingerprintForDedup() {
+        Finding f = Finding.builder()
+                .assetId(UUID.randomUUID()).type("SAST").cwe("CWE-89")
+                .filePath("test.java").lineNumber(10)
+                .severity("HIGH").confidence("HIGH").build();
+        f.setCreatedAt(Instant.now());
+        engine.enrich(f);
+        assertNotNull(f.getFingerprint());
+        assertTrue(f.getFingerprint().matches("[a-f0-9]+"));
+    }
+}

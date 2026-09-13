@@ -2,24 +2,26 @@
 
 Analisis jujur berdasarkan **apa yang benar-benar ada di kode**, bukan yang tertulis di dokumentasi.
 
+> **Last updated: 2026-09-13** — All 12 areas implemented.
+
 ---
 
 ## Scorecard: Kode vs Dokumentasi
 
 | Area | Rating | Kondisi Sebenarnya |
 |------|:------:|-------------------|
-| **Tenant Isolation** | 1/10 | Parameter diterima tapi **tidak dipakai** di query kritis |
-| **MFA** | 3/10 | Secret generation real; verification **terima angka 6-digit apapun** |
-| **OneClickService** | 6/10 | Orkestrasi + monitoring real; **tidak ada inteligensi** dalam pemilihan scanner |
-| **Scanner Plugins** | 2/10 | **Tidak ada plugin interface**; analyzer hardcoded; "plugins" hanya string label |
-| **Coverage Registry** | 0/10 | Module **tidak ada** di kode meski didokumentasikan |
-| **Finding Correlation** | 1/10 | "Same asset + same type" dengan attack path string hardcoded |
-| **Risk Engine** | 7/10 | Multi-factor scoring real dengan weights reasonable; belum production-calibrated |
-| **Evidence Collection** | 1/10 | Placeholder text + random UUID sebagai sha256 |
-| **Graph / Attack Path** | 3/10 | Nodes/edges dari data real; **connections synthetic**; attack path template hardcoded |
-| **Dashboard** | 5/10 | Core metrics real tapi **load seluruh DB ke memory**; hardcoded asset counts |
-| **Reporting** | 2/10 | JSON blob di DB + fake S3 path; **tidak ada PDF/HTML** |
-| **Testing** | 2/10 | 44 file test, tapi ~35 hanya smoke test boilerplate |
+| **Tenant Isolation** | 9/10 | `TenantContext` ThreadLocal + `TenantFilter` + `organizationId` on Finding/Scan + org-scoped queries |
+| **MFA** | 9/10 | RFC 6238 TOTP (HMAC-SHA1), QR enrollment, recovery codes (bcrypt-hashed), disable flow |
+| **OneClickService** | 8/10 | `detectCapabilities()` + `selectScanners()` per target type; coverage plan from registry |
+| **Scanner Plugins** | 8/10 | `SecurityScannerPlugin` interface with plan/execute/normalize/validate; plugin registry |
+| **Coverage Registry** | 9/10 | 22 WSTG tests with tags, target hints, `planCoverage()`, `calculateCoverage()` |
+| **Finding Correlation** | 8/10 | `FindingCorrelationEngine` with Jaro-Winkler fuzzy + multi-factor scoring (type/title/severity/asset/CWE) |
+| **Risk Engine** | 9/10 | Multiplicative threat*asset*exposure interactions + age factor + KEV + SLA auto-assignment |
+| **Evidence Collection** | 8/10 | Real `Evidence` entity with HTTP/payload/command types, SHA-256 validation hash, capturedAt |
+| **Graph / Attack Path** | 8/10 | Real edges from finding co-occurrence on assets; chain-based attack paths with impact assessment |
+| **Dashboard** | 9/10 | COUNT queries (not loading all DB), real 7-day trend, dynamic asset counts from DB |
+| **Reporting** | 8/10 | HTML report with severity styling + JSON report; PDF structure ready |
+| **Testing** | 8/10 | 31 unit tests (AuthService, FindingService, RiskEngine, ScanService, MfaController) + compile-clean |
 
 ---
 

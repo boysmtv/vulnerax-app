@@ -12,15 +12,18 @@ import java.util.UUID;
 public class Scan extends BaseEntity {
     @Column(nullable = false) private UUID projectId;
     private UUID assetId;
-    @Column(nullable = false) private String profile; // PASSIVE, QUICK, STANDARD, DEEP, RELEASE_GATE, CONTINUOUS, COMPLIANCE, PENTEST
-    @Column(nullable = false) private String scannerType; // SAST, SCA, SECRET, DAST, API, MOBILE, CONTAINER, K8S, IAC, CLOUD, NETWORK
-    @Builder.Default private String status = "QUEUED"; // QUEUED, RUNNING, COMPLETED, FAILED, CANCELLED
-    private String target; // repo url, image, domain, apk name
+    private UUID organizationId;
+    @Column(nullable = false) private String profile;
+    @Column(nullable = false) private String scannerType;
+    @Column(nullable = false) private String scanType;
+    @Builder.Default private String status = "QUEUED";
+    private String target;
+    private String targetUrl;
     private Instant startedAt;
     private Instant finishedAt;
     private String initiatedBy;
     @Column(columnDefinition = "TEXT") private String configJson;
-    @Column(columnDefinition = "TEXT") private String scopeJson; // allowed targets, excluded paths
+    @Column(columnDefinition = "TEXT") private String scopeJson;
     private Integer findingsCount;
     private Long durationMs;
 }

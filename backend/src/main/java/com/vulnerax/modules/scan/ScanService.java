@@ -3,6 +3,7 @@ package com.vulnerax.modules.scan;
 import com.vulnerax.common.exception.ResourceNotFoundException;
 import com.vulnerax.modules.finding.Finding;
 import com.vulnerax.modules.finding.FindingService;
+import com.vulnerax.modules.identity.TenantContext;
 import com.vulnerax.modules.scan.analyzers.ApiAnalyzer;
 import com.vulnerax.modules.scan.analyzers.ContainerAnalyzer;
 import com.vulnerax.modules.scan.analyzers.DastAnalyzer;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
@@ -29,46 +31,83 @@ public class ScanService {
     private final ScanJobRepository jobRepo;
     private final FindingService findingService;
     private final ApplicationContext ctx;
+    private final SecurityCoverageRegistry coverageRegistry;
+    private final Map<String, SecurityScannerPlugin> pluginRegistry = new ConcurrentHashMap<>();
 
-    public ScanService(ScanRepository scanRepo, ScanJobRepository jobRepo, FindingService findingService, ApplicationContext ctx) {
-        this.scanRepo = scanRepo; this.jobRepo = jobRepo; this.findingService = findingService; this.ctx = ctx;
+    public ScanService(ScanRepository scanRepo, ScanJobRepository jobRepo, FindingService findingService,
+                      ApplicationContext ctx, SecurityCoverageRegistry coverageRegistry,
+                      List<SecurityScannerPlugin> plugins) {
+        this.scanRepo = scanRepo;
+        this.jobRepo = jobRepo;
+        this.findingService = findingService;
+        this.ctx = ctx;
+        this.coverageRegistry = coverageRegistry;
+        if (plugins != null) {
+            plugins.forEach(p -> pluginRegistry.put(p.getId(), p));
+        }
     }
 
     public Page<Scan> list(UUID projectId, Pageable p) {
+        UUID orgId = TenantContext.getOrganizationId();
         if (projectId != null) return scanRepo.findByProjectId(projectId, p);
+        if (orgId != null) return scanRepo.findByOrganizationId(orgId, p);
         return scanRepo.findAll(p);
     }
+
     public Scan get(UUID id) { return scanRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Scan not found")); }
     public List<ScanJob> jobs(UUID scanId) { return jobRepo.findByScanId(scanId); }
 
     @Transactional
+    public Scan createScan(String targetUrl, String user) {
+        Scan s = new Scan();
+        s.setTarget(targetUrl);
+        s.setTargetUrl(targetUrl);
+        s.setInitiatedBy(user);
+        s.setStatus("QUEUED");
+        s.setProfile("STANDARD");
+        s.setScannerType("DAST");
+        s.setScanType("url");
+        return scanRepo.save(s);
+    }
+
+    @Transactional
     public Scan create(Scan s, String user) {
+        UUID orgId = TenantContext.getOrganizationId();
+        if (orgId != null) s.setOrganizationId(orgId);
         s.setInitiatedBy(user);
         s.setStatus("QUEUED");
         Scan saved = scanRepo.save(s);
-        // create jobs per scanner type
+
         List<String> plugins = pluginsFor(s.getScannerType());
         for (String pl : plugins) {
             ScanJob j = ScanJob.builder().scanId(saved.getId()).scannerPlugin(pl).status("QUEUED").progress(0).build();
             jobRepo.save(j);
         }
-        // async execution — go through proxy to trigger @Async
         ctx.getBean(ScanService.class).executeAsync(saved.getId());
         return saved;
     }
 
+    @Transactional
+    public void startScan(Scan scan, String user) {
+        UUID orgId = TenantContext.getOrganizationId();
+        if (orgId != null) scan.setOrganizationId(orgId);
+        scan.setStatus("QUEUED");
+        scanRepo.save(scan);
+        ctx.getBean(ScanService.class).executeAsync(scan.getId());
+    }
+
     private List<String> pluginsFor(String type) {
-        if (type == null) return List.of("mock-scanner");
+        if (type == null) return List.of("sast-plugin");
         return switch (type.toUpperCase()) {
-            case "SAST" -> List.of("semgrep", "codeql");
-            case "SCA" -> List.of("trivy", "grype");
-            case "SECRET" -> List.of("gitleaks", "trufflehog");
-            case "DAST" -> List.of("zap", "nuclei");
-            case "MOBILE" -> List.of("mobsf", "jadx");
-            case "CONTAINER" -> List.of("trivy-image", "grype-image");
-            case "IAC" -> List.of("checkov", "kics");
-            case "API" -> List.of("zap-api", "nuclei-api");
-            default -> List.of("mock-" + type.toLowerCase());
+            case "SAST" -> List.of("sast-plugin");
+            case "SCA" -> List.of("sca-plugin");
+            case "SECRET" -> List.of("secret-plugin");
+            case "DAST" -> List.of("dast-plugin");
+            case "MOBILE" -> List.of("mobile-plugin");
+            case "CONTAINER" -> List.of("container-plugin");
+            case "IAC" -> List.of("iac-plugin");
+            case "API" -> List.of("api-plugin");
+            default -> List.of("sast-plugin");
         };
     }
 
@@ -93,19 +132,17 @@ public class ScanService {
                 j.setLogs("Real analysis completed for " + j.getScannerPlugin() + " on " + scan.getTarget());
                 jobRepo.save(j);
             }
-            // REAL analysis - no mock random. Analyze actual target/config content
             int created = runRealAnalyzers(scan);
             scan.setStatus("COMPLETED");
             scan.setFinishedAt(Instant.now());
             scan.setDurationMs(scan.getFinishedAt().toEpochMilli() - scan.getStartedAt().toEpochMilli());
             scan.setFindingsCount(created);
-            // update job result
             for (ScanJob j : jobs) {
                 j.setResultJson("{\"findings\": " + created + ", \"real\": true}");
                 jobRepo.save(j);
             }
             scanRepo.save(scan);
-            log.info("Scan {} completed with {} REAL findings (no mock)", scanId, created);
+            log.info("Scan {} completed with {} REAL findings", scanId, created);
         } catch (Exception e) {
             log.error("Scan failed", e);
             try {
@@ -118,12 +155,10 @@ public class ScanService {
 
     private int runRealAnalyzers(Scan scan) {
         String content = scan.getTarget() != null ? scan.getTarget() : "";
-        // if configJson contains fileContent, use it as real file content
         String fileContent = null;
         String fileName = scan.getTarget();
         if (scan.getConfigJson() != null && scan.getConfigJson().contains("fileContent")) {
             try {
-                // naive extract fileContent value from JSON string
                 String cfg = scan.getConfigJson();
                 int idx = cfg.indexOf("fileContent");
                 if (idx != -1) {
@@ -131,7 +166,7 @@ public class ScanService {
                     int firstQuote = cfg.indexOf("\"", start);
                     int lastQuote = cfg.lastIndexOf("\"");
                     if (firstQuote != -1 && lastQuote != -1 && lastQuote > firstQuote) {
-                        fileContent = cfg.substring(firstQuote+1, lastQuote).replace("\\n", "\n").replace("\\\"", "\"");
+                        fileContent = cfg.substring(firstQuote + 1, lastQuote).replace("\\n", "\n").replace("\\\"", "\"");
                     }
                 }
             } catch (Exception e) { log.warn("parse fileContent failed", e); }
@@ -139,146 +174,138 @@ public class ScanService {
         String toAnalyze = fileContent != null ? fileContent : content;
         String type = scan.getScannerType() != null ? scan.getScannerType().toUpperCase() : "SAST";
         int total = 0;
-        List<Map<String,Object>> secrets = List.of();
-        List<Map<String,Object>> sasts = List.of();
-        List<Map<String,Object>> scas = List.of();
+
         try {
             if ("SECRET".equals(type) || "IAC".equals(type) || "CONTAINER".equals(type) || "ALL".equals(type)) {
-                secrets = SecretAnalyzer.analyze(toAnalyze, fileName);
+                List<Map<String, Object>> secrets = SecretAnalyzer.analyze(toAnalyze, fileName);
                 for (var f : secrets) {
                     Finding fd = Finding.builder()
-                        .title((String)f.get("title"))
-                        .description("Hardcoded secret detected: " + f.get("rule") + " at " + f.get("file") + ":" + f.get("line") + " match=" + f.get("match"))
-                        .type("SECRET").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
-                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
-                        .source("secret-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(7.5)
-                        .businessCriticality("HIGH").owner("Security Team")
-                        .filePath((String)f.get("file")).lineNumber((Integer)f.get("line"))
-                        .codeSnippet("match: " + f.get("match"))
-                        .recommendation("Rotate secret, purge history, move to Vault")
-                        .build();
+                            .title((String) f.get("title")).description("Hardcoded secret detected: " + f.get("rule"))
+                            .type("SECRET").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
+                            .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                            .source("secret-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(7.5)
+                            .businessCriticality("HIGH").owner("Security Team")
+                            .filePath((String) f.get("file")).lineNumber((Integer) f.get("line"))
+                            .codeSnippet("match: " + f.get("match"))
+                            .recommendation("Rotate secret, purge history, move to Vault")
+                            .build();
                     findingService.create(fd);
                     total++;
                 }
             }
             if ("SAST".equals(type) || "IAC".equals(type) || "ALL".equals(type)) {
-                sasts = SastAnalyzer.analyze(toAnalyze, fileName);
+                List<Map<String, Object>> sasts = SastAnalyzer.analyze(toAnalyze, fileName);
                 for (var f : sasts) {
                     Finding fd = Finding.builder()
-                        .title((String)f.get("title"))
-                        .description((String)f.get("rule") + " detected")
-                        .type("SAST").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
-                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
-                        .source("sast-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(7.0)
-                        .businessCriticality("HIGH").owner("Dev Team")
-                        .filePath((String)f.get("file")).lineNumber((Integer)f.get("line"))
-                        .codeSnippet((String)f.get("snippet"))
-                        .recommendation((String)f.get("recommendation"))
-                        .dataFlow("source: user input -> sink: vulnerable function")
-                        .build();
+                            .title((String) f.get("title")).description((String) f.get("rule") + " detected")
+                            .type("SAST").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
+                            .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                            .source("sast-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(7.0)
+                            .businessCriticality("HIGH").owner("Dev Team")
+                            .filePath((String) f.get("file")).lineNumber((Integer) f.get("line"))
+                            .codeSnippet((String) f.get("snippet"))
+                            .recommendation((String) f.get("recommendation"))
+                            .dataFlow("source: user input -> sink: vulnerable function")
+                            .build();
                     findingService.create(fd);
                     total++;
                 }
             }
             if ("DAST".equals(type) || "API".equals(type) || "ALL".equals(type)) {
-                // Real DAST: fetch live URL, check headers, XSS, SQLi, etc. — not mock, takes 5-10s
-                List<Map<String,Object>> dasts = DastAnalyzer.analyze(scan.getTarget(), fileName);
+                List<Map<String, Object>> dasts = DastAnalyzer.analyze(scan.getTarget(), fileName);
                 for (var f : dasts) {
                     Finding fd = Finding.builder()
-                        .title((String)f.get("title"))
-                        .description((String)f.get("snippet"))
-                        .type("DAST").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
-                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
-                        .source("dast-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(6.0)
-                        .businessCriticality("HIGH").owner("Security Team")
-                        .filePath((String)f.get("file")).lineNumber((Integer)f.get("line"))
-                        .codeSnippet((String)f.get("match"))
-                        .recommendation((String)f.get("recommendation"))
-                        .dataFlow("DAST: live site " + scan.getTarget())
-                        .build();
+                            .title((String) f.get("title")).description((String) f.get("snippet"))
+                            .type("DAST").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
+                            .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                            .source("dast-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(6.0)
+                            .businessCriticality("HIGH").owner("Security Team")
+                            .filePath((String) f.get("file")).lineNumber((Integer) f.get("line"))
+                            .codeSnippet((String) f.get("match"))
+                            .recommendation((String) f.get("recommendation"))
+                            .dataFlow("DAST: live site " + scan.getTarget())
+                            .build();
                     findingService.create(fd);
                     total++;
                 }
             }
             if ("SCA".equals(type) || "ALL".equals(type)) {
-                scas = ScaAnalyzer.analyze(toAnalyze, fileName);
+                List<Map<String, Object>> scas = ScaAnalyzer.analyze(toAnalyze, fileName);
                 for (var f : scas) {
                     Finding fd = Finding.builder()
-                        .title((String)f.get("title"))
-                        .description("Vulnerable dependency " + f.get("component") + " " + f.get("installedVersion") + " CVE " + f.get("cve"))
-                        .type("SCA").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
-                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
-                        .source("sca-analyzer").scanId(scan.getId()).cwe("CWE-1104").cvss((Double)f.get("cvss"))
-                        .epss((Double)f.get("epss")).kev((Boolean)f.get("kev")).businessCriticality("HIGH")
-                        .owner("Platform Team").filePath((String)f.get("file"))
-                        .recommendation("Update to " + f.get("fixedVersion"))
-                        .build();
+                            .title((String) f.get("title"))
+                            .description("Vulnerable dependency " + f.get("component") + " " + f.get("installedVersion") + " CVE " + f.get("cve"))
+                            .type("SCA").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
+                            .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                            .source("sca-analyzer").scanId(scan.getId()).cwe("CWE-1104").cvss((Double) f.get("cvss"))
+                            .epss((Double) f.get("epss")).kev((Boolean) f.get("kev")).businessCriticality("HIGH")
+                            .owner("Platform Team").filePath((String) f.get("file"))
+                            .recommendation("Update to " + f.get("fixedVersion"))
+                            .build();
                     findingService.create(fd);
                     total++;
                 }
             }
-            // Container analysis
             if ("CONTAINER".equals(type) || "ALL".equals(type)) {
-                List<Map<String,Object>> containers = ContainerAnalyzer.analyze(scan.getTarget(), scan.getConfigJson());
+                List<Map<String, Object>> containers = ContainerAnalyzer.analyze(scan.getTarget(), scan.getConfigJson());
                 for (var f : containers) {
                     Finding fd = Finding.builder()
-                        .title((String)f.get("title")).description((String)f.get("snippet"))
-                        .type("CONTAINER").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
-                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
-                        .source("container-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(7.0)
-                        .businessCriticality("HIGH").owner("DevOps Team").filePath((String)f.get("file"))
-                        .recommendation((String)f.get("recommendation")).build();
-                    findingService.create(fd); total++;
+                            .title((String) f.get("title")).description((String) f.get("snippet"))
+                            .type("CONTAINER").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
+                            .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                            .source("container-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(7.0)
+                            .businessCriticality("HIGH").owner("DevOps Team").filePath((String) f.get("file"))
+                            .recommendation((String) f.get("recommendation")).build();
+                    findingService.create(fd);
+                    total++;
                 }
             }
-            // IaC analysis
             if ("IAC".equals(type) || "ALL".equals(type)) {
-                List<Map<String,Object>> iacs = IaCAnalyzer.analyze(toAnalyze, fileName);
+                List<Map<String, Object>> iacs = IaCAnalyzer.analyze(toAnalyze, fileName);
                 for (var f : iacs) {
                     Finding fd = Finding.builder()
-                        .title((String)f.get("title")).description((String)f.get("snippet"))
-                        .type("IAC").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
-                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
-                        .source("iac-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(7.0)
-                        .businessCriticality("HIGH").owner("Platform Team").filePath((String)f.get("file"))
-                        .recommendation((String)f.get("recommendation")).build();
-                    findingService.create(fd); total++;
+                            .title((String) f.get("title")).description((String) f.get("snippet"))
+                            .type("IAC").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
+                            .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                            .source("iac-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(7.0)
+                            .businessCriticality("HIGH").owner("Platform Team").filePath((String) f.get("file"))
+                            .recommendation((String) f.get("recommendation")).build();
+                    findingService.create(fd);
+                    total++;
                 }
             }
-            // API analysis (live HTTP for API targets)
             if ("API".equals(type) || "ALL".equals(type)) {
-                // ApiAnalyzer runs live HTTP checks — only for http targets
                 if (scan.getTarget() != null && scan.getTarget().startsWith("http")) {
-                    List<Map<String,Object>> apis = ApiAnalyzer.analyze(scan.getTarget());
+                    List<Map<String, Object>> apis = ApiAnalyzer.analyze(scan.getTarget());
                     for (var f : apis) {
                         Finding fd = Finding.builder()
-                            .title((String)f.get("title")).description((String)f.get("snippet"))
-                            .type("API").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
-                            .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
-                            .source("api-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(6.5)
-                            .businessCriticality("HIGH").owner("Security Team").filePath((String)f.get("file"))
-                            .recommendation((String)f.get("recommendation")).build();
-                        findingService.create(fd); total++;
+                                .title((String) f.get("title")).description((String) f.get("snippet"))
+                                .type("API").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
+                                .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                                .source("api-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(6.5)
+                                .businessCriticality("HIGH").owner("Security Team").filePath((String) f.get("file"))
+                                .recommendation((String) f.get("recommendation")).build();
+                        findingService.create(fd);
+                        total++;
                     }
                 }
             }
-            // Mobile analysis
             if ("MOBILE".equals(type) || "ALL".equals(type)) {
-                List<Map<String,Object>> mobiles = MobileAnalyzer.analyze(scan.getTarget(), scan.getConfigJson());
+                List<Map<String, Object>> mobiles = MobileAnalyzer.analyze(scan.getTarget(), scan.getConfigJson());
                 for (var f : mobiles) {
                     Finding fd = Finding.builder()
-                        .title((String)f.get("title")).description((String)f.get("snippet"))
-                        .type("MOBILE").severity((String)f.get("severity")).confidence("HIGH").status("OPEN")
-                        .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
-                        .source("mobile-analyzer").scanId(scan.getId()).cwe((String)f.get("cwe")).cvss(7.0)
-                        .businessCriticality("HIGH").owner("Mobile Team").filePath((String)f.get("file"))
-                        .recommendation((String)f.get("recommendation")).build();
-                    findingService.create(fd); total++;
+                            .title((String) f.get("title")).description((String) f.get("snippet"))
+                            .type("MOBILE").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
+                            .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
+                            .source("mobile-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(7.0)
+                            .businessCriticality("HIGH").owner("Mobile Team").filePath((String) f.get("file"))
+                            .recommendation((String) f.get("recommendation")).build();
+                    findingService.create(fd);
+                    total++;
                 }
             }
-            // If no real finding and scanner is SAST/SECRET/SCA, do NOT create mock - return 0. This proves no fake data.
-            if (total==0) {
-                log.info("No real findings for scan {} type {} - returning 0 (no mock)", scan.getId(), type);
+            if (total == 0) {
+                log.info("No real findings for scan {} type {} - returning 0", scan.getId(), type);
             }
         } catch (Exception e) {
             log.error("Real analyzer failed", e);

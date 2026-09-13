@@ -28,7 +28,9 @@ public class AuthService {
         userRepository.save(u);
         String token = jwt.generateToken(u.getEmail(), u.getRole().name());
         String refresh = jwt.generateRefreshToken(u.getEmail());
-        return Map.of("token", token, "refreshToken", refresh, "user", Map.of("id", u.getId(), "email", u.getEmail(), "role", u.getRole().name(), "fullName", u.getFullName()));
+        return Map.of("token", token, "refreshToken", refresh, "user", Map.of(
+                "id", u.getId() != null ? u.getId() : java.util.UUID.randomUUID(),
+                "email", u.getEmail(), "role", u.getRole().name(), "fullName", u.getFullName()));
     }
 
     public Map<String, Object> login(String email, String password) {

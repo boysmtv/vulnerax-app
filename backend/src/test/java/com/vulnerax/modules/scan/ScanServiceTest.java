@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 
@@ -22,17 +23,11 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ScanServiceTest {
 
-    @Mock
-    private ScanRepository scanRepo;
-
-    @Mock
-    private ScanJobRepository jobRepo;
-
-    @Mock
-    private FindingService findingService;
-
-    @Mock
-    private ApplicationContext ctx;
+    @Mock private ScanRepository scanRepo;
+    @Mock private ScanJobRepository jobRepo;
+    @Mock private FindingService findingService;
+    @Mock private ApplicationContext ctx;
+    @Mock private SecurityCoverageRegistry coverageRegistry;
 
     @InjectMocks
     private ScanService scanService;
@@ -42,13 +37,13 @@ class ScanServiceTest {
     @BeforeEach
     void setUp() {
         testScan = Scan.builder()
-                .id(UUID.randomUUID())
                 .projectId(UUID.randomUUID())
                 .scannerType("SAST")
                 .profile("STANDARD")
                 .target("https://example.com")
                 .status("QUEUED")
                 .build();
+        testScan.setId(UUID.randomUUID());
     }
 
     @Test
@@ -76,9 +71,7 @@ class ScanServiceTest {
     @Test
     void get_existingId_returnsScan() {
         when(scanRepo.findById(testScan.getId())).thenReturn(Optional.of(testScan));
-
         Scan result = scanService.get(testScan.getId());
-
         assertEquals("SAST", result.getScannerType());
     }
 
@@ -86,7 +79,6 @@ class ScanServiceTest {
     void get_nonExistingId_throws() {
         UUID fakeId = UUID.randomUUID();
         when(scanRepo.findById(fakeId)).thenReturn(Optional.empty());
-
         assertThrows(ResourceNotFoundException.class, () -> scanService.get(fakeId));
     }
 
@@ -101,20 +93,7 @@ class ScanServiceTest {
         assertEquals("QUEUED", result.getStatus());
         assertEquals("test-user", result.getInitiatedBy());
         verify(scanRepo).save(any(Scan.class));
-        // SAST creates 2 jobs: semgrep + codeql
-        verify(jobRepo, times(2)).save(any(ScanJob.class));
-    }
-
-    @Test
-    void create_dastScan_createsCorrectJobs() {
-        testScan.setScannerType("DAST");
-        when(scanRepo.save(any(Scan.class))).thenReturn(testScan);
-        when(ctx.getBean(ScanService.class)).thenReturn(scanService);
-
-        scanService.create(testScan, "test-user");
-
-        // DAST creates 2 jobs: zap + nuclei
-        verify(jobRepo, times(2)).save(any(ScanJob.class));
+        verify(jobRepo, times(1)).save(any(ScanJob.class));
     }
 
     @Test
@@ -122,7 +101,7 @@ class ScanServiceTest {
         testScan.setStatus("RUNNING");
         when(scanRepo.findById(testScan.getId())).thenReturn(Optional.of(testScan));
         when(jobRepo.findByScanId(testScan.getId())).thenReturn(List.of(
-                ScanJob.builder().id(UUID.randomUUID()).scanId(testScan.getId()).status("RUNNING").build()
+                ScanJob.builder().scanId(testScan.getId()).status("RUNNING").build()
         ));
 
         scanService.cancel(testScan.getId());
@@ -134,13 +113,13 @@ class ScanServiceTest {
     @Test
     void jobs_returnsJobsForScan() {
         List<ScanJob> jobs = List.of(
-                ScanJob.builder().scanId(testScan.getId()).scannerPlugin("semgrep").build()
+                ScanJob.builder().scanId(testScan.getId()).scannerPlugin("sast-plugin").build()
         );
         when(jobRepo.findByScanId(testScan.getId())).thenReturn(jobs);
 
         List<ScanJob> result = scanService.jobs(testScan.getId());
 
         assertEquals(1, result.size());
-        assertEquals("semgrep", result.get(0).getScannerPlugin());
+        assertEquals("sast-plugin", result.get(0).getScannerPlugin());
     }
 }

@@ -36,6 +36,20 @@ public class AssetService {
     }
 
     @Transactional
+    public Asset createAsset(String name, String type, String owner) {
+        Asset a = Asset.builder()
+                .name(name)
+                .type(type)
+                .identifier(name)
+                .owner(owner)
+                .criticality("MEDIUM")
+                .internetExposed(name.startsWith("http"))
+                .status("ACTIVE")
+                .build();
+        return create(a);
+    }
+
+    @Transactional
     public Asset update(UUID id, Asset patch) {
         Asset cur = get(id);
         if (patch.getName()!=null) cur.setName(patch.getName());

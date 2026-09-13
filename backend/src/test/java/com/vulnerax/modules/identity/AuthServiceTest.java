@@ -36,13 +36,13 @@ class AuthServiceTest {
     @BeforeEach
     void setUp() {
         testUser = User.builder()
-                .id(java.util.UUID.randomUUID())
                 .email("test@vulnerax.com")
                 .passwordHash("$2a$10$hashed")
                 .fullName("Test User")
                 .role(User.Role.DEVELOPER)
                 .active(true)
                 .build();
+        testUser.setId(java.util.UUID.randomUUID());
     }
 
     @Test

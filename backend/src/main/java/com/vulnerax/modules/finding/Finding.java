@@ -7,55 +7,62 @@ import lombok.*;
 import java.time.Instant;
 import java.util.UUID;
 
-@Entity @Table(name = "findings", indexes = {@Index(columnList = "projectId"), @Index(columnList = "severity"), @Index(columnList = "status")})
+@Entity @Table(name = "findings", indexes = {
+    @Index(columnList = "projectId"), @Index(columnList = "severity"),
+    @Index(columnList = "status"), @Index(columnList = "organizationId"),
+    @Index(columnList = "assetId"), @Index(columnList = "scanId")
+})
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Finding extends BaseEntity {
 
-    @Column(nullable = false, unique = true) private String findingId; // FND-xxxx
+    @Column(nullable = false, unique = true) private String findingId;
 
     @Column(nullable = false) private String title;
     @Column(columnDefinition = "TEXT") private String description;
-    @Column(nullable = false) private String type; // INJECTION, AUTH, CRYPTO, etc
-    @Column(nullable = false) private String severity; // CRITICAL, HIGH, MEDIUM, LOW, INFO
-    @Column(nullable = false) private String confidence; // CONFIRMED, HIGH, MEDIUM, LOW, INFO
-    @Builder.Default private String status = "OPEN"; // OPEN, TRIAGING, CONFIRMED, ASSIGNED, IN_PROGRESS, FIXED, READY_FOR_RETEST, RETESTING, RESOLVED, RISK_ACCEPTED, FALSE_POSITIVE, DUPLICATE, WONT_FIX, REOPENED
+    @Column(nullable = false) private String type;
+    @Column(nullable = false) private String severity;
+    @Column(nullable = false) private String confidence;
+    @Builder.Default private String status = "OPEN";
 
     private UUID projectId;
+    private UUID organizationId;
     private UUID assetId;
     private String assetName;
-    private String environment; // PRODUCTION etc
+    private String environment;
 
-    private String source; // scanner name or MANUAL
+    private String source;
     private UUID scanId;
 
-    // Standards mapping
-    private String cwe; // e.g. CWE-89
-    private String owasp; // e.g. A03:2021 or API1:2023
+    private String cwe;
+    private String owasp;
     private String masvs;
     private String asvs;
+    private String cweId;
 
-    private Double cvss; // CVSS 4.0 base
-    private Double epss; // 0-1
+    private Double cvss;
+    private Double epss;
     @Builder.Default private Boolean kev = false;
     @Builder.Default private Boolean internetExposed = false;
     @Builder.Default private Boolean reachable = false;
-    private String businessCriticality; // CRITICAL etc
-    private String owner; // team/user
+    private String businessCriticality;
+    private String owner;
     private String filePath;
     private Integer lineNumber;
     private String functionName;
     @Column(columnDefinition = "TEXT") private String codeSnippet;
     @Column(columnDefinition = "TEXT") private String dataFlow;
     @Column(columnDefinition = "TEXT") private String recommendation;
+    @Column(columnDefinition = "TEXT") private String evidenceJson;
 
-    private Double riskScore; // 0-100 contextual
-    private String riskLevel; // LOW, MODERATE, HIGH, VERY_HIGH, CRITICAL
+    private Double riskScore;
+    private String riskLevel;
 
-    private String fingerprint; // dedup
+    private String fingerprint;
     @Builder.Default private Boolean falsePositive = false;
     @Builder.Default private Boolean duplicate = false;
 
-    private UUID parentFindingId; // for instances grouped
+    private UUID parentFindingId;
+    private UUID correlationId;
     private Instant slaDueAt;
-    private String slaStatus; // WITHIN_SLA, APPROACHING, BREACHED
+    private String slaStatus;
 }
