@@ -5,7 +5,7 @@ export default function ContainerPage() {
     <EntityListPage
       title="Container Security"
       subtitle="Docker, Kubernetes — Images, Registries, Runtime, Policies"
-      apiPath="/api/v1/cloud"
+      apiPath="/api/v1/containers"
       columns={[
         { key: 'name', label: 'Name' },
         { key: 'type', label: 'Type' },

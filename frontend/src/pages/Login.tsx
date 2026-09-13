@@ -19,10 +19,10 @@ export default function Login() {
     setError(''); setLoading(true)
     try {
       const url = mode === 'login' ? '/api/v1/auth/login' : '/api/v1/auth/register'
-      const payload = mode === 'login' ? { email, password } : { email, password, fullName, role: 'SECURITY_ENGINEER' }
+      const payload = mode === 'login' ? { email, password } : { email, password, fullName, name: fullName, role: 'SECURITY_ENGINEER' }
       const res = await api.post(url, payload)
       const data = res.data.data
-      login(data.token, data.user)
+      login(data.accessToken || data.token, data.user)
       nav('/')
     } catch (err: any) {
       setError(err.response?.data?.message || err.message)
