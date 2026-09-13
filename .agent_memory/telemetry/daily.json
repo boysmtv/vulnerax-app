@@ -51,19 +51,21 @@
     "with_token": 0
   },
   "2026-09-13": {
-    "total": 6,
+    "total": 10,
     "by_tool": {
       "project_status": 1,
-      "project_memory_list": 1,
+      "project_memory_list": 2,
       "history_stats": 1,
       "proven_usage": 1,
       "history_recent": 1,
-      "project_scan": 1
+      "project_scan": 2,
+      "history_store": 1,
+      "project_memory_inspect": 1
     },
     "by_agent": {
-      "opencode": 6
+      "opencode": 10
     },
-    "read_only": 6,
+    "read_only": 10,
     "with_token": 0
   }
 }
