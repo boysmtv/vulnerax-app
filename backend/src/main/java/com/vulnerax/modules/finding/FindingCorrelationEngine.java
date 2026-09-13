@@ -1,11 +1,19 @@
 package com.vulnerax.modules.finding;
 
+import org.springframework.stereotype.Component;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Component
 public class FindingCorrelationEngine {
 
-    public static CorrelationResult correlate(Finding newFinding, List<Finding> existingFindings) {
+    private static final double MAX_WEIGHT = 1.05;
+    private static final long TEMPORAL_WINDOW_DAYS = 90;
+
+    public CorrelationResult correlate(Finding newFinding, List<Finding> existingFindings) {
         List<Finding> matches = new ArrayList<>();
         String reason = "NO_MATCH";
 
@@ -15,16 +23,15 @@ public class FindingCorrelationEngine {
 
             double similarity = calculateSimilarity(newFinding, existing);
 
-            if (similarity > 0.95) {
+            if (similarity > 0.90) {
                 matches.add(existing);
                 reason = "EXACT_MATCH";
-                break;
-            } else if (similarity > 0.75) {
+            } else if (similarity > 0.70) {
                 matches.add(existing);
-                reason = "SIMILAR";
-            } else if (similarity > 0.5) {
+                reason = "SIMILAR".equals(reason) || "EXACT_MATCH".equals(reason) ? reason : "SIMILAR";
+            } else if (similarity > 0.50) {
                 matches.add(existing);
-                reason = "RELATED";
+                if (!"EXACT_MATCH".equals(reason) && !"SIMILAR".equals(reason)) reason = "RELATED";
             }
         }
 
@@ -35,34 +42,56 @@ public class FindingCorrelationEngine {
         return new CorrelationResult(matches, reason, isDuplicate, mergeRecommendation);
     }
 
-    private static double calculateSimilarity(Finding a, Finding b) {
+    private double calculateSimilarity(Finding a, Finding b) {
         double score = 0;
 
-        // Same type = 0.3
-        if (a.getType() == b.getType()) score += 0.3;
+        // Same type = 0.25
+        if (Objects.equals(a.getType(), b.getType())) score += 0.25;
 
         // Same title fuzzy = 0.25
         if (a.getTitle() != null && b.getTitle() != null) {
             score += 0.25 * jaroWinkler(a.getTitle(), b.getTitle());
         }
 
-        // Same severity = 0.15
-        if (a.getSeverity() == b.getSeverity()) score += 0.15;
+        // Same severity = 0.10
+        if (Objects.equals(a.getSeverity(), b.getSeverity())) score += 0.10;
 
-        // Same affected URL / asset = 0.2
-        if (a.getFilePath() != null && a.getFilePath().equals(b.getFilePath())) score += 0.2;
-        else if (a.getAssetId() != null && a.getAssetId().equals(b.getAssetId())) score += 0.15;
+        // Same file path (fuzzy for URLs) = 0.15
+        if (a.getFilePath() != null && b.getFilePath() != null) {
+            if (a.getFilePath().equals(b.getFilePath())) {
+                score += 0.15;
+            } else {
+                score += 0.15 * jaroWinkler(a.getFilePath(), b.getFilePath()) * 0.5;
+            }
+        } else if (a.getAssetId() != null && a.getAssetId().equals(b.getAssetId())) {
+            score += 0.10;
+        }
 
-        // Same CWE = 0.1
-        if (Objects.equals(a.getCweId(), b.getCweId())) score += 0.1;
+        // Same CWE (use cweId with fallback to cwe) = 0.15
+        String aCwe = a.getCweId() != null ? a.getCweId() : a.getCwe();
+        String bCwe = b.getCweId() != null ? b.getCweId() : b.getCwe();
+        if (Objects.equals(aCwe, bCwe) && aCwe != null) score += 0.15;
 
         // Same source = 0.05
-        if (a.getSource() != null && a.getSource().equals(b.getSource())) score += 0.05;
+        if (Objects.equals(a.getSource(), b.getSource())) score += 0.05;
 
-        return score;
+        // Same scan = 0.05
+        if (Objects.equals(a.getScanId(), b.getScanId())) score += 0.05;
+
+        // Temporal decay: findings within 90 days get bonus, older ones penalized
+        if (a.getCreatedAt() != null && b.getCreatedAt() != null) {
+            long daysBetween = Math.abs(ChronoUnit.DAYS.between(a.getCreatedAt(), b.getCreatedAt()));
+            if (daysBetween <= 7) score += 0.05;
+            else if (daysBetween <= 30) score += 0.03;
+            else if (daysBetween <= TEMPORAL_WINDOW_DAYS) score += 0.01;
+            else score -= 0.02; // penalize old correlations
+        }
+
+        // Normalize to 0-1 range
+        return Math.max(0, Math.min(1.0, score / MAX_WEIGHT));
     }
 
-    private static double jaroWinkler(String s1, String s2) {
+    private double jaroWinkler(String s1, String s2) {
         if (s1.equals(s2)) return 1.0;
         int len1 = s1.length(), len2 = s2.length();
         if (len1 == 0 || len2 == 0) return 0.0;
@@ -93,7 +122,8 @@ public class FindingCorrelationEngine {
             k++;
         }
 
-        double jaro = (double) matches / len1 + (double) matches / len2 + ((double) matches - transpositions / 2.0) / matches;
+        double jaro = (double) matches / len1 + (double) matches / len2 +
+                ((double) matches - transpositions / 2.0) / matches;
         int prefix = 0;
         for (int i = 0; i < Math.min(4, Math.min(len1, len2)); i++) {
             if (s1.charAt(i) == s2.charAt(i)) prefix++;

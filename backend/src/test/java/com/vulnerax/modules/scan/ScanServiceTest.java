@@ -29,13 +29,12 @@ class ScanServiceTest {
     @Mock private ApplicationContext ctx;
     @Mock private SecurityCoverageRegistry coverageRegistry;
 
-    @InjectMocks
     private ScanService scanService;
-
     private Scan testScan;
 
     @BeforeEach
     void setUp() {
+        scanService = new ScanService(scanRepo, jobRepo, findingService, ctx, coverageRegistry, List.of());
         testScan = Scan.builder()
                 .projectId(UUID.randomUUID())
                 .scannerType("SAST")

@@ -30,4 +30,9 @@ public interface AssetRepository extends JpaRepository<Asset, UUID> {
 
     @Query(value = "select * from assets a where a.criticality = 'CRITICAL' order by a.created_at desc limit :limit", nativeQuery = true)
     List<Asset> findTopRiskAssets(@Param("limit") int limit);
+
+    long countByOrganizationId(UUID orgId);
+
+    @Query("select count(a) from Asset a where a.organizationId = :orgId")
+    long countByOrgId(@Param("orgId") UUID orgId);
 }

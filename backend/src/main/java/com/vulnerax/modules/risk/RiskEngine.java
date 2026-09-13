@@ -3,6 +3,8 @@ package com.vulnerax.modules.risk;
 import com.vulnerax.modules.finding.Finding;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
@@ -22,6 +24,9 @@ public class RiskEngine {
 
     private static final Map<String, Double> CONFIDENCE_WEIGHT = Map.of(
             "CONFIRMED", 5.0, "HIGH", 3.0, "MEDIUM", 0.0, "LOW", -5.0);
+
+    private static final Map<String, Double> DATA_CLASSIFICATION_BONUS = Map.of(
+            "PUBLIC", 0.0, "INTERNAL", 2.0, "CONFIDENTIAL", 5.0, "RESTRICTED", 10.0);
 
     public double calculate(Finding f) {
         double cvssScore = f.getCvss() != null ? (f.getCvss() / 10.0) * 30 : 15;
@@ -44,6 +49,16 @@ public class RiskEngine {
         double severityScore = SEVERITY_WEIGHT.getOrDefault(
                 f.getSeverity() != null ? f.getSeverity() : "MEDIUM", 3.0);
 
+        // Data classification modifier
+        double classificationBonus = DATA_CLASSIFICATION_BONUS.getOrDefault(
+                f.getBusinessCriticality() != null ? f.getBusinessCriticality() : "MEDIUM", 2.0);
+
+        // Compensating control deduction
+        double compensatingDeduction = 0;
+        if (f.getCompensatingControl() != null && !f.getCompensatingControl().isBlank()) {
+            compensatingDeduction = 5.0; // WAF, IPS, or other compensating controls
+        }
+
         // Age factor: older open findings slightly higher risk
         double ageScore = 0;
         if (f.getCreatedAt() != null) {
@@ -53,13 +68,14 @@ public class RiskEngine {
 
         // Multiplicative interaction: (threat * asset * exposure) with modifiers
         double threatComponent = cvssScore + epssScore + severityScore;
-        double assetComponent = criticalityScore + confidenceScore;
+        double assetComponent = criticalityScore + confidenceScore + classificationBonus;
         double exposureComponent = exposureScore + ageScore;
 
         // Interaction: high threat + high asset + high exposure = exponential
         double multiplicative = (threatComponent * assetComponent * exposureComponent) / 100.0;
 
-        double total = multiplicative + threatComponent + assetComponent + exposureComponent;
+        double total = multiplicative + threatComponent + assetComponent + exposureComponent
+                - compensatingDeduction;
         total = Math.max(0, Math.min(100, total));
         return Math.round(total * 10.0) / 10.0;
     }
@@ -90,7 +106,21 @@ public class RiskEngine {
         f.setSlaDueAt(Instant.now().plus(slaDays, ChronoUnit.DAYS));
         f.setSlaStatus("WITHIN_SLA");
 
-        String fp = String.format("%s|%s|%s|%s|%s", f.getAssetId(), f.getType(), f.getCwe(), f.getFilePath(), f.getLineNumber());
-        f.setFingerprint(Integer.toHexString(fp.hashCode()));
+        // SHA-256 fingerprint to eliminate collision risk
+        String fp = String.format("%s|%s|%s|%s|%s|%s",
+                f.getAssetId(), f.getType(), f.getCwe(), f.getCweId(), f.getFilePath(), f.getLineNumber());
+        f.setFingerprint(sha256(fp));
+    }
+
+    private String sha256(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hash) sb.append(String.format("%02x", b));
+            return sb.toString();
+        } catch (Exception e) {
+            return Integer.toHexString(input.hashCode());
+        }
     }
 }

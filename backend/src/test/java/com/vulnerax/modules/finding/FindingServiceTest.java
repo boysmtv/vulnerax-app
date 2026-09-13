@@ -28,6 +28,7 @@ class FindingServiceTest {
     @Mock private FindingInstanceRepository instanceRepo;
     @Mock private RiskEngine riskEngine;
     @Mock private AuditService auditService;
+    @Mock private FindingCorrelationEngine correlationEngine;
 
     @InjectMocks
     private FindingService findingService;
@@ -101,6 +102,8 @@ class FindingServiceTest {
         when(findingRepo.findByFingerprint(any())).thenReturn(Collections.emptyList());
         when(findingRepo.findByAssetId(any(), any(Pageable.class))).thenReturn(new PageImpl<>(List.of()));
         when(findingRepo.save(any(Finding.class))).thenReturn(testFinding);
+        when(correlationEngine.correlate(any(), anyList()))
+                .thenReturn(new FindingCorrelationEngine.CorrelationResult(List.of(), "NO_MATCH", false, "INDEPENDENT"));
 
         Finding result = findingService.create(testFinding);
 
@@ -160,11 +163,19 @@ class FindingServiceTest {
         when(findingRepo.countByStatusAgg()).thenReturn(statusList);
         when(findingRepo.countByRiskLevel()).thenReturn(riskList);
         when(findingRepo.count()).thenReturn(15L);
+        when(findingRepo.countBySeverity("CRITICAL")).thenReturn(5L);
+        when(findingRepo.countBySeverity("HIGH")).thenReturn(10L);
+        when(findingRepo.countByKev(true)).thenReturn(2L);
+        when(findingRepo.avgRiskScore()).thenReturn(45.0);
 
         Map<String, Object> result = findingService.stats(null);
 
         assertNotNull(result.get("bySeverity"));
         assertNotNull(result.get("byStatus"));
         assertEquals(15L, result.get("total"));
+        assertEquals(5L, result.get("critical"));
+        assertEquals(10L, result.get("high"));
+        assertEquals(2L, result.get("kev"));
+        assertEquals(45.0, result.get("avgRiskScore"));
     }
 }

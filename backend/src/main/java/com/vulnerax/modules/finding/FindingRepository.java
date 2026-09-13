@@ -33,7 +33,7 @@ public interface FindingRepository extends JpaRepository<Finding, UUID> {
     @Query("select count(f) from Finding f where f.severity = :severity")
     long countBySeverity(@Param("severity") String severity);
 
-    @Query("select count(f) from Finding f where f.severity = :severity and function('date', f.createdAt) = :date")
+    @Query(value = "select count(*) from findings where severity = :severity and cast(created_at as date) = cast(:date as date)", nativeQuery = true)
     long countBySeverityAndDate(@Param("severity") String severity, @Param("date") LocalDate date);
 
     @Query("select count(f) from Finding f where f.kev = true")
@@ -42,6 +42,20 @@ public interface FindingRepository extends JpaRepository<Finding, UUID> {
     @Query("select avg(f.riskScore) from Finding f")
     Double avgRiskScore();
 
-    @Query("select count(f) from Finding f where f.type = :type")
+    @Query("select case when count(f) > 0 then true else false end from Finding f where f.type = :type")
     boolean existsByType(@Param("type") String type);
+
+    long countByProjectId(UUID projectId);
+
+    @Query("select count(f) from Finding f where f.status = 'OPEN' and f.slaDueAt < current_timestamp")
+    long countSlaBreached();
+
+    @Query("select f from Finding f where f.status = 'OPEN' and f.slaDueAt < current_timestamp")
+    List<Finding> findSlaBreached();
+
+    @Query("select count(f) from Finding f where f.organizationId = :orgId")
+    long countByOrganizationId(@Param("orgId") UUID orgId);
+
+    @Query("select f.type, count(f) from Finding f where f.projectId = :projectId group by f.type")
+    List<Object[]> countByTypePerProject(@Param("projectId") UUID projectId);
 }

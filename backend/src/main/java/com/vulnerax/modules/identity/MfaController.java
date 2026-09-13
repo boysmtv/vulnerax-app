@@ -32,29 +32,43 @@ public class MfaController {
     public ApiResponse<?> verify(@RequestParam String code, Authentication auth) {
         var user = userRepo.findByEmail(auth.getName()).orElseThrow();
 
-        if (user.getMfaSecret() != null && totpService.verify(user.getMfaSecret(), code)) {
-            user.setMfaEnabled(true);
-            userRepo.save(user);
+        // TOTP verification with rate limiting
+        if (user.getMfaSecret() != null) {
+            var result = totpService.verify(user.getEmail(), user.getMfaSecret(), code);
+            if (result.success()) {
+                user.setMfaEnabled(true);
+                userRepo.save(user);
+                return ApiResponse.ok(Map.of(
+                        "verified", true,
+                        "message", result.message(),
+                        "method", "TOTP"
+                ));
+            }
+            // If not locked out, check recovery codes
+            if (!"Invalid code format".equals(result.message()) && !result.message().contains("locked")) {
+                if (totpService.useRecoveryCode(user, code)) {
+                    user.setMfaEnabled(true);
+                    userRepo.save(user);
+                    return ApiResponse.ok(Map.of(
+                            "verified", true,
+                            "message", "MFA enabled via recovery code",
+                            "method", "RECOVERY"
+                    ));
+                }
+                return ApiResponse.ok(Map.of(
+                        "verified", false,
+                        "message", result.message()
+                ));
+            }
             return ApiResponse.ok(Map.of(
-                    "verified", true,
-                    "message", "MFA enabled successfully",
-                    "method", "TOTP"
-            ));
-        }
-
-        if (totpService.useRecoveryCode(user, code)) {
-            user.setMfaEnabled(true);
-            userRepo.save(user);
-            return ApiResponse.ok(Map.of(
-                    "verified", true,
-                    "message", "MFA enabled via recovery code",
-                    "method", "RECOVERY"
+                    "verified", false,
+                    "message", result.message()
             ));
         }
 
         return ApiResponse.ok(Map.of(
                 "verified", false,
-                "message", "Invalid TOTP code or recovery code"
+                "message", "MFA not set up. Call /setup first."
         ));
     }
 
@@ -62,15 +76,19 @@ public class MfaController {
     public ApiResponse<?> disable(@RequestParam String code, Authentication auth) {
         var user = userRepo.findByEmail(auth.getName()).orElseThrow();
 
-        if (user.getMfaSecret() != null && totpService.verify(user.getMfaSecret(), code)) {
-            user.setMfaEnabled(false);
-            user.setMfaSecret(null);
-            user.setRecoveryCodes(null);
-            userRepo.save(user);
-            return ApiResponse.ok(Map.of("mfaEnabled", false, "message", "MFA disabled"));
+        if (user.getMfaSecret() != null) {
+            var result = totpService.verify(user.getEmail(), user.getMfaSecret(), code);
+            if (result.success()) {
+                user.setMfaEnabled(false);
+                user.setMfaSecret(null);
+                user.setRecoveryCodes(null);
+                userRepo.save(user);
+                return ApiResponse.ok(Map.of("mfaEnabled", false, "message", "MFA disabled"));
+            }
+            return ApiResponse.ok(Map.of("verified", false, "message", result.message()));
         }
 
-        return ApiResponse.ok(Map.of("verified", false, "message", "Invalid code"));
+        return ApiResponse.ok(Map.of("verified", false, "message", "MFA not enabled"));
     }
 
     @GetMapping("/recovery-codes")

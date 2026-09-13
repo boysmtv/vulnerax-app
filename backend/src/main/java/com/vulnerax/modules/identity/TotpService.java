@@ -8,19 +8,24 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class TotpService {
 
     private static final int TOTP_DIGITS = 6;
     private static final int TOTP_PERIOD_SECONDS = 30;
-    private static final int TOTP_WINDOW = 1; // Allow ±1 window (30s before/after)
+    private static final int TOTP_WINDOW = 1;
     private static final String HMAC_ALGO = "HmacSHA1";
     private static final String BASE32_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+    private static final int MAX_VERIFY_ATTEMPTS = 5;
+    private static final int LOCKOUT_MINUTES = 15;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final Map<String, MfaAttemptTracker> attemptTrackers = new ConcurrentHashMap<>();
 
     public TotpService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -42,21 +47,41 @@ public class TotpService {
         return new TotpSetupResult(secret, otpauthUri, qrUrl);
     }
 
-    public boolean verify(String secret, String code) {
+    public VerifyResult verify(String email, String secret, String code) {
         if (secret == null || code == null || !code.matches("\\d{6}")) {
-            return false;
+            return new VerifyResult(false, "Invalid code format");
+        }
+
+        // Rate limiting check
+        MfaAttemptTracker tracker = attemptTrackers.computeIfAbsent(email, k -> new MfaAttemptTracker());
+        if (tracker.isLockedOut()) {
+            long remainingSeconds = tracker.getRemainingLockoutSeconds();
+            return new VerifyResult(false, "Account locked out. Try again in " + (remainingSeconds / 60 + 1) + " minutes");
         }
 
         long time = System.currentTimeMillis() / 1000;
         long currentWindow = time / TOTP_PERIOD_SECONDS;
 
+        boolean matched = false;
         for (int i = -TOTP_WINDOW; i <= TOTP_WINDOW; i++) {
             String expected = generateOtp(secret, currentWindow + i);
             if (expected.equals(code)) {
-                return true;
+                matched = true;
+                break;
             }
         }
-        return false;
+
+        if (matched) {
+            tracker.resetAttempts();
+            return new VerifyResult(true, "TOTP verified");
+        } else {
+            tracker.recordFailedAttempt();
+            int remaining = MAX_VERIFY_ATTEMPTS - tracker.getAttemptCount();
+            if (remaining <= 0) {
+                return new VerifyResult(false, "Too many failed attempts. Account locked for " + LOCKOUT_MINUTES + " minutes");
+            }
+            return new VerifyResult(false, "Invalid TOTP code. " + remaining + " attempts remaining");
+        }
     }
 
     public List<String> generateRecoveryCodes(int count) {
@@ -79,7 +104,6 @@ public class TotpService {
             userRepository.save(user);
             return Map.of("recoveryCodes", codes, "message", "Save these codes securely. Each code can only be used once.");
         }
-        // Return unhashed display (masked)
         return Map.of("recoveryCodesCount", user.getRecoveryCodes().size(),
                 "message", "You have " + user.getRecoveryCodes().size() + " recovery codes remaining.");
     }
@@ -156,4 +180,38 @@ public class TotpService {
     }
 
     public record TotpSetupResult(String secret, String otpauthUri, String qrUrl) {}
+    public record VerifyResult(boolean success, String message) {}
+
+    private static class MfaAttemptTracker {
+        private int attemptCount = 0;
+        private Instant lockoutUntil = null;
+
+        synchronized boolean isLockedOut() {
+            if (lockoutUntil != null && Instant.now().isBefore(lockoutUntil)) return true;
+            if (lockoutUntil != null && Instant.now().isAfter(lockoutUntil)) {
+                attemptCount = 0;
+                lockoutUntil = null;
+            }
+            return false;
+        }
+
+        synchronized long getRemainingLockoutSeconds() {
+            if (lockoutUntil == null) return 0;
+            return Math.max(0, lockoutUntil.getEpochSecond() - Instant.now().getEpochSecond());
+        }
+
+        synchronized void recordFailedAttempt() {
+            attemptCount++;
+            if (attemptCount >= 5) {
+                lockoutUntil = Instant.now().plus(15, java.time.temporal.ChronoUnit.MINUTES);
+            }
+        }
+
+        synchronized int getAttemptCount() { return attemptCount; }
+
+        synchronized void resetAttempts() {
+            attemptCount = 0;
+            lockoutUntil = null;
+        }
+    }
 }

@@ -1,15 +1,14 @@
 package com.vulnerax.modules.dashboard;
 
 import com.vulnerax.modules.asset.AssetRepository;
-import com.vulnerax.modules.finding.Finding;
 import com.vulnerax.modules.finding.FindingRepository;
 import com.vulnerax.modules.identity.TenantContext;
 import com.vulnerax.modules.scan.ScanRepository;
+import com.vulnerax.modules.scan.SecurityCoverageRegistry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -18,17 +17,19 @@ public class DashboardService {
     private final FindingRepository findingRepo;
     private final AssetRepository assetRepo;
     private final ScanRepository scanRepo;
+    private final SecurityCoverageRegistry coverageRegistry;
 
     public Map<String, Object> securityPosture(UUID projectId, UUID orgId) {
         UUID tenantOrgId = orgId != null ? orgId : TenantContext.getOrganizationId();
 
-        long totalAssets = assetRepo.count();
-        long totalFindings = findingRepo.count();
-        long critical = findingRepo.countBySeverity("CRITICAL");
-        long high = findingRepo.countBySeverity("HIGH");
-        long medium = findingRepo.countBySeverity("MEDIUM");
-        long low = findingRepo.countBySeverity("LOW");
-        long info = findingRepo.countBySeverity("INFO");
+        // Project-scoped or global counts
+        long totalAssets = projectId != null ? assetRepo.countByProjectId(projectId) : assetRepo.count();
+        long totalFindings = projectId != null ? findingRepo.countByProjectId(projectId) : findingRepo.count();
+        long critical = projectId != null ? findingRepo.countByProjectIdAndSeverity(projectId, "CRITICAL") : findingRepo.countBySeverity("CRITICAL");
+        long high = projectId != null ? findingRepo.countByProjectIdAndSeverity(projectId, "HIGH") : findingRepo.countBySeverity("HIGH");
+        long medium = projectId != null ? findingRepo.countByProjectIdAndSeverity(projectId, "MEDIUM") : findingRepo.countBySeverity("MEDIUM");
+        long low = projectId != null ? findingRepo.countByProjectIdAndSeverity(projectId, "LOW") : findingRepo.countBySeverity("LOW");
+        long info = projectId != null ? findingRepo.countByProjectIdAndSeverity(projectId, "INFO") : findingRepo.countBySeverity("INFO");
 
         long exposed = assetRepo.countByInternetExposedTrue();
         long kev = findingRepo.countByKev(true);
@@ -63,16 +64,28 @@ public class DashboardService {
         posture.put("trend", trend);
 
         posture.put("topRiskAssets", assetRepo.findTopRiskAssets(5));
-        posture.put("coverage", Map.of(
-                "SAST", scanRepo.existsByScannerType("SAST") ? "✓" : "○",
-                "SCA", scanRepo.existsByScannerType("SCA") ? "✓" : "○",
-                "SECRET", findingRepo.existsByType("SECRET") ? "✓" : "○",
-                "DAST", scanRepo.existsByScannerType("DAST") ? "✓" : "○",
-                "API", scanRepo.existsByScannerType("API") ? "✓" : "○",
-                "MOBILE", scanRepo.existsByScannerType("MOBILE") ? "✓" : "○",
-                "CONTAINER", scanRepo.existsByScannerType("CONTAINER") ? "✓" : "○",
-                "IAC", scanRepo.existsByScannerType("IAC") ? "✓" : "○"
-        ));
+
+        // Real coverage: use SecurityCoverageRegistry.calculateCoverage() for percentage
+        Map<String, Object> coverage = new LinkedHashMap<>();
+        Set<String> testedTypes = new HashSet<>();
+        for (String type : List.of("SAST", "SCA", "SECRET", "DAST", "API", "MOBILE", "CONTAINER", "IAC")) {
+            boolean hasScan = scanRepo.existsByScannerType(type);
+            boolean hasFindings = findingRepo.existsByType(type);
+            if (hasScan || hasFindings) testedTypes.add(type);
+        }
+        Map<String, Object> coverageTests = coverageRegistry.calculateCoverage(projectId != null ? projectId : null);
+        coverage.put("testedTypes", testedTypes.size());
+        coverage.put("totalTypes", 8);
+        coverage.put("percentage", coverageTests.getOrDefault("overallPercentage", 0));
+        coverage.put("details", coverageTests.getOrDefault("tested", List.of()));
+        posture.put("coverage", coverage);
+
+        // Real asset type breakdown from DB
+        List<Object[]> assetTypes = assetRepo.countByType();
+        Map<String, Long> assetTypeMap = new LinkedHashMap<>();
+        for (Object[] row : assetTypes) assetTypeMap.put((String) row[0], (Long) row[1]);
+        posture.put("assetTypes", assetTypeMap);
+
         return posture;
     }
 

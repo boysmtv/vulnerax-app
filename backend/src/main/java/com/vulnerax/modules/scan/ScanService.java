@@ -4,14 +4,7 @@ import com.vulnerax.common.exception.ResourceNotFoundException;
 import com.vulnerax.modules.finding.Finding;
 import com.vulnerax.modules.finding.FindingService;
 import com.vulnerax.modules.identity.TenantContext;
-import com.vulnerax.modules.scan.analyzers.ApiAnalyzer;
-import com.vulnerax.modules.scan.analyzers.ContainerAnalyzer;
-import com.vulnerax.modules.scan.analyzers.DastAnalyzer;
-import com.vulnerax.modules.scan.analyzers.IaCAnalyzer;
-import com.vulnerax.modules.scan.analyzers.MobileAnalyzer;
-import com.vulnerax.modules.scan.analyzers.SastAnalyzer;
-import com.vulnerax.modules.scan.analyzers.ScaAnalyzer;
-import com.vulnerax.modules.scan.analyzers.SecretAnalyzer;
+import com.vulnerax.modules.scan.analyzers.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
@@ -20,6 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.MessageDigest;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -179,6 +173,7 @@ public class ScanService {
             if ("SECRET".equals(type) || "IAC".equals(type) || "CONTAINER".equals(type) || "ALL".equals(type)) {
                 List<Map<String, Object>> secrets = SecretAnalyzer.analyze(toAnalyze, fileName);
                 for (var f : secrets) {
+                    String evidence = buildEvidenceJson(f);
                     Finding fd = Finding.builder()
                             .title((String) f.get("title")).description("Hardcoded secret detected: " + f.get("rule"))
                             .type("SECRET").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
@@ -188,6 +183,7 @@ public class ScanService {
                             .filePath((String) f.get("file")).lineNumber((Integer) f.get("line"))
                             .codeSnippet("match: " + f.get("match"))
                             .recommendation("Rotate secret, purge history, move to Vault")
+                            .evidenceJson(evidence)
                             .build();
                     findingService.create(fd);
                     total++;
@@ -196,6 +192,7 @@ public class ScanService {
             if ("SAST".equals(type) || "IAC".equals(type) || "ALL".equals(type)) {
                 List<Map<String, Object>> sasts = SastAnalyzer.analyze(toAnalyze, fileName);
                 for (var f : sasts) {
+                    String evidence = buildEvidenceJson(f);
                     Finding fd = Finding.builder()
                             .title((String) f.get("title")).description((String) f.get("rule") + " detected")
                             .type("SAST").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
@@ -206,6 +203,7 @@ public class ScanService {
                             .codeSnippet((String) f.get("snippet"))
                             .recommendation((String) f.get("recommendation"))
                             .dataFlow("source: user input -> sink: vulnerable function")
+                            .evidenceJson(evidence)
                             .build();
                     findingService.create(fd);
                     total++;
@@ -214,6 +212,7 @@ public class ScanService {
             if ("DAST".equals(type) || "API".equals(type) || "ALL".equals(type)) {
                 List<Map<String, Object>> dasts = DastAnalyzer.analyze(scan.getTarget(), fileName);
                 for (var f : dasts) {
+                    String evidence = buildDastEvidence(f, scan.getTarget());
                     Finding fd = Finding.builder()
                             .title((String) f.get("title")).description((String) f.get("snippet"))
                             .type("DAST").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
@@ -224,6 +223,8 @@ public class ScanService {
                             .codeSnippet((String) f.get("match"))
                             .recommendation((String) f.get("recommendation"))
                             .dataFlow("DAST: live site " + scan.getTarget())
+                            .evidenceJson(evidence)
+                            .internetExposed(true)
                             .build();
                     findingService.create(fd);
                     total++;
@@ -232,6 +233,7 @@ public class ScanService {
             if ("SCA".equals(type) || "ALL".equals(type)) {
                 List<Map<String, Object>> scas = ScaAnalyzer.analyze(toAnalyze, fileName);
                 for (var f : scas) {
+                    String evidence = buildEvidenceJson(f);
                     Finding fd = Finding.builder()
                             .title((String) f.get("title"))
                             .description("Vulnerable dependency " + f.get("component") + " " + f.get("installedVersion") + " CVE " + f.get("cve"))
@@ -240,7 +242,9 @@ public class ScanService {
                             .source("sca-analyzer").scanId(scan.getId()).cwe("CWE-1104").cvss((Double) f.get("cvss"))
                             .epss((Double) f.get("epss")).kev((Boolean) f.get("kev")).businessCriticality("HIGH")
                             .owner("Platform Team").filePath((String) f.get("file"))
+                            .cveId(f.get("cve") != null ? f.get("cve").toString() : null)
                             .recommendation("Update to " + f.get("fixedVersion"))
+                            .evidenceJson(evidence)
                             .build();
                     findingService.create(fd);
                     total++;
@@ -249,13 +253,16 @@ public class ScanService {
             if ("CONTAINER".equals(type) || "ALL".equals(type)) {
                 List<Map<String, Object>> containers = ContainerAnalyzer.analyze(scan.getTarget(), scan.getConfigJson());
                 for (var f : containers) {
+                    String evidence = buildEvidenceJson(f);
                     Finding fd = Finding.builder()
                             .title((String) f.get("title")).description((String) f.get("snippet"))
                             .type("CONTAINER").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
                             .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
                             .source("container-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(7.0)
                             .businessCriticality("HIGH").owner("DevOps Team").filePath((String) f.get("file"))
-                            .recommendation((String) f.get("recommendation")).build();
+                            .recommendation((String) f.get("recommendation"))
+                            .evidenceJson(evidence)
+                            .build();
                     findingService.create(fd);
                     total++;
                 }
@@ -263,13 +270,16 @@ public class ScanService {
             if ("IAC".equals(type) || "ALL".equals(type)) {
                 List<Map<String, Object>> iacs = IaCAnalyzer.analyze(toAnalyze, fileName);
                 for (var f : iacs) {
+                    String evidence = buildEvidenceJson(f);
                     Finding fd = Finding.builder()
                             .title((String) f.get("title")).description((String) f.get("snippet"))
                             .type("IAC").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
                             .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
                             .source("iac-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(7.0)
                             .businessCriticality("HIGH").owner("Platform Team").filePath((String) f.get("file"))
-                            .recommendation((String) f.get("recommendation")).build();
+                            .recommendation((String) f.get("recommendation"))
+                            .evidenceJson(evidence)
+                            .build();
                     findingService.create(fd);
                     total++;
                 }
@@ -278,13 +288,16 @@ public class ScanService {
                 if (scan.getTarget() != null && scan.getTarget().startsWith("http")) {
                     List<Map<String, Object>> apis = ApiAnalyzer.analyze(scan.getTarget());
                     for (var f : apis) {
+                        String evidence = buildEvidenceJson(f);
                         Finding fd = Finding.builder()
                                 .title((String) f.get("title")).description((String) f.get("snippet"))
                                 .type("API").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
                                 .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
                                 .source("api-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(6.5)
                                 .businessCriticality("HIGH").owner("Security Team").filePath((String) f.get("file"))
-                                .recommendation((String) f.get("recommendation")).build();
+                                .recommendation((String) f.get("recommendation"))
+                                .evidenceJson(evidence)
+                                .build();
                         findingService.create(fd);
                         total++;
                     }
@@ -293,13 +306,16 @@ public class ScanService {
             if ("MOBILE".equals(type) || "ALL".equals(type)) {
                 List<Map<String, Object>> mobiles = MobileAnalyzer.analyze(scan.getTarget(), scan.getConfigJson());
                 for (var f : mobiles) {
+                    String evidence = buildEvidenceJson(f);
                     Finding fd = Finding.builder()
                             .title((String) f.get("title")).description((String) f.get("snippet"))
                             .type("MOBILE").severity((String) f.get("severity")).confidence("HIGH").status("OPEN")
                             .projectId(scan.getProjectId()).assetId(scan.getAssetId()).assetName(scan.getTarget())
                             .source("mobile-analyzer").scanId(scan.getId()).cwe((String) f.get("cwe")).cvss(7.0)
                             .businessCriticality("HIGH").owner("Mobile Team").filePath((String) f.get("file"))
-                            .recommendation((String) f.get("recommendation")).build();
+                            .recommendation((String) f.get("recommendation"))
+                            .evidenceJson(evidence)
+                            .build();
                     findingService.create(fd);
                     total++;
                 }
@@ -311,6 +327,48 @@ public class ScanService {
             log.error("Real analyzer failed", e);
         }
         return total;
+    }
+
+    private String buildEvidenceJson(Map<String, Object> f) {
+        try {
+            Map<String, Object> evidence = new LinkedHashMap<>();
+            evidence.put("type", f.getOrDefault("rule", "SCAN_RESULT"));
+            evidence.put("file", f.get("file"));
+            evidence.put("line", f.get("line"));
+            evidence.put("snippet", f.get("snippet"));
+            evidence.put("match", f.get("match"));
+            evidence.put("cwe", f.get("cwe"));
+            evidence.put("timestamp", Instant.now().toString());
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            mapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+            return mapper.writeValueAsString(evidence);
+        } catch (Exception e) {
+            return "{\"type\":\"SCAN_RESULT\",\"error\":\"serialization_failed\"}";
+        }
+    }
+
+    private String buildDastEvidence(Map<String, Object> f, String target) {
+        try {
+            Map<String, Object> evidence = new LinkedHashMap<>();
+            evidence.put("type", f.getOrDefault("rule", "DAST_RESULT"));
+            evidence.put("target", target);
+            evidence.put("file", f.get("file"));
+            evidence.put("line", f.get("line"));
+            evidence.put("snippet", f.get("snippet"));
+            evidence.put("match", f.get("match"));
+            evidence.put("cwe", f.get("cwe"));
+            evidence.put("testUrl", f.get("testUrl"));
+            evidence.put("statusCode", f.get("statusCode"));
+            evidence.put("responseHeaders", f.get("responseHeaders"));
+            evidence.put("responseBody", f.get("responseBody"));
+            evidence.put("payload", f.get("payload"));
+            evidence.put("timestamp", Instant.now().toString());
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            mapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+            return mapper.writeValueAsString(evidence);
+        } catch (Exception e) {
+            return "{\"type\":\"DAST_RESULT\",\"error\":\"serialization_failed\"}";
+        }
     }
 
     @Transactional

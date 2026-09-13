@@ -10,7 +10,10 @@ import java.util.UUID;
 @Entity @Table(name = "findings", indexes = {
     @Index(columnList = "projectId"), @Index(columnList = "severity"),
     @Index(columnList = "status"), @Index(columnList = "organizationId"),
-    @Index(columnList = "assetId"), @Index(columnList = "scanId")
+    @Index(columnList = "assetId"), @Index(columnList = "scanId"),
+    @Index(columnList = "fingerprint"), @Index(columnList = "kev"),
+    @Index(columnList = "cwe"), @Index(columnList = "cveId"),
+    @Index(columnList = "severity,createdAt"), @Index(columnList = "projectId,severity")
 })
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Finding extends BaseEntity {
@@ -33,11 +36,14 @@ public class Finding extends BaseEntity {
     private String source;
     private UUID scanId;
 
+    // Vulnerability references
     private String cwe;
+    @Column(name = "cwe_id")
+    private String cweId;
+    private String cveId;
     private String owasp;
     private String masvs;
     private String asvs;
-    private String cweId;
 
     private Double cvss;
     private Double epss;
@@ -56,6 +62,7 @@ public class Finding extends BaseEntity {
 
     private Double riskScore;
     private String riskLevel;
+    private String compensatingControl;
 
     private String fingerprint;
     @Builder.Default private Boolean falsePositive = false;
@@ -63,6 +70,19 @@ public class Finding extends BaseEntity {
 
     private UUID parentFindingId;
     private UUID correlationId;
+    private Instant firstSeenAt;
+    private Instant lastSeenAt;
     private Instant slaDueAt;
     private String slaStatus;
+
+    @PrePersist
+    protected void onCreate() {
+        if (firstSeenAt == null) firstSeenAt = Instant.now();
+        lastSeenAt = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        lastSeenAt = Instant.now();
+    }
 }

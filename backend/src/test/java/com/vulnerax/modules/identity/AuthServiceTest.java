@@ -48,12 +48,13 @@ class AuthServiceTest {
     @Test
     void register_success() {
         when(userRepository.existsByEmail("test@vulnerax.com")).thenReturn(false);
-        when(encoder.encode("password123")).thenReturn("$2a$10$hashed");
+        String strongPass = "P@ssw0rd!1234";
+        when(encoder.encode(strongPass)).thenReturn("$2a$10$hashed");
         when(userRepository.save(any(User.class))).thenReturn(testUser);
         when(jwt.generateToken(any(), any())).thenReturn("jwt-token");
         when(jwt.generateRefreshToken(any())).thenReturn("refresh-token");
 
-        Map<String, Object> result = authService.register("test@vulnerax.com", "password123", "Test User", "DEVELOPER");
+        Map<String, Object> result = authService.register("test@vulnerax.com", strongPass, "Test User", "DEVELOPER");
 
         assertNotNull(result);
         assertEquals("jwt-token", result.get("token"));
@@ -66,17 +67,18 @@ class AuthServiceTest {
         when(userRepository.existsByEmail("test@vulnerax.com")).thenReturn(true);
 
         assertThrows(BusinessException.class,
-                () -> authService.register("test@vulnerax.com", "password123", "Test User", null));
+                () -> authService.register("test@vulnerax.com", "P@ssw0rd!1234", "Test User", null));
     }
 
     @Test
     void login_success() {
         when(userRepository.findByEmail("test@vulnerax.com")).thenReturn(Optional.of(testUser));
-        when(encoder.matches("password123", testUser.getPasswordHash())).thenReturn(true);
+        String strongPass = "P@ssw0rd!1234";
+        when(encoder.matches(strongPass, testUser.getPasswordHash())).thenReturn(true);
         when(jwt.generateToken(any(), any())).thenReturn("jwt-token");
         when(jwt.generateRefreshToken(any())).thenReturn("refresh-token");
 
-        Map<String, Object> result = authService.login("test@vulnerax.com", "password123");
+        Map<String, Object> result = authService.login("test@vulnerax.com", strongPass);
 
         assertNotNull(result);
         assertEquals("jwt-token", result.get("token"));

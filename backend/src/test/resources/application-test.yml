@@ -1,20 +1,16 @@
-server:
-  port: 8080
-
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
     username: sa
     password:
-    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: create-drop
-    open-in-view: false
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-        format_sql: true
   flyway:
     enabled: false
   data:
@@ -23,22 +19,15 @@ spring:
       port: 6379
   kafka:
     bootstrap-servers: localhost:9092
+    auto-startup: false
 
-app:
-  jwt:
-    secret: vulnerax-super-secret-jwt-key-must-be-at-least-64-chars-long-for-hs512-change-me-in-prod-test-key-123456
-    expiration-ms: 86400000
-    refresh-expiration-ms: 604800000
-  s3:
-    endpoint: http://localhost:9000
-    access-key: minioadmin
-    secret-key: minioadmin
-    bucket: vulnerax-artifacts
-    region: us-east-1
-  aes-key: 0123456789abcdef0123456789abcdef
-  cors:
-    allowed-origins: http://localhost:5173,http://localhost:3000
-  ai:
-    deepseek-api-key: test-key
-    deepseek-base-url: https://api.deepseek.com
-    deepseek-model: deepseek-chat
+spring.kafka.listener.auto-startup: false
+
+spring.autoconfigure.exclude:
+  - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+  - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+
+logging:
+  level:
+    root: WARN
+    com.vulnerax: INFO
