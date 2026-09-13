@@ -28,13 +28,14 @@ class ScanServiceTest {
     @Mock private FindingService findingService;
     @Mock private ApplicationContext ctx;
     @Mock private SecurityCoverageRegistry coverageRegistry;
+    @Mock private org.springframework.kafka.core.KafkaTemplate<String, Object> kafkaTemplate;
 
     private ScanService scanService;
     private Scan testScan;
 
     @BeforeEach
     void setUp() {
-        scanService = new ScanService(scanRepo, jobRepo, findingService, ctx, coverageRegistry, List.of());
+        scanService = new ScanService(scanRepo, jobRepo, findingService, ctx, coverageRegistry, List.of(), kafkaTemplate);
         testScan = Scan.builder()
                 .projectId(UUID.randomUUID())
                 .scannerType("SAST")
