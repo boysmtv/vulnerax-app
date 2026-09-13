@@ -1,40 +1,62 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import '@testing-library/jest-dom'
 import Login from '../pages/Login'
-import * as client from '../api/client'
+import { BrowserRouter } from 'react-router-dom'
 
-vi.mock('../api/client', async () => {
-  const actual = await vi.importActual<typeof import('../api/client')>('../api/client')
-  return { ...actual, api: { ...actual.api, post: vi.fn() } }
-})
+// Mock the auth store
+vi.mock('../store/auth', () => ({
+  useAuth: () => ({
+    token: null,
+    login: vi.fn(),
+    logout: vi.fn(),
+  }),
+}))
 
-describe('Login — auth flow', () => {
+// Mock axios
+vi.mock('axios', () => ({
+  default: {
+    post: vi.fn(),
+    get: vi.fn(),
+  },
+}))
+
+const renderWithRouter = (component) => {
+  return render(<BrowserRouter>{component}</BrowserRouter>)
+}
+
+describe('Login Page', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders login form', () => {
-    render(<MemoryRouter><Login /></MemoryRouter>)
-    expect(screen.getAllByText(/VulneraX/i).length).toBeGreaterThan(0)
-    expect(screen.getByPlaceholderText(/Email/i)).toBeInTheDocument()
+    renderWithRouter(<Login />)
+
+    expect(screen.getByText(/vulnerax/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument()
   })
 
-  it('has password field and submit', () => {
-    render(<MemoryRouter><Login /></MemoryRouter>)
-    const pwd = screen.queryByPlaceholderText(/password/i) || screen.queryByLabelText(/password/i) || document.querySelector('input[type="password"]')
-    expect(pwd).toBeInTheDocument()
-    const btn = screen.queryByRole('button', { name: /sign in|login|submit/i }) || document.querySelector('button[type="submit"]')
-    expect(btn).toBeInTheDocument()
-  })
+  it('shows email validation error for invalid email', async () => {
+    renderWithRouter(<Login />)
 
-  it('calls api on submit when mocked', async () => {
-    vi.mocked(client.api.post).mockResolvedValue({ data: { data: { token: 'tok', user: { email: 'a@b.com', fullName: 'A', role: 'DEVELOPER' } } } })
-    render(<MemoryRouter><Login /></MemoryRouter>)
-    const emailInput = screen.getByPlaceholderText('Email') as HTMLInputElement
-    const pwdInput = screen.getByPlaceholderText('Password') as HTMLInputElement
-    const btn = screen.getByText('Sign in') as HTMLButtonElement
-    fireEvent.change(emailInput, { target: { value: 'a@b.com' } })
-    fireEvent.change(pwdInput, { target: { value: 'secret' } })
-    fireEvent.click(btn)
+    const emailInput = screen.getByLabelText(/email/i)
+    const submitButton = screen.getByRole('button', { name: /sign in/i })
+
+    fireEvent.change(emailInput, { target: { value: 'invalid-email' } })
+    fireEvent.click(submitButton)
+
     await waitFor(() => {
-      expect(document.body).toBeInTheDocument()
+      expect(screen.getByText(/valid email/i)).toBeInTheDocument()
     })
+  })
+
+  it('disables submit button when form is empty', () => {
+    renderWithRouter(<Login />)
+
+    const submitButton = screen.getByRole('button', { name: /sign in/i })
+    expect(submitButton).toBeDisabled()
   })
 })

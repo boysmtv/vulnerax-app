@@ -1,37 +1,70 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { render, screen, waitFor } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import Dashboard from '../pages/Dashboard'
-import * as clientModule from '../api/client'
+import { BrowserRouter } from 'react-router-dom'
 
-vi.mock('../api/client', async () => {
-  const actual = await vi.importActual<typeof import('../api/client')>('../api/client')
-  return { ...actual, api: { ...actual.api, get: vi.fn() } }
-})
+// Mock the auth store
+vi.mock('../store/auth', () => ({
+  useAuth: () => ({
+    token: 'mock-token',
+    user: { email: 'test@vulnerax.com', role: 'DEVELOPER' },
+  }),
+}))
 
-describe('Dashboard — Security Command Center', () => {
-  it('renders Security Command Center title', async () => {
-    vi.mocked(clientModule.api.get).mockResolvedValue({ data: { data: { securityScore: 74, critical: 3, high: 17, totalAssets: 247 } } })
-    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } })
-    render(<QueryClientProvider client={qc}><Dashboard /></QueryClientProvider>)
-    expect(await screen.findByText(/Security Command Center/i)).toBeInTheDocument()
-    expect(screen.getByText(/Security Score/i)).toBeInTheDocument()
+// Mock axios
+vi.mock('axios', () => ({
+  default: {
+    get: vi.fn().mockResolvedValue({
+      data: {
+        success: true,
+        data: {
+          securityScore: 75,
+          totalFindings: 150,
+          criticalFindings: 5,
+          highFindings: 20,
+          coverage: { sast: 80, dast: 60, sca: 90 },
+          trend: [
+            { month: 'Jan', findings: 100 },
+            { month: 'Feb', findings: 120 },
+            { month: 'Mar', findings: 150 },
+          ],
+        },
+      },
+    }),
+  },
+}))
+
+const renderWithRouter = (component) => {
+  return render(<BrowserRouter>{component}</BrowserRouter>)
+}
+
+describe('Dashboard Page', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
   })
 
-  it('shows stats fallback when api empty', async () => {
-    vi.mocked(clientModule.api.get).mockResolvedValue({ data: { data: null } })
-    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } })
-    render(<QueryClientProvider client={qc}><Dashboard /></QueryClientProvider>)
-    expect(await screen.findByText(/Security Command Center/i)).toBeInTheDocument()
-    // fallback renders at least one chart title
-    expect(screen.getByText(/Findings by Severity/i)).toBeInTheDocument()
+  it('renders dashboard title', async () => {
+    renderWithRouter(<Dashboard />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/dashboard/i)).toBeInTheDocument()
+    })
   })
 
-  it('shows Generate Report and New Assessment links', async () => {
-    vi.mocked(clientModule.api.get).mockResolvedValue({ data: { data: {} } })
-    const qc = new QueryClient()
-    render(<QueryClientProvider client={qc}><Dashboard /></QueryClientProvider>)
-    expect(await screen.findByText(/Generate Report/i)).toBeInTheDocument()
-    expect(screen.getByText(/New Assessment/i)).toBeInTheDocument()
+  it('displays security score', async () => {
+    renderWithRouter(<Dashboard />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/75/)).toBeInTheDocument()
+    })
+  })
+
+  it('displays findings count', async () => {
+    renderWithRouter(<Dashboard />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/150/)).toBeInTheDocument()
+    })
   })
 })

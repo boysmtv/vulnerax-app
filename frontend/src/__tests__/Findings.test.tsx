@@ -1,45 +1,97 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { MemoryRouter } from 'react-router-dom'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import Findings from '../pages/Findings'
-import * as client from '../api/client'
+import { BrowserRouter } from 'react-router-dom'
 
-vi.mock('../api/client', async () => {
-  const actual = await vi.importActual<typeof import('../api/client')>('../api/client')
-  return { ...actual, api: { ...actual.api, get: vi.fn() } }
-})
+// Mock the auth store
+vi.mock('../store/auth', () => ({
+  useAuth: () => ({
+    token: 'mock-token',
+    user: { email: 'test@vulnerax.com', role: 'DEVELOPER' },
+  }),
+}))
 
-const mockFindings = {
-  content: [
-    { id: '1', findingId: 'FND-1001', title: 'SQL Injection via Unsanitized Input', severity: 'HIGH', status: 'OPEN', riskLevel: 'CRITICAL', riskScore: 85 },
-    { id: '2', findingId: 'FND-1002', title: 'Broken Object Level Authorization', severity: 'CRITICAL', status: 'OPEN', riskLevel: 'CRITICAL', riskScore: 92 },
-  ]
+// Mock axios
+vi.mock('axios', () => ({
+  default: {
+    get: vi.fn().mockResolvedValue({
+      data: {
+        success: true,
+        data: {
+          content: [
+            {
+              id: '1',
+              findingId: 'FND-1001',
+              title: 'SQL Injection in Login',
+              severity: 'CRITICAL',
+              status: 'OPEN',
+              type: 'SAST',
+              cwe: 'CWE-89',
+              cvss: 9.8,
+              assetName: 'auth-service',
+            },
+            {
+              id: '2',
+              findingId: 'FND-1002',
+              title: 'XSS in Search',
+              severity: 'HIGH',
+              status: 'OPEN',
+              type: 'DAST',
+              cwe: 'CWE-79',
+              cvss: 7.5,
+              assetName: 'web-app',
+            },
+          ],
+          totalElements: 2,
+          totalPages: 1,
+        },
+      },
+    }),
+  },
+}))
+
+const renderWithRouter = (component) => {
+  return render(<BrowserRouter>{component}</BrowserRouter>)
 }
 
-describe('Findings — Vulnerability Explorer', () => {
-  it('renders findings explorer', async () => {
-    vi.mocked(client.api.get).mockResolvedValue({ data: { data: mockFindings } })
-    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } })
-    render(<QueryClientProvider client={qc}><MemoryRouter><Findings /></MemoryRouter></QueryClientProvider>)
-    // title may be Findings or Vulnerability Explorer
-    const title = await screen.findByText(/Findings|Vulnerability/i)
-    expect(title).toBeInTheDocument()
+describe('Findings Page', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
   })
 
-  it('shows findings list', async () => {
-    vi.mocked(client.api.get).mockResolvedValue({ data: { data: mockFindings } })
-    const qc = new QueryClient()
-    render(<QueryClientProvider client={qc}><MemoryRouter><Findings /></MemoryRouter></QueryClientProvider>)
-    expect(await screen.findByText(/SQL Injection/i)).toBeInTheDocument()
-    expect(await screen.findByText(/Broken Object Level/i)).toBeInTheDocument()
+  it('renders findings list', async () => {
+    renderWithRouter(<Findings />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/findings/i)).toBeInTheDocument()
+    })
+  })
+
+  it('displays finding entries', async () => {
+    renderWithRouter(<Findings />)
+
+    await waitFor(() => {
+      expect(screen.getByText('SQL Injection in Login')).toBeInTheDocument()
+      expect(screen.getByText('XSS in Search')).toBeInTheDocument()
+    })
   })
 
   it('shows severity badges', async () => {
-    vi.mocked(client.api.get).mockResolvedValue({ data: { data: mockFindings } })
-    const qc = new QueryClient()
-    render(<QueryClientProvider client={qc}><MemoryRouter><Findings /></MemoryRouter></QueryClientProvider>)
-    expect(await screen.findByText('HIGH')).toBeInTheDocument()
-    expect(await screen.findByText('CRITICAL')).toBeInTheDocument()
+    renderWithRouter(<Findings />)
+
+    await waitFor(() => {
+      expect(screen.getByText('CRITICAL')).toBeInTheDocument()
+      expect(screen.getByText('HIGH')).toBeInTheDocument()
+    })
+  })
+
+  it('displays finding IDs', async () => {
+    renderWithRouter(<Findings />)
+
+    await waitFor(() => {
+      expect(screen.getByText('FND-1001')).toBeInTheDocument()
+      expect(screen.getByText('FND-1002')).toBeInTheDocument()
+    })
   })
 })

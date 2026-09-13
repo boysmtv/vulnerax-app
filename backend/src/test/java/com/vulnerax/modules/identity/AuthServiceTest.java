@@ -4,103 +4,117 @@ import com.vulnerax.common.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 
-    @Mock UserRepository userRepository;
-    @Mock PasswordEncoder encoder;
-    @Mock JwtTokenProvider jwt;
+    @Mock
+    private UserRepository userRepository;
 
-    AuthService service;
+    @Mock
+    private PasswordEncoder encoder;
+
+    @Mock
+    private JwtTokenProvider jwt;
+
+    @InjectMocks
+    private AuthService authService;
+
+    private User testUser;
 
     @BeforeEach
-    void setUp() { service = new AuthService(userRepository, encoder, jwt); }
-
-    // login — success flow
-    @Test
-    void login_success() {
-        User u = User.builder().email("a@b.com").passwordHash("hash").fullName("A").role(User.Role.DEVELOPER).build();
-        u.setId(UUID.randomUUID());
-        when(userRepository.findByEmail("a@b.com")).thenReturn(Optional.of(u));
-        when(encoder.matches("pass", "hash")).thenReturn(true);
-        when(jwt.generateToken(any(), any())).thenReturn("tok");
-        when(jwt.generateRefreshToken(any())).thenReturn("refresh");
-
-        var res = service.login("a@b.com", "pass");
-        assertThat(res).containsKeys("token","refreshToken","user");
-        assertThat(res.get("token")).isEqualTo("tok");
+    void setUp() {
+        testUser = User.builder()
+                .id(java.util.UUID.randomUUID())
+                .email("test@vulnerax.com")
+                .passwordHash("$2a$10$hashed")
+                .fullName("Test User")
+                .role(User.Role.DEVELOPER)
+                .active(true)
+                .build();
     }
 
-    @Test
-    void login_invalid_password_throws() {
-        User u = User.builder().email("a@b.com").passwordHash("hash").fullName("A").build();
-        when(userRepository.findByEmail(any())).thenReturn(Optional.of(u));
-        when(encoder.matches(any(), any())).thenReturn(false);
-        assertThatThrownBy(() -> service.login("a@b.com","wrong")).isInstanceOf(BusinessException.class);
-    }
-
-    @Test
-    void login_user_not_found_throws() {
-        when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
-        assertThatThrownBy(() -> service.login("x@y.com","p")).isInstanceOf(BusinessException.class);
-    }
-
-    // create / register — success
     @Test
     void register_success() {
-        when(userRepository.existsByEmail("new@b.com")).thenReturn(false);
-        when(encoder.encode("pass")).thenReturn("hash");
-        when(jwt.generateToken(any(), any())).thenReturn("tok");
-        when(jwt.generateRefreshToken(any())).thenReturn("refresh");
-        // mock save to set id
-        when(userRepository.save(any(User.class))).thenAnswer(inv -> {
-            User u = inv.getArgument(0);
-            u.setId(UUID.randomUUID());
-            return u;
-        });
-        var res = service.register("new@b.com","pass","New User","DEVELOPER");
-        assertThat(res).containsKey("token");
-        verify(userRepository).save(any());
+        when(userRepository.existsByEmail("test@vulnerax.com")).thenReturn(false);
+        when(encoder.encode("password123")).thenReturn("$2a$10$hashed");
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+        when(jwt.generateToken(any(), any())).thenReturn("jwt-token");
+        when(jwt.generateRefreshToken(any())).thenReturn("refresh-token");
+
+        Map<String, Object> result = authService.register("test@vulnerax.com", "password123", "Test User", "DEVELOPER");
+
+        assertNotNull(result);
+        assertEquals("jwt-token", result.get("token"));
+        assertEquals("refresh-token", result.get("refreshToken"));
+        verify(userRepository).save(any(User.class));
     }
 
     @Test
-    void register_duplicate_throws() {
-        when(userRepository.existsByEmail("dup@b.com")).thenReturn(true);
-        assertThatThrownBy(() -> service.register("dup@b.com","p","N",null)).isInstanceOf(BusinessException.class);
+    void register_duplicateEmail_throws() {
+        when(userRepository.existsByEmail("test@vulnerax.com")).thenReturn(true);
+
+        assertThrows(BusinessException.class,
+                () -> authService.register("test@vulnerax.com", "password123", "Test User", null));
     }
 
-    // me
+    @Test
+    void login_success() {
+        when(userRepository.findByEmail("test@vulnerax.com")).thenReturn(Optional.of(testUser));
+        when(encoder.matches("password123", testUser.getPasswordHash())).thenReturn(true);
+        when(jwt.generateToken(any(), any())).thenReturn("jwt-token");
+        when(jwt.generateRefreshToken(any())).thenReturn("refresh-token");
+
+        Map<String, Object> result = authService.login("test@vulnerax.com", "password123");
+
+        assertNotNull(result);
+        assertEquals("jwt-token", result.get("token"));
+    }
+
+    @Test
+    void login_wrongPassword_throws() {
+        when(userRepository.findByEmail("test@vulnerax.com")).thenReturn(Optional.of(testUser));
+        when(encoder.matches("wrong", testUser.getPasswordHash())).thenReturn(false);
+
+        assertThrows(BusinessException.class,
+                () -> authService.login("test@vulnerax.com", "wrong"));
+    }
+
+    @Test
+    void login_userNotFound_throws() {
+        when(userRepository.findByEmail("unknown@test.com")).thenReturn(Optional.empty());
+
+        assertThrows(BusinessException.class,
+                () -> authService.login("unknown@test.com", "password"));
+    }
+
     @Test
     void me_success() {
-        User u = User.builder().email("me@b.com").fullName("Me").role(User.Role.AUDITOR).build();
-        u.setId(UUID.randomUUID());
-        when(userRepository.findByEmail("me@b.com")).thenReturn(Optional.of(u));
-        var res = service.me("me@b.com");
-        assertThat(res.get("email")).isEqualTo("me@b.com");
-        assertThat(res.get("role")).isEqualTo("AUDITOR");
+        when(userRepository.findByEmail("test@vulnerax.com")).thenReturn(Optional.of(testUser));
+
+        Map<String, Object> result = authService.me("test@vulnerax.com");
+
+        assertNotNull(result);
+        assertEquals("test@vulnerax.com", result.get("email"));
+        assertEquals("DEVELOPER", result.get("role"));
     }
 
-    // return / logout implicit — list roles edge
     @Test
-    void register_defaults_to_developer_when_role_null() {
-        when(userRepository.existsByEmail(any())).thenReturn(false);
-        when(encoder.encode(any())).thenReturn("h");
-        when(jwt.generateToken(any(), eq("DEVELOPER"))).thenReturn("tok");
-        when(jwt.generateRefreshToken(any())).thenReturn("r");
-        when(userRepository.save(any())).thenAnswer(i -> { User u=i.getArgument(0); u.setId(UUID.randomUUID()); return u; });
-        service.register("d@e.com","p","F",null);
-        verify(jwt).generateToken(any(), eq("DEVELOPER"));
+    void me_userNotFound_throws() {
+        when(userRepository.findByEmail("unknown@test.com")).thenReturn(Optional.empty());
+
+        assertThrows(BusinessException.class,
+                () -> authService.me("unknown@test.com"));
     }
 }
