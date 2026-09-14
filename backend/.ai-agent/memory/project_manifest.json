@@ -1,0 +1,1353 @@
+{
+  "project_name": "backend",
+  "project_root": "D:\\Work\\Pribadi\\WebProject\\vulnerax-app\\backend",
+  "final_project_root": "D:\\Work\\Pribadi\\WebProject\\vulnerax-app\\backend",
+  "problem_file": "",
+  "problem_statement": "",
+  "stack": [],
+  "stack_id": "",
+  "template_id": "",
+  "platform": "",
+  "domain": "",
+  "project_type": "",
+  "build_commands": [],
+  "run_commands": [],
+  "features": [
+    "create",
+    "delete",
+    "list",
+    "login",
+    "return",
+    "run",
+    "start",
+    "update"
+  ],
+  "packages": [
+    "com.vulnerax",
+    "com.vulnerax.common",
+    "com.vulnerax.common.exception",
+    "com.vulnerax.config",
+    "com.vulnerax.config.ratelimit",
+    "com.vulnerax.integration",
+    "com.vulnerax.modules.ai",
+    "com.vulnerax.modules.aillm",
+    "com.vulnerax.modules.assessment",
+    "com.vulnerax.modules.asset",
+    "com.vulnerax.modules.audit",
+    "com.vulnerax.modules.browser",
+    "com.vulnerax.modules.campaign",
+    "com.vulnerax.modules.cicd",
+    "com.vulnerax.modules.cloud",
+    "com.vulnerax.modules.compliance",
+    "com.vulnerax.modules.container",
+    "com.vulnerax.modules.dashboard",
+    "com.vulnerax.modules.database",
+    "com.vulnerax.modules.finding",
+    "com.vulnerax.modules.firmware",
+    "com.vulnerax.modules.graph",
+    "com.vulnerax.modules.iac",
+    "com.vulnerax.modules.iam",
+    "com.vulnerax.modules.identity",
+    "com.vulnerax.modules.integration",
+    "com.vulnerax.modules.k8s",
+    "com.vulnerax.modules.mobile",
+    "com.vulnerax.modules.network",
+    "com.vulnerax.modules.notification",
+    "com.vulnerax.modules.oneclick",
+    "com.vulnerax.modules.organization",
+    "com.vulnerax.modules.pentest",
+    "com.vulnerax.modules.policy",
+    "com.vulnerax.modules.rbac",
+    "com.vulnerax.modules.report",
+    "com.vulnerax.modules.reporting",
+    "com.vulnerax.modules.retest",
+    "com.vulnerax.modules.risk",
+    "com.vulnerax.modules.sbom",
+    "com.vulnerax.modules.scan",
+    "com.vulnerax.modules.scan.analyzers",
+    "com.vulnerax.modules.scan.model",
+    "com.vulnerax.modules.scan.plugins",
+    "com.vulnerax.modules.search",
+    "com.vulnerax.modules.supplychain",
+    "com.vulnerax.modules.threatmodel",
+    "com.vulnerax.seed"
+  ],
+  "languages": [
+    "java"
+  ],
+  "entrypoints": [
+    "src/main/java/com/vulnerax/common/exception/GlobalExceptionHandler.java",
+    "src/main/java/com/vulnerax/modules/ai/AiController.java",
+    "src/main/java/com/vulnerax/modules/aillm/AiLlmController.java",
+    "src/main/java/com/vulnerax/modules/assessment/AssessmentController.java",
+    "src/main/java/com/vulnerax/modules/asset/AssetController.java",
+    "src/main/java/com/vulnerax/modules/audit/AuditController.java",
+    "src/main/java/com/vulnerax/modules/browser/BrowserController.java",
+    "src/main/java/com/vulnerax/modules/campaign/CampaignController.java",
+    "src/main/java/com/vulnerax/modules/cicd/CicdController.java",
+    "src/main/java/com/vulnerax/modules/cloud/CloudController.java",
+    "src/main/java/com/vulnerax/modules/compliance/ComplianceController.java",
+    "src/main/java/com/vulnerax/modules/container/ContainerController.java",
+    "src/main/java/com/vulnerax/modules/dashboard/DashboardController.java",
+    "src/main/java/com/vulnerax/modules/database/DatabaseController.java",
+    "src/main/java/com/vulnerax/modules/finding/FindingController.java",
+    "src/main/java/com/vulnerax/modules/firmware/FirmwareController.java",
+    "src/main/java/com/vulnerax/modules/graph/GraphController.java",
+    "src/main/java/com/vulnerax/modules/iac/IacController.java",
+    "src/main/java/com/vulnerax/modules/iam/IamController.java",
+    "src/main/java/com/vulnerax/modules/identity/AuthController.java",
+    "src/main/java/com/vulnerax/modules/identity/MfaController.java",
+    "src/main/java/com/vulnerax/modules/identity/SsoController.java",
+    "src/main/java/com/vulnerax/modules/integration/IntegrationController.java",
+    "src/main/java/com/vulnerax/modules/k8s/K8sController.java",
+    "src/main/java/com/vulnerax/modules/mobile/MobileController.java",
+    "src/main/java/com/vulnerax/modules/network/NetworkController.java",
+    "src/main/java/com/vulnerax/modules/notification/NotificationController.java",
+    "src/main/java/com/vulnerax/modules/oneclick/OneClickController.java",
+    "src/main/java/com/vulnerax/modules/organization/OrganizationController.java",
+    "src/main/java/com/vulnerax/modules/pentest/PentestController.java",
+    "src/main/java/com/vulnerax/modules/policy/PolicyController.java",
+    "src/main/java/com/vulnerax/modules/reporting/ReportController.java",
+    "src/main/java/com/vulnerax/modules/retest/RetestController.java",
+    "src/main/java/com/vulnerax/modules/sbom/SbomController.java",
+    "src/main/java/com/vulnerax/modules/scan/ScanController.java",
+    "src/main/java/com/vulnerax/modules/search/SearchController.java",
+    "src/main/java/com/vulnerax/modules/supplychain/ProvenanceController.java",
+    "src/main/java/com/vulnerax/modules/threatmodel/ThreatModelController.java"
+  ],
+  "final_status": "registered",
+  "mode": "factory_managed",
+  "updated_at": "2026-09-13T17:05:08.054660+00:00",
+  "source_fingerprint": {
+    "updated_at": "2026-09-13T17:05:08.126812+00:00",
+    "file_count": 244,
+    "digest": "34576c638e9c951da64b48e4063e857d90e22ed297291320480bab095b518031",
+    "files": [
+      {
+        "path": "pom.xml",
+        "hash": "27cc430481a989f02756d19a569b2738485835715e66b3a5c23ce51483edbb13",
+        "size_bytes": 6596
+      },
+      {
+        "path": "src/main/java/com/vulnerax/VulneraxApplication.java",
+        "hash": "04d8f9e9b44bcd6a1a2f584deb1e4cb36cc9c4a399fc6bf8acdc130fe47cb400",
+        "size_bytes": 665
+      },
+      {
+        "path": "src/main/java/com/vulnerax/common/ApiResponse.java",
+        "hash": "f6c6e454fd43e8f8f96d8d2ad82e89b2a734a41473009fedd5a71efac2d3bbb1",
+        "size_bytes": 754
+      },
+      {
+        "path": "src/main/java/com/vulnerax/common/BaseEntity.java",
+        "hash": "ec4e6c0c2c841ec5212fdfcfa64960eb35fbc20d887b2353eb42bf640ee9b503",
+        "size_bytes": 696
+      },
+      {
+        "path": "src/main/java/com/vulnerax/common/PageResponse.java",
+        "hash": "c8df015537c0dfe8a835846d65983af26e14dcca1ab9bf92c3c2efaf0655fb61",
+        "size_bytes": 721
+      },
+      {
+        "path": "src/main/java/com/vulnerax/common/exception/BusinessException.java",
+        "hash": "bd30aa1850f5e4e463c28e40a077986879eb4700ced1e9d5afb72299e2a190d3",
+        "size_bytes": 157
+      },
+      {
+        "path": "src/main/java/com/vulnerax/common/exception/GlobalExceptionHandler.java",
+        "hash": "f7b36924afb2420c698162c1c08f606c8d6443337efec5ec1c221135544b776d",
+        "size_bytes": 5774
+      },
+      {
+        "path": "src/main/java/com/vulnerax/common/exception/ResourceNotFoundException.java",
+        "hash": "5515e6359fe4f27c581373825c93c8df8b8eac0206397a794c76638b0779d611",
+        "size_bytes": 173
+      },
+      {
+        "path": "src/main/java/com/vulnerax/config/AuditingConfig.java",
+        "hash": "26299ed80030fafb552ec374f306354775707e2763fd4b1c6c0d065cb9163e47",
+        "size_bytes": 657
+      },
+      {
+        "path": "src/main/java/com/vulnerax/config/OpenApiConfig.java",
+        "hash": "598e9dfcc2ce7e7b8f671d5dd0a4d91c108c767ed76b86a418493f85d5f8283f",
+        "size_bytes": 936
+      },
+      {
+        "path": "src/main/java/com/vulnerax/config/SecurityConfig.java",
+        "hash": "1c0c97d0cfff431e2dab181ffba14b489e6ace9417258c6726cfe6c1211f82c4",
+        "size_bytes": 3821
+      },
+      {
+        "path": "src/main/java/com/vulnerax/config/ratelimit/RateLimitFilter.java",
+        "hash": "ca4dd969b3f2ba6120507d8e87c14ee263f5a3dfef5ab052512de960e8cb5012",
+        "size_bytes": 3602
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/ai/AiAnalystService.java",
+        "hash": "ae177c147671c7a27596f1c5380734bcb776fe7818e56c283e744690071dac5d",
+        "size_bytes": 11627
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/ai/AiController.java",
+        "hash": "1f2d7a299a4d13375e08637214693bf7c2d81f708048827a8c50186fab3fe39a",
+        "size_bytes": 879
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/aillm/AiAsset.java",
+        "hash": "34c60aab8b77b71a4e8ed9df1459d6f453ef4210e679325a09e9b434fc102f15",
+        "size_bytes": 866
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/aillm/AiLlmController.java",
+        "hash": "c50ea9e73e4d168c5eee7a27e2dd7c212751e16f9ae405f034c1b3a3ec93197f",
+        "size_bytes": 707
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/aillm/AiLlmService.java",
+        "hash": "265f803e6d70c5985c33eefaa06b0d7c4bbb21539e9b1ac37a8f8450f4092aa7",
+        "size_bytes": 570
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/aillm/AiRepository.java",
+        "hash": "0e84daf4871f1b927b024b89722eebf5871e175b5cbd0fb26dd276ae4646dfc9",
+        "size_bytes": 272
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/assessment/AssessmentController.java",
+        "hash": "2dd1636105fade7e8d2af4a517717069b7ba0babd91b04c4351e0a3891e4dae8",
+        "size_bytes": 3683
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/asset/Asset.java",
+        "hash": "e44285d7a1de85009d3a3058a2220320e69c5bcc9fd8cd4d03db27265d377333",
+        "size_bytes": 1688
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/asset/AssetController.java",
+        "hash": "6d29449d0908133b46a1d05d508c94bd45c6261e56feee83bbe5e94f51bd8682",
+        "size_bytes": 1871
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/asset/AssetRepository.java",
+        "hash": "9356c2e63b32a86a8a2084e23c6dc2757f1fcd5320a964eb2b3e04fd4b194959",
+        "size_bytes": 1545
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/asset/AssetService.java",
+        "hash": "56740ef0d2974522868ddf1166c3f356888c833a8b3e79d9eb39835ba2679c1e",
+        "size_bytes": 4627
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/audit/AuditController.java",
+        "hash": "d687a8db1fdea96fbd83727095f7d7c5172cc75ff40de1dc5099f58bec93154f",
+        "size_bytes": 526
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/audit/AuditEvent.java",
+        "hash": "b7ea5def9fba5da0a5c460b529931fba837fc23c48052eda0e1c343773b76d87",
+        "size_bytes": 550
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/audit/AuditRepository.java",
+        "hash": "4e2dcc7bbe1772ed14067a6f4bc66c203e0c95bd9c5d33f80f28cb224726ac78",
+        "size_bytes": 358
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/audit/AuditService.java",
+        "hash": "94d1e76fc83c9e314ebf07a7e4fce1ccdd4805d26e19d8d8b6a4d1ccaace53e0",
+        "size_bytes": 897
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/browser/BrowserController.java",
+        "hash": "21254ab2c154aab131872760a271b0bdd8605f9b3a670326e28c07c5b44fb63c",
+        "size_bytes": 731
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/browser/BrowserExtension.java",
+        "hash": "4389672b83b0e72924190459b9799c601cbe2450a8d2e857ec9e3848cc357a9a",
+        "size_bytes": 801
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/browser/BrowserRepository.java",
+        "hash": "2a0c9a608ce8badfe309fe5497ebef4d77bb2a6ac6893748619e886598b79eb8",
+        "size_bytes": 297
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/browser/BrowserService.java",
+        "hash": "0d618ff1bbe4e44bf3d86e5f32f491923e911a07ad3c6c1a569a13b7a59c9dc7",
+        "size_bytes": 615
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/campaign/CampaignController.java",
+        "hash": "ae81dd337d98639db6465d71bd98c3b64ff66183043ee035f39c500f54b24056",
+        "size_bytes": 735
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/campaign/CampaignRepository.java",
+        "hash": "e6b3477d62e5594db98aa20841d6d2898c6e15bf9c343e3671b8f6ebf2128452",
+        "size_bytes": 294
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/campaign/CampaignService.java",
+        "hash": "5c32645fc1de699b5b33804339de6488517ab759bf7f6883a46a019cb6bdc5fe",
+        "size_bytes": 553
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/campaign/SecurityCampaign.java",
+        "hash": "074586f276769416eb423399d26d3196bba325a4e7a0d1ca0f4f1dfe513ad26c",
+        "size_bytes": 724
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/cicd/CicdController.java",
+        "hash": "70581478e94af0116451f066cdeb7f08fe51ac0bd913fdb3eaf13dfa8f495ead",
+        "size_bytes": 704
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/cicd/CicdPipeline.java",
+        "hash": "9ac98e73d0f56829ba8b19fffe7079032c5857a5336d4e7b3e977c1543be2a5b",
+        "size_bytes": 803
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/cicd/CicdRepository.java",
+        "hash": "b6060e47b6912fcb4702f8bab86b1e52cb2ecee8353b7f522c3775d4b44c069b",
+        "size_bytes": 283
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/cicd/CicdService.java",
+        "hash": "b35b1e5e959ef193ae7d4341764ab7f45fd72ced11c3a5bbd5dcaa36b0c47ef3",
+        "size_bytes": 590
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/cloud/CloudController.java",
+        "hash": "c9dfba2ce30212235d6bd577b17a37483b91033d3610c0212dc1bc0a1eecbd61",
+        "size_bytes": 833
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/cloud/CloudRepository.java",
+        "hash": "5005934158fa1d6d5043aaa31fd91fa1acb3f27e5ae3a60954b51d2867ea0f69",
+        "size_bytes": 278
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/cloud/CloudResource.java",
+        "hash": "8541e4e411049e56f2805c5c55f2c16a9a128ac335d1f857824a8bb9d83417a7",
+        "size_bytes": 1015
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/cloud/CloudService.java",
+        "hash": "2301a048b184de5331832fc0be26aea832a7a9352f4b02c4ab613b6d9ed125c9",
+        "size_bytes": 1050
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/compliance/ComplianceAssessment.java",
+        "hash": "a816cf349bbcd97da7a50e52560c72b3147b8732906fc85d4fd0e92c2e470ff4",
+        "size_bytes": 829
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/compliance/ComplianceAssessmentRepository.java",
+        "hash": "270c50a517522df72cc56eab5a3d6a9f13cdc97d5d89736da9c174392224f9f0",
+        "size_bytes": 312
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/compliance/ComplianceController.java",
+        "hash": "9b636bc52bc2b53d83e93eb5ac0b478261f91082b7c49f213460ff7556a63dc4",
+        "size_bytes": 1048
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/compliance/ComplianceFramework.java",
+        "hash": "005d3c1368480b9aca5d67e668adcae6ad44b33e8bf8a4246f4be4596697da89",
+        "size_bytes": 706
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/compliance/ComplianceFrameworkRepository.java",
+        "hash": "a71aacbee0a6c6bfafbdcf909bca8eb7384137b83594a4e2b11d4d459f6e3ea1",
+        "size_bytes": 226
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/compliance/ComplianceService.java",
+        "hash": "fb8a2c8c8943e94937fc098fb8a6a909b8c97717c32405498e30dc2bfb89227f",
+        "size_bytes": 1498
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/container/ContainerController.java",
+        "hash": "e10f3a26482f2691a8bd638080b2114a3dd8523042ad825c335df760d559caa9",
+        "size_bytes": 862
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/container/ContainerImage.java",
+        "hash": "4daf72ae50786cb35e17dea8cf8702fca56660a48881f0346d88a1e52f0c8eab",
+        "size_bytes": 1071
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/container/ContainerRepository.java",
+        "hash": "8e4976c262eacb77dce7b9d213900e6cfe3d89961687091d26f639dc62a14cc6",
+        "size_bytes": 291
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/container/ContainerService.java",
+        "hash": "b665564c2c1714e6294635d003bbe6e8a98f1ee6c499df9a19b88350419c9870",
+        "size_bytes": 794
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/dashboard/DashboardController.java",
+        "hash": "2d581ceebb8851a99271a36d238f8cd4dcd2fc333aed73893f2366674ba732f1",
+        "size_bytes": 772
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/dashboard/DashboardService.java",
+        "hash": "afae8f39eda4190754a998d7f475f9546f2c9df0c5f5f1b8dab32dc974861aa5",
+        "size_bytes": 5207
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/database/DatabaseAsset.java",
+        "hash": "f8240cc322fd8d7d25281215ce876316c125079949bc39e8588eaf2bc5d2b205",
+        "size_bytes": 973
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/database/DatabaseController.java",
+        "hash": "0060bcb32819209c81e1951a66f51a213c1ced18e51ff7a9b9e94f8587319ff1",
+        "size_bytes": 722
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/database/DatabaseRepository.java",
+        "hash": "57351bef6828a1329fb2957605bd17b90bb3053391395604666b69c81fd6cd21",
+        "size_bytes": 293
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/database/DatabaseService.java",
+        "hash": "142609bf539418a5fbea0d87a1c4dd1df78fa96d9ee659fd0862252def9f94e1",
+        "size_bytes": 606
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/Evidence.java",
+        "hash": "4f91991a1b4dbc74abb500e8d628e5fc7ac9914b421d1d73becc7af28a5e8e80",
+        "size_bytes": 1454
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/EvidenceRepository.java",
+        "hash": "93d06d8ef89d08c9651ae1efef5d752de91029ddd50933c8bad2353ccc64ae02",
+        "size_bytes": 659
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/EvidenceService.java",
+        "hash": "89ddbb8b5fda9f32b405f11e32c48f7fee0a73173f40b0fc8f2461f71674c10a",
+        "size_bytes": 3745
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/Finding.java",
+        "hash": "0b39541d253b9606ebeb740512a706188399e9e4e8ece350fbf7d45ac4802b3f",
+        "size_bytes": 2923
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/FindingController.java",
+        "hash": "8d4106d0a2ea8043e0625464e1f9260bdb64d4125f3bd3cc47116e1a3fe70c0d",
+        "size_bytes": 2671
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/FindingCorrelationEngine.java",
+        "hash": "a685914fdd17628028fbba7c185c32c06e2cc892c8e544e9946d6587b200da9d",
+        "size_bytes": 5346
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/FindingInstance.java",
+        "hash": "d6cac5ae0201662c7fd632c86e4f1ae36171f08db3ea1a8041d48eebf8eec250",
+        "size_bytes": 596
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/FindingInstanceRepository.java",
+        "hash": "56099b8539990d86643588c26d487530161761406b01896c655ca25a309a1445",
+        "size_bytes": 299
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/FindingRepository.java",
+        "hash": "6b98f605935c85f1ff05ce31ce7c9e4d58a3003ed8aad34c5cc1da67e47f6b4c",
+        "size_bytes": 2621
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/FindingService.java",
+        "hash": "09f78bbcce26e7720e5900f2614a1882fc1ae869788cdfac63e7e6a61ee10d48",
+        "size_bytes": 9571
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/finding/FindingType.java",
+        "hash": "4151f1c94bda4597ce396966c58e7bfc8b6490e9a8c9d08d677c20eee0d3fea5",
+        "size_bytes": 214
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/firmware/FirmwareAsset.java",
+        "hash": "a625373e04bbc7b93e71e86ef65d148031ce9fbee73ed3b67c0051e02d61bfb0",
+        "size_bytes": 913
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/firmware/FirmwareController.java",
+        "hash": "4da8af960421313924e9d01ca4613e6342ade85340b9c353b3caf97be3a21201",
+        "size_bytes": 721
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/firmware/FirmwareRepository.java",
+        "hash": "423a3b20d4c2ff59f023610002911e29d13febb0b0dacf83ddf10bfe2f0fc2a6",
+        "size_bytes": 293
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/firmware/FirmwareService.java",
+        "hash": "7c53e30c6f1fcde47def4c1dfe0214fa3ef592495fd49fb79b07d89d9bce710d",
+        "size_bytes": 606
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/graph/GraphController.java",
+        "hash": "4d097ec70cce5d3fbd7d3f1e057ac3b703166f80cddac608846f572914d2cca0",
+        "size_bytes": 671
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/graph/SecurityGraphService.java",
+        "hash": "9e1865687c53635e42a8578269c6f7f90f1cdef589c521b85b68e56dcc483879",
+        "size_bytes": 8448
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/iac/IacController.java",
+        "hash": "92c259c14507b104ee86a7eb71f0ad351ee66b264b08acc52a2defd75f8a5c38",
+        "size_bytes": 695
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/iac/IacScan.java",
+        "hash": "1166417b5ecee4641b917e635c3632bf2eba9a9c6ba8413d6ca4f8ae1c797a06",
+        "size_bytes": 737
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/iac/IacScanRepository.java",
+        "hash": "d10169e5c305ddfda011e40d787c1b8cb60d286e9a15d50124323f9ab5eb092e",
+        "size_bytes": 275
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/iac/IacService.java",
+        "hash": "c1e16eaa2841982760c417b1699f585be592c42602fb93a0bf4e88019019c0e8",
+        "size_bytes": 571
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/iam/IamController.java",
+        "hash": "7eb2c31d758d96d0c4049178f0f887ce08ab547b0f683ee91864f703adf9470d",
+        "size_bytes": 699
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/iam/IamRepository.java",
+        "hash": "36a28a2eaeb2b63fda133f84dd716d931bcd4a5088714d3bb41b767fa9b89591",
+        "size_bytes": 279
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/iam/IamResource.java",
+        "hash": "1ac145f413de4896a1ec3b968be7a87206992d607dd6f8e9b04667dc36e878f4",
+        "size_bytes": 971
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/iam/IamService.java",
+        "hash": "68282623e375dd8b8bb8105e6a2762ced7227392a2516665b0bfd09142b98158",
+        "size_bytes": 583
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/AuthController.java",
+        "hash": "dd887f88a8f9238bc2b76166cfe7f7299feb0ec9f1423720a6c9c80e1cf47695",
+        "size_bytes": 1469
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/AuthService.java",
+        "hash": "c1a9c33e2717470dd5ac943ec8e0fb18a1e5b996121e7de46995e831b2d797d6",
+        "size_bytes": 3040
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/JwtAuthFilter.java",
+        "hash": "87c419e70660dc585bb4c256543fe7a624cb121ff4a8528717c050dc11d80206",
+        "size_bytes": 1898
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/JwtTokenProvider.java",
+        "hash": "2325a8711f55ffb0f3dc3c5ab1d0a37db928977408669e40ac3bc5f5f72e945e",
+        "size_bytes": 2058
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/MfaController.java",
+        "hash": "cff49bb7833c87f1bbaa419e3a2885badf90c9ef6ee822e71b9d26ce6950b2b0",
+        "size_bytes": 3845
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/SsoController.java",
+        "hash": "a92945bfe504013711b6f59ae4f0f8486b9977994a34947700a24ff683b91e1a",
+        "size_bytes": 1220
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/TenantContext.java",
+        "hash": "b54bf9118ed25426f27165a481cb94c0c29639a08e564d01ee7fc1e97069f7e7",
+        "size_bytes": 1454
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/TenantFilter.java",
+        "hash": "f732eafbbe515bcd9ee01fd8eb14223da50239557fc85e93d0acb890f5582c6b",
+        "size_bytes": 2097
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/TotpService.java",
+        "hash": "d51ac4dfd643b94e2202782a909c2400627305a34c0311f06be47d922b980dc7",
+        "size_bytes": 8381
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/User.java",
+        "hash": "642618c38c022664d60e892491f7d519485945451d270cc54f5c2d0db12fab1c",
+        "size_bytes": 2285
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/identity/UserRepository.java",
+        "hash": "330e667c6be8f0ebb4e277fdc85a5167a2f1b6b57cb45175f80a75db8d5821a2",
+        "size_bytes": 310
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/integration/Integration.java",
+        "hash": "68f322a2d3d303b03e8f888080a3fe4fb9a6cffacb7b07ebc60028702d14308f",
+        "size_bytes": 751
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/integration/IntegrationController.java",
+        "hash": "8ff60096ac793ca6f7bb83f96f191944c7ef61863754f1ba58c47cf38c6727da",
+        "size_bytes": 874
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/integration/IntegrationRepository.java",
+        "hash": "c3d2c92966dc7eded8d873c43b4f8b60919924f6d572d5280762749c152fc37e",
+        "size_bytes": 305
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/integration/IntegrationService.java",
+        "hash": "deff64bdbfc15761c9ab0c7d986af5cde66df978e765f526142e66669738dabb",
+        "size_bytes": 745
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/k8s/K8sController.java",
+        "hash": "697fb1dc3ee2a2b3c78fc77fafe6bb47302f8b9dee9ef8831b38a10fd2e17ea0",
+        "size_bytes": 828
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/k8s/K8sRepository.java",
+        "hash": "5e10ef6dceef1b70069eaf80fd2c8e33dcdea9e192c8acc17ded2af39450a38b",
+        "size_bytes": 270
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/k8s/K8sResource.java",
+        "hash": "cc53408820097c9e8d47ac1760122c6711388a0d3d35a81942582acd9c10cdce",
+        "size_bytes": 747
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/k8s/K8sService.java",
+        "hash": "5c3bb9563190f9f7cb2502fac2b4f1311823bd23d97d9f53925ba270bfc21797",
+        "size_bytes": 894
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/mobile/MobileAnalysis.java",
+        "hash": "5cbbd12af445e96394b426e3d5ef0b62762546056cbfbf76ddd89cc75aa74810",
+        "size_bytes": 961
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/mobile/MobileController.java",
+        "hash": "e1c14823e15141fd20627336cc1feb601018dbe05b76e9475476a3113cc518d6",
+        "size_bytes": 1154
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/mobile/MobileRepository.java",
+        "hash": "1f30bee40ae23f2b4bc361b80c9bf5e443be76eed66c8788771552e02cfe179c",
+        "size_bytes": 283
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/mobile/MobileService.java",
+        "hash": "16f8a02793da846eeeca5cbd197344586f6c906a1bc07384a7bfe960e97bebf2",
+        "size_bytes": 8773
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/network/NetworkAsset.java",
+        "hash": "27b9eb407f9ebbe158503faaaa1e0af9ec226e98efe162b161902b5125c54dbf",
+        "size_bytes": 840
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/network/NetworkController.java",
+        "hash": "ff685498a0134d7d4c8c820f2f4b859d8d04c15b4401ff31872fa57ed3c5f746",
+        "size_bytes": 716
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/network/NetworkRepository.java",
+        "hash": "b7b81fe6b45d2309e57067a542d1a864643170781a1996610d090d6dbb970be9",
+        "size_bytes": 289
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/network/NetworkService.java",
+        "hash": "da9063d2201a2b0e2ed9b5ae5cdc989ed5618b4360a40d95947a73fd13a532a5",
+        "size_bytes": 599
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/notification/Notification.java",
+        "hash": "ffdbdcd025975edad5b5359002de40de89cb975d0598323e563a559c0071220a",
+        "size_bytes": 705
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/notification/NotificationController.java",
+        "hash": "8adfb2dc92f1350260c3f40b03d61ce3d9e92455757f2bec35d629b1c16cf981",
+        "size_bytes": 733
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/notification/NotificationRepository.java",
+        "hash": "79e7b82b1390a2f5eadbe4de52f87de5df58ba2c383559945f689d9d922000d0",
+        "size_bytes": 366
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/notification/NotificationService.java",
+        "hash": "08da756e4ec988093a848fd564d7bed56bc614b73bd4035ab651465d678507b8",
+        "size_bytes": 598
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/oneclick/OneClickController.java",
+        "hash": "87599109357d86f3f5f1d054456dff5c3024adc4f2dbd040dbac11272eb9bfab",
+        "size_bytes": 3726
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/oneclick/OneClickRepository.java",
+        "hash": "27f507052e23be5c3673657490f3c09d258314149e1f7f61e86a2fa536b5fba0",
+        "size_bytes": 305
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/oneclick/OneClickRun.java",
+        "hash": "cb710a879b61c35a9bd74fd48bdeeb45167e0d8551b44d7a3166ead9ff419e6d",
+        "size_bytes": 887
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/oneclick/OneClickService.java",
+        "hash": "b75a36ab385e2c98426f79fa7baef0516760c47c147b9b89c3aeac237515e325",
+        "size_bytes": 14071
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/organization/Organization.java",
+        "hash": "9516cfc9cab67c5845cbabae1f6c8bd7549ef3867590bb031644449ad9d5f778",
+        "size_bytes": 556
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/organization/OrganizationController.java",
+        "hash": "8c55dfdd15b8310352ad1adbe5789b417d460bacd1f2e580623e22755fb11a64",
+        "size_bytes": 1792
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/organization/OrganizationRepository.java",
+        "hash": "116989ec91bdec64e052a610750eb125a7e5810d7b8364f4e310818fad89de2a",
+        "size_bytes": 215
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/organization/OrganizationService.java",
+        "hash": "9878d8fb850cbfb56d17eb5931e185a0cc3a0e4aafbb2353b8148ecc831ad6a4",
+        "size_bytes": 1541
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/organization/Project.java",
+        "hash": "e36230f33c0b2dbcd40343df6dbf89dc77bf50b98850e365d27fd43522ab722d",
+        "size_bytes": 737
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/organization/ProjectRepository.java",
+        "hash": "02b05c68b9a6afe6d880e85d1ffa4400b7251baeab1535929c85127fa32a459b",
+        "size_bytes": 329
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/organization/Workspace.java",
+        "hash": "56b21d733a444a0b7c85e2c216c8c5771f06bbeac9baa4d27d0340f924a7e151",
+        "size_bytes": 542
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/organization/WorkspaceRepository.java",
+        "hash": "400498d7b56ab90f42ec84fb5735e158ce24a11bfbfefaa6616cafb29c80075c",
+        "size_bytes": 287
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/pentest/PentestController.java",
+        "hash": "314dfcd014646f08805c7ab4ddda6b0198d7c4e5a22d9a17f100cecd6615adb8",
+        "size_bytes": 755
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/pentest/PentestEngagement.java",
+        "hash": "84c59dc304bcd7535cd9471c304102187c77997206f0b8aeadfe1cc81f7af932",
+        "size_bytes": 1020
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/pentest/PentestRepository.java",
+        "hash": "1f82a6347d7d8a99c77164041fa58bdd03cde7bf7f0b139c0ccdb2498088cf86",
+        "size_bytes": 290
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/pentest/PentestService.java",
+        "hash": "094140336c35ea1653424ecb2f5875a1b173465ad31f2e0bbfd015f9c560a2f7",
+        "size_bytes": 552
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/policy/PolicyController.java",
+        "hash": "63ddd5a9cc7ef014d9f67f574057faa451ddcea926f5196ed7bfce10d6aad361",
+        "size_bytes": 1356
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/policy/PolicyException.java",
+        "hash": "e8a579cd09fdd9c7795b5ee459cb5197498279d3f54916bab23d47bdf718f1d6",
+        "size_bytes": 774
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/policy/PolicyExceptionRepository.java",
+        "hash": "45e50214def99e78c72e4ccd78fea709d2f7ca22a1500a1907bf4ac0d8077893",
+        "size_bytes": 291
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/policy/PolicyRepository.java",
+        "hash": "d365c023570381c9106fda842e54d0324b3ff9fac0e02e1c4941642f48459154",
+        "size_bytes": 283
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/policy/PolicyService.java",
+        "hash": "2fb78f77dbed517868c9413ae6bf483e2bce4ff935f132fc568f904dfb0cc14a",
+        "size_bytes": 1785
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/policy/SecurityPolicy.java",
+        "hash": "e68e6b84a0819bfea7a1aff99c77466378b59acf093f819cf2d645d958bada0e",
+        "size_bytes": 696
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/rbac/Permission.java",
+        "hash": "8cd9b242fee6eeeec9c8c0857d57e48abdce00b586ff488d865987ad22810a7d",
+        "size_bytes": 493
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/rbac/PermissionAspect.java",
+        "hash": "19b1b506881424ec01976a7c2b730dc605bb9e103398311b50d0479f915d132b",
+        "size_bytes": 1337
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/rbac/PermissionRepository.java",
+        "hash": "1f2ab712985a37d85c36ffda7072d00cb5801b5db2fbc1907c088f20b793fe4d",
+        "size_bytes": 602
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/rbac/PermissionService.java",
+        "hash": "f5e31bd4d5d06d7ecac45dccfdba62d66bed4ba6aef08294f31092805e102fdb",
+        "size_bytes": 1924
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/rbac/RequirePermission.java",
+        "hash": "d965d0cf380714669f317f221a2a78bb65376efd2df07f0f7085ddf347e9347a",
+        "size_bytes": 224
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/rbac/RolePermission.java",
+        "hash": "512112f82b6e69d833aa44120df644033f752926028070c28effd9a928a6e048",
+        "size_bytes": 542
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/rbac/RolePermissionRepository.java",
+        "hash": "0007f5527dc6283ebda6ecdd04f5430b855e6d3f0cecf439eaea743de61074fb",
+        "size_bytes": 212
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/report/ReportService.java",
+        "hash": "e928d376b5c48a3a84e1d23d69a705b97a062eb435f43f3a690a8a73cdca76f4",
+        "size_bytes": 16635
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/reporting/Report.java",
+        "hash": "b985167e105403a1ddd4c9ebbd1e25cd4e20ae708831c3858c9032a2f7b51063",
+        "size_bytes": 936
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/reporting/ReportController.java",
+        "hash": "a122ab6b128fbfb955f9e9a58ca6dc304bcf931fb2d8f4ea473f564a4bb2bb16",
+        "size_bytes": 1164
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/reporting/ReportRepository.java",
+        "hash": "7681f62a27f7613b92c6012d992ac1ec943b6aaddafc052ec2fff640e6918bcf",
+        "size_bytes": 274
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/reporting/ReportService.java",
+        "hash": "fbcd5a1279e431a4a709a3fd53ceece34dd4cc7d57a722efb02e17feefef85ca",
+        "size_bytes": 2651
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/retest/Retest.java",
+        "hash": "eb39380e719f9e1c458df6d507ee76a043c9a1049031958fb385cb073f12dff5",
+        "size_bytes": 800
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/retest/RetestController.java",
+        "hash": "d2ee511b3a3a0df63c2e1df08ac21621a5221fef26720c6cb4266b1742301e1f",
+        "size_bytes": 699
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/retest/RetestRepository.java",
+        "hash": "11b7a4ba439d8a4f722b2f8bee7298096a05192aa83f991fc83aaf828fa56e72",
+        "size_bytes": 312
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/retest/RetestService.java",
+        "hash": "231f55cda51c608bf322ec77767213a6bafbc07ebcd3cdbc6dab48777a474e3d",
+        "size_bytes": 1121
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/risk/RiskEngine.java",
+        "hash": "9d3491041a30fe4abe77edc84e210ab0d923afdb701bda56c9be71a8da0b38ec",
+        "size_bytes": 5261
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/sbom/Sbom.java",
+        "hash": "d1985637012bdfe50cdcf6bcfe40fb9e723d9788133be11a4ca1d8c60928434a",
+        "size_bytes": 670
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/sbom/SbomController.java",
+        "hash": "e09679be0ebedd2fb5c1d0ae40abad1a7ed1ec165d485448642af615654e37a7",
+        "size_bytes": 830
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/sbom/SbomRepository.java",
+        "hash": "aea4dc935803181fda50d406650a313627fe14dd8649a86b38bdfeef94c7e7d4",
+        "size_bytes": 259
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/sbom/SbomService.java",
+        "hash": "f6acb8e5be8f48efede96f6b34d7b7dc62c90974876f0f10eeafb4595fd89908",
+        "size_bytes": 1083
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/Scan.java",
+        "hash": "2e9ae81dffd89eebf28c50a11a547cbed01d7125b475a1c720bd97eb3e59a573",
+        "size_bytes": 991
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/ScanController.java",
+        "hash": "ba44660f378f4da17fe36b97a230e547727ef8c13366ce688ad56497d5ceefc5",
+        "size_bytes": 2876
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/ScanJob.java",
+        "hash": "d3255a32b9ea4c96d2aafe69187e32efd871328035018dc4e5b3b5145a173034",
+        "size_bytes": 720
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/ScanJobRepository.java",
+        "hash": "cd7308eb3f029090c31314039fd5bdf33618a9dee4a63aaf31635c66d32662ec",
+        "size_bytes": 266
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/ScanRepository.java",
+        "hash": "7109655b272c0190ad52f6afe5df01e81bc8a00179994c96002f4adfbc403211",
+        "size_bytes": 730
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/ScanService.java",
+        "hash": "4b90f89b46ae9604a63957380572ae060515820590ace4f8440f8a5dee297a35",
+        "size_bytes": 20360
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/SecurityCoverageRegistry.java",
+        "hash": "13dbbdc4200c338f2b748507eae91add439a6a68f55977df9d72d077cbdf1e55",
+        "size_bytes": 12789
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/SecurityScannerPlugin.java",
+        "hash": "029f3e2df83218bd5016077c4af113f6139f8b463044c1f41364f4e40308039e",
+        "size_bytes": 1078
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/SlaBreachScheduler.java",
+        "hash": "94134bfb53c80805c43ba113627a22397705a7264df10ccd3f10f60b7d25758a",
+        "size_bytes": 2134
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/analyzers/ApiAnalyzer.java",
+        "hash": "57b464f992f6f48cb5db3589d12b06a871fcb819706d4d96c73ef47c8264e89e",
+        "size_bytes": 8618
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/analyzers/ContainerAnalyzer.java",
+        "hash": "15fed8177841188b7f99b18c3081722bc3b2607291455d3a0794b559cb4156f0",
+        "size_bytes": 6410
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/analyzers/DastAnalyzer.java",
+        "hash": "b3d46e462be954a0f74fc5a87224ed8c57db905b453bd1a58b197702f551be21",
+        "size_bytes": 25541
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/analyzers/IaCAnalyzer.java",
+        "hash": "5c996aff3f3eadb098cc1981be849bd4219eaa2c45aa01a29be1a81590e8af84",
+        "size_bytes": 10341
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/analyzers/MobileAnalyzer.java",
+        "hash": "6f6ae83700ad8c40adbb7e9385e21fdb891cb020e7de16a9418aa795ba59a1ec",
+        "size_bytes": 8258
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/analyzers/SastAnalyzer.java",
+        "hash": "0e3a686a719b4f2ad32d01766e7f03c71d0355940c49e9b457f164ed30fe27e7",
+        "size_bytes": 10042
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/analyzers/ScaAnalyzer.java",
+        "hash": "48e7a24a4a199358884439e3b5d126e9043d481edfe0dc4815591d85027dcdf9",
+        "size_bytes": 5425
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/analyzers/SecretAnalyzer.java",
+        "hash": "133296fb28410f2a9f36c5d23776cb922301166b26156e17dd640bfa6e744027",
+        "size_bytes": 2514
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/model/Severity.java",
+        "hash": "ad82166482652c24efff0704e427ddbe91c3437e825cd5d392b65bdb751287af",
+        "size_bytes": 105
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/plugins/ApiPlugin.java",
+        "hash": "584adb94e80847a67b1d0ca4a536cf5cb45a6caf4b87f798866a020afc537e20",
+        "size_bytes": 2214
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/plugins/ContainerPlugin.java",
+        "hash": "4243fda4f4316f502dfc91ec0bae97367c822cc2c6c62e941a1232427fb18115",
+        "size_bytes": 2252
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/plugins/DastPlugin.java",
+        "hash": "65c0d058e836ddb908ce761ad589a0449645477679d6dfdb4e605491e4d60de3",
+        "size_bytes": 3439
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/plugins/IacPlugin.java",
+        "hash": "8a530aff5333dccc61ca34b54534be1bb22c7518db2c6dd32551d74cf114522c",
+        "size_bytes": 2317
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/plugins/MobilePlugin.java",
+        "hash": "57b5a133b61e25b1b4769678e4afa4f27d578fa31c2f066cc04353d72d47a335",
+        "size_bytes": 2226
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/plugins/PluginRegistry.java",
+        "hash": "5f675cb28772c49eb226fa6627b71ea55483d1d8fdd96ed702d270e5f8df7e64",
+        "size_bytes": 1937
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/plugins/SastPlugin.java",
+        "hash": "b59adb690e34ff043a2b1269fb416385d35ce49089e4e704db03b4ae29e1deb9",
+        "size_bytes": 2978
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/plugins/ScaPlugin.java",
+        "hash": "3b9651f2d42062897f8a54b57b97e70cb01d92d207b6ebd16b3540092db74fa8",
+        "size_bytes": 2564
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/scan/plugins/SecretPlugin.java",
+        "hash": "46cc994e36c68e82267216b8c58d00ddbc5f13696ccc02afdb285c6fb672b621",
+        "size_bytes": 2490
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/search/SearchController.java",
+        "hash": "b929e19470e1ac07a0717a60278fe38eb4ff9f683937125b1328880b300a246c",
+        "size_bytes": 1643
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/supplychain/ArtifactProvenance.java",
+        "hash": "3c2b0a3d8e68d6f5a81596b47c27f8287988642638a25ce77fb2f1a3ce67e14b",
+        "size_bytes": 830
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/supplychain/EpssScheduler.java",
+        "hash": "ae54f11235b45181c766c28a27e6eabe4afc8e71c4d05ce2ac38c6aa865a2716",
+        "size_bytes": 1515
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/supplychain/ProvenanceController.java",
+        "hash": "92a99fd9c2ade92909ace1f2b1d7ff6ab8dc12a4fcbfd01ecab30b827650bedc",
+        "size_bytes": 863
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/supplychain/ProvenanceRepository.java",
+        "hash": "f592ff8b6b4600578c755974ff6bac0e94f63fab9ab1ebcee6f3839104c31a0b",
+        "size_bytes": 308
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/supplychain/ProvenanceService.java",
+        "hash": "b6ea3f4221a277a8e01f8d339ade38f561d4c4df043e13109558d562f1a69085",
+        "size_bytes": 832
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/threatmodel/ThreatModel.java",
+        "hash": "c43f74f3cbcf31361a57db09f1af50a304315aa8d83f71023a868f950a1dab7b",
+        "size_bytes": 1046
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/threatmodel/ThreatModelController.java",
+        "hash": "e7a8186b873b0f796c53ff2b119257fa100c3fd389f9616c70ecb3cbcb263bbc",
+        "size_bytes": 723
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/threatmodel/ThreatModelRepository.java",
+        "hash": "b613632d6741a2edfd0acb0b554a92d9f23ccdafeb754d3b8a2b1c97e5488cd5",
+        "size_bytes": 290
+      },
+      {
+        "path": "src/main/java/com/vulnerax/modules/threatmodel/ThreatModelService.java",
+        "hash": "8cc65cd7978918959184a80bc0f7946bebf6b01de1883d000a6cc44db22d4ac2",
+        "size_bytes": 2278
+      },
+      {
+        "path": "src/main/java/com/vulnerax/seed/DataSeeder.java",
+        "hash": "dd399ca05d8783705e4308fb4a4047734aa7551c093fb4b287357e0e42f8eab6",
+        "size_bytes": 2570
+      },
+      {
+        "path": "src/main/resources/application.yml",
+        "hash": "acfb8f5dada75defbb5a5028eb160869e31a75dc292928c5564b08984a0f2cf6",
+        "size_bytes": 2426
+      },
+      {
+        "path": "src/test/java/com/vulnerax/ApiSmokeTest.java",
+        "hash": "683a3e2867b6ac762cd47a301b1e4b09c6d017854e74b217f4b2f4e3e550a4b3",
+        "size_bytes": 1721
+      },
+      {
+        "path": "src/test/java/com/vulnerax/VulneraxApplicationTest.java",
+        "hash": "8e39c8ccb1cd9d60b518d1c2d2bdf62888763ec075f756936d811b1276e9d4e9",
+        "size_bytes": 359
+      },
+      {
+        "path": "src/test/java/com/vulnerax/integration/EvidenceIntegrationTest.java",
+        "hash": "2253e85ee20a19c7a014079c12bac6a8788b30791ecfe4212980776fb366fd6e",
+        "size_bytes": 3893
+      },
+      {
+        "path": "src/test/java/com/vulnerax/integration/RiskEngineIntegrationTest.java",
+        "hash": "42bf435d304e2a60928fe617684965a5644ec7b2c28c8608eae1aecc612c5eca",
+        "size_bytes": 3711
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/ai/AiControllerTest.java",
+        "hash": "126f553349fa747f55a375bbc107969333b386b9738cad3596468680debda38c",
+        "size_bytes": 2422
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/aillm/AiLlmControllerTest.java",
+        "hash": "f75ac66ca902508eccf4ce3de0c9cffddb64c84109e56d87fdaed10cc9559e12",
+        "size_bytes": 2448
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/assessment/AssessmentControllerTest.java",
+        "hash": "33ff38637de9a53c019ca595242c7191daaf8c9679a334d1f487433da571107a",
+        "size_bytes": 2617
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/asset/AssetControllerTest.java",
+        "hash": "31bc35d638c821920c94a2d1f8e46a96af999d14efdab6de0be70b08355b59fa",
+        "size_bytes": 4702
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/asset/AssetServiceTest.java",
+        "hash": "1d28523ae1b2fc1d90d23275a96b0948bc82790b61bf8e9a61cee7282f1f2d01",
+        "size_bytes": 4414
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/audit/AuditControllerTest.java",
+        "hash": "5b2142d642becfdf47e02b9c347a6478dfc6fb47085ff71e5535138139cc5c97",
+        "size_bytes": 2079
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/browser/BrowserControllerTest.java",
+        "hash": "cc3fefabd52180bd889d3b998c2475631d0108ddf91bc6b53726b835b22370ba",
+        "size_bytes": 2483
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/campaign/CampaignControllerTest.java",
+        "hash": "30252fd0e1b127b95f9a6a4d28cf89d001a1bee81da1a98f3861e0ff9e82d3a8",
+        "size_bytes": 2460
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/cicd/CicdControllerTest.java",
+        "hash": "a31f7b5db944608ff90514615331a532488f687e63c2ce9f6c1fbc449e27b32c",
+        "size_bytes": 2429
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/cloud/CloudControllerTest.java",
+        "hash": "19576ddc3261bd8f24a4e6d55691ee31e2e8a49777f8d9378e37bd2bf2fa9e11",
+        "size_bytes": 2436
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/compliance/ComplianceControllerTest.java",
+        "hash": "270e50874540b8cf5148635e329c5edafc6f62617f49f409c8edf71f57c1839a",
+        "size_bytes": 2471
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/container/ContainerControllerTest.java",
+        "hash": "5c60955050630f5f874cdbacdb767ca69b754286fbe9189d8746c89bee931ec6",
+        "size_bytes": 2467
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/dashboard/DashboardControllerTest.java",
+        "hash": "79642d4bd0bf212c739a9feac0c99cae04b2f5a28627f785802be3568ab71d6a",
+        "size_bytes": 2146
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/dashboard/DashboardIntegrationTest.java",
+        "hash": "cfc2ef04affa084075167956fa6f419e3a11b32d6c5461ca6c5771751c22c2df",
+        "size_bytes": 1911
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/database/DatabaseControllerTest.java",
+        "hash": "efba188107fe9d2c6f58d68a917c39223d94be232e495ed6ba9e07adf465325e",
+        "size_bytes": 2460
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/finding/FindingControllerTest.java",
+        "hash": "7ebab0adc0e51d6d93cfc1758afdbf56684a1505cfbbdbc5aa9ce5ce71084b5e",
+        "size_bytes": 4974
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/finding/FindingServiceTest.java",
+        "hash": "a60b8f4834460279409ea4dcb5707e912eda4e5efd3a100f66b8a09cbf953efc",
+        "size_bytes": 7221
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/firmware/FirmwareControllerTest.java",
+        "hash": "213bfa2c02f99667c7d9a8739e2917f9ccfc58d973fc43d2442f1a1612b20a50",
+        "size_bytes": 2457
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/graph/GraphControllerTest.java",
+        "hash": "913cffc9876c695506aef6495afb0ddba3d935c42780434137a099dce416a9ea",
+        "size_bytes": 2444
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/iac/IacControllerTest.java",
+        "hash": "067c00dbcc9c0e5128b49ace7126f3623649a8c942366ad5509e160808ca3233",
+        "size_bytes": 2422
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/iam/IamControllerTest.java",
+        "hash": "116f45ba3a34580157a35b85c8e5a461e2e1b18436699c7fd921c877a8b939ec",
+        "size_bytes": 2422
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/identity/AuthControllerTest.java",
+        "hash": "d5422504e6b89afc8cd36552a69aa7047a74f6c7d8a7361d257730f048fed371",
+        "size_bytes": 3927
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/identity/AuthServiceTest.java",
+        "hash": "c66720404e8d694a8c4d65fbae23f63d6e78193669a69a37916e3bea577beb0f",
+        "size_bytes": 4160
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/identity/JwtTokenProviderTest.java",
+        "hash": "e181e8d828d76c336ec10973b89f762e8c6eb365ee63717a1597618b7e59b37a",
+        "size_bytes": 2540
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/identity/MfaControllerTest.java",
+        "hash": "cdc1574adc86ef4425ae74c202ec952c114d605f2166da3320ac247526ba794c",
+        "size_bytes": 1678
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/identity/SsoControllerTest.java",
+        "hash": "438f8cdbaacbefdf36e4fb9ec568372e83b576c4b7daa2cb2ccf0d9969d334e4",
+        "size_bytes": 2411
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/integration/IntegrationControllerTest.java",
+        "hash": "0b65a9832ab10847685433f349b42b53a022ca1cf2db3cf104800715a3b76f7d",
+        "size_bytes": 2481
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/mobile/MobileControllerTest.java",
+        "hash": "65af14d660be46280b47d189cbe3f3d1a5f00df058618093dcbccc18fec51a18",
+        "size_bytes": 2443
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/network/NetworkControllerTest.java",
+        "hash": "1a21cd644df83a563c53efaf93311c9e658b5a6968ae4fe9f5f9a326ed76ceb9",
+        "size_bytes": 2450
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/notification/NotificationControllerTest.java",
+        "hash": "23eac97fe1ccce988021b8385174e463b1f695140c47ca429ad364fef14c59fc",
+        "size_bytes": 2488
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/organization/OrganizationControllerTest.java",
+        "hash": "978d3d14759f8965fef8878c58039bf50433881c2473a092d924c2a55d17b40f",
+        "size_bytes": 2450
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/pentest/PentestControllerTest.java",
+        "hash": "630fc02bdf160e965d3aad6f149070aed231f1353f0013be61f689362ce64ad9",
+        "size_bytes": 2450
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/policy/PolicyControllerTest.java",
+        "hash": "f9f672f4267d587aa1f5d553da3826565c84b87348a47593eedff4134d73a85d",
+        "size_bytes": 2449
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/reporting/ReportControllerTest.java",
+        "hash": "18e1347189ea3b7545c609c953d1471fa59162d9718be508404a2e56ede24506",
+        "size_bytes": 2453
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/retest/RetestControllerTest.java",
+        "hash": "f5344ac5f15a3a6c7d5c054f8328d749e533d2f9b0c5c10dfa2c47a7a20cff24",
+        "size_bytes": 2446
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/risk/RiskEngineTest.java",
+        "hash": "3ffbf93846f4582bac1fbcc019da3cc9d0697981343e62b0fc5747212800f93d",
+        "size_bytes": 3149
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/sbom/SbomControllerTest.java",
+        "hash": "48e80a96ac094755deb6c7771c9460db33f917ed599c19f2cbcecb8efaa6360f",
+        "size_bytes": 2432
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/scan/ScanControllerTest.java",
+        "hash": "1600a87496ded3eda02f950da2fb1513e8269bb430728f82a10294c76c325ada",
+        "size_bytes": 4280
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/scan/ScanServiceTest.java",
+        "hash": "56b532f02910386d804819d0c4da50c81eca52ea9353d2201c938a6487e4f288",
+        "size_bytes": 4485
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/search/SearchControllerTest.java",
+        "hash": "86d1537546ae9f04a73e2f5b25de87ab719da4697352514d1c5ff95f2a24cdd1",
+        "size_bytes": 2262
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/supplychain/ProvenanceControllerTest.java",
+        "hash": "89318b4da69d3c55fc00f7c5cfcdf1b62c2fa000299ca1d6eb3aa5ffa2ebb0d7",
+        "size_bytes": 2472
+      },
+      {
+        "path": "src/test/java/com/vulnerax/modules/threatmodel/ThreatModelControllerTest.java",
+        "hash": "1732d297c3845f9ee46f8eba6b7ecbc71f58114313c2ba73ed1f6337513c17eb",
+        "size_bytes": 2484
+      },
+      {
+        "path": "src/test/resources/application-test.yml",
+        "hash": "e50aa792eb6493a0aa8641e5b087f12f360a99e52bb8f7429c8641f1fb95fc7b",
+        "size_bytes": 742
+      }
+    ]
+  },
+  "registration": {
+    "source": "project_registration",
+    "actor": "",
+    "recorded_at": "2026-09-13T17:05:08.126812+00:00"
+  }
+}

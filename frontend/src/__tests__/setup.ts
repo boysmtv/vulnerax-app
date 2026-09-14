@@ -29,8 +29,16 @@ Object.defineProperty(window, 'matchMedia', {
 
 // ResizeObserver for recharts
 // @ts-ignore
-globalThis.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}))
+globalThis.ResizeObserver = class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+// IntersectionObserver for recharts ResponsiveContainer
+// @ts-ignore
+globalThis.IntersectionObserver = class IntersectionObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}

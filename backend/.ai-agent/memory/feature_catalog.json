@@ -1,0 +1,14 @@
+{
+  "features": [
+    "create",
+    "delete",
+    "list",
+    "login",
+    "return",
+    "run",
+    "start",
+    "update"
+  ],
+  "commands": [],
+  "updated_at": "2026-09-13T17:05:06.821035+00:00"
+}

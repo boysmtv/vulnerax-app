@@ -1,0 +1,46 @@
+{
+  "changes": [
+    {
+      "run_id": "bootstrap::backend",
+      "final_status": "registered",
+      "summary": "Bootstrapped AI_AGENT_CORE memory from existing project registration (project_registration).",
+      "changed_artifacts": [
+        "src/main/java/com/vulnerax/common/ApiResponse.java",
+        "src/main/java/com/vulnerax/common/BaseEntity.java",
+        "src/main/java/com/vulnerax/common/exception/BusinessException.java",
+        "src/main/java/com/vulnerax/common/exception/GlobalExceptionHandler.java",
+        "src/main/java/com/vulnerax/common/exception/ResourceNotFoundException.java",
+        "src/main/java/com/vulnerax/common/PageResponse.java",
+        "src/main/java/com/vulnerax/config/AuditingConfig.java",
+        "src/main/java/com/vulnerax/config/OpenApiConfig.java",
+        "src/main/java/com/vulnerax/config/ratelimit/RateLimitFilter.java",
+        "src/main/java/com/vulnerax/config/SecurityConfig.java",
+        "src/main/java/com/vulnerax/modules/ai/AiAnalystService.java",
+        "src/main/java/com/vulnerax/modules/ai/AiController.java",
+        "src/main/java/com/vulnerax/modules/aillm/AiAsset.java",
+        "src/main/java/com/vulnerax/modules/aillm/AiLlmController.java",
+        "src/main/java/com/vulnerax/modules/aillm/AiLlmService.java",
+        "src/main/java/com/vulnerax/modules/aillm/AiRepository.java",
+        "src/main/java/com/vulnerax/modules/assessment/AssessmentController.java",
+        "src/main/java/com/vulnerax/modules/asset/Asset.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetController.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetRepository.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java",
+        "src/main/java/com/vulnerax/modules/audit/AuditController.java",
+        "src/main/java/com/vulnerax/modules/audit/AuditEvent.java",
+        "src/main/java/com/vulnerax/modules/audit/AuditRepository.java"
+      ],
+      "features": [
+        "create",
+        "delete",
+        "list",
+        "login",
+        "return",
+        "run",
+        "start",
+        "update"
+      ],
+      "recorded_at": "2026-09-13T17:05:08.126812+00:00"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "contracts": [
+    {
+      "type": "command",
+      "name": "add",
+      "summary": "CLI command `add`"
+    },
+    {
+      "type": "command",
+      "name": "approve",
+      "summary": "CLI command `approve`"
+    },
+    {
+      "type": "command",
+      "name": "borrow",
+      "summary": "CLI command `borrow`"
+    },
+    {
+      "type": "command",
+      "name": "create",
+      "summary": "CLI command `create`"
+    },
+    {
+      "type": "command",
+      "name": "delete",
+      "summary": "CLI command `delete`"
+    },
+    {
+      "type": "command",
+      "name": "deposit",
+      "summary": "CLI command `deposit`"
+    },
+    {
+      "type": "command",
+      "name": "history",
+      "summary": "CLI command `history`"
+    },
+    {
+      "type": "command",
+      "name": "list",
+      "summary": "CLI command `list`"
+    },
+    {
+      "type": "command",
+      "name": "login",
+      "summary": "CLI command `login`"
+    },
+    {
+      "type": "command",
+      "name": "logout",
+      "summary": "CLI command `logout`"
+    },
+    {
+      "type": "command",
+      "name": "reject",
+      "summary": "CLI command `reject`"
+    },
+    {
+      "type": "command",
+      "name": "return",
+      "summary": "CLI command `return`"
+    },
+    {
+      "type": "command",
+      "name": "run",
+      "summary": "CLI command `run`"
+    },
+    {
+      "type": "command",
+      "name": "start",
+      "summary": "CLI command `start`"
+    },
+    {
+      "type": "command",
+      "name": "status",
+      "summary": "CLI command `status`"
+    },
+    {
+      "type": "command",
+      "name": "sync",
+      "summary": "CLI command `sync`"
+    },
+    {
+      "type": "command",
+      "name": "transfer",
+      "summary": "CLI command `transfer`"
+    },
+    {
+      "type": "command",
+      "name": "update",
+      "summary": "CLI command `update`"
+    },
+    {
+      "type": "command",
+      "name": "waitlist",
+      "summary": "CLI command `waitlist`"
+    },
+    {
+      "type": "command",
+      "name": "withdraw",
+      "summary": "CLI command `withdraw`"
+    }
+  ],
+  "updated_at": "2026-09-13T17:05:06.821035+00:00"
+}

@@ -9,12 +9,19 @@ interface Column {
   className?: string
 }
 
+interface CreateField {
+  key: string
+  label: string
+  type?: string
+  required?: boolean
+}
+
 interface EntityListPageProps {
   title: string
   subtitle: string
   apiPath: string
   columns: Column[]
-  createFields?: Record<string, string>
+  createFields?: CreateField[] | Record<string, string>
   nameLabel?: string
 }
 
@@ -97,15 +104,26 @@ export default function EntityListPage({ title, subtitle, apiPath, columns, crea
         <div className="bg-white border rounded-xl p-4 space-y-3">
           <h3 className="font-semibold text-sm">Create New {title.replace(/s$/, '')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {Object.entries(createFields).map(([key, placeholder]) => (
-              <input
-                key={key}
-                value={form[key] || ''}
-                onChange={e => setForm({ ...form, [key]: e.target.value })}
-                placeholder={placeholder}
-                className="border rounded-lg px-3 py-2 text-sm"
-              />
-            ))}
+            {Array.isArray(createFields)
+              ? createFields.map((field) => (
+                  <input
+                    key={field.key}
+                    value={form[field.key] || ''}
+                    onChange={e => setForm({ ...form, [field.key]: e.target.value })}
+                    placeholder={field.label}
+                    className="border rounded-lg px-3 py-2 text-sm"
+                  />
+                ))
+              : Object.entries(createFields).map(([key, placeholder]) => (
+                  <input
+                    key={key}
+                    value={form[key] || ''}
+                    onChange={e => setForm({ ...form, [key]: e.target.value })}
+                    placeholder={placeholder}
+                    className="border rounded-lg px-3 py-2 text-sm"
+                  />
+                ))
+            }
           </div>
           <button onClick={handleCreate} className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700">Create</button>
         </div>

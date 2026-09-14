@@ -1,0 +1,97 @@
+{
+  "updated_at": "2026-09-13T17:05:08.054660+00:00",
+  "project_root": "D:\\Work\\Pribadi\\WebProject\\vulnerax-app\\backend",
+  "final_project_root": "D:\\Work\\Pribadi\\WebProject\\vulnerax-app\\backend",
+  "dominant_language": "java",
+  "dominant_platform": "",
+  "languages": [
+    {
+      "language": "java",
+      "file_count": 241,
+      "modeling_guidance": "Prefer enums, records, dedicated service types, and explicit interfaces instead of string switches spread across the codebase.",
+      "localization_guidance": "Keep user-facing copy behind a resource, catalog, or message boundary suitable for the platform.",
+      "configuration_guidance": "Use the platform's standard configuration and environment layering instead of ad-hoc constants.",
+      "documentation_topics": [
+        "Java language guide",
+        "Java enums, records, and interface design",
+        "JUnit and build-tool testing patterns",
+        "Maven lifecycle and project structure guidance",
+        "Docker image and runtime configuration guidance"
+      ],
+      "next_checks": [
+        "Confirm new java changes follow idiomatic modeling and naming conventions.",
+        "Review java test layout and update the closest existing test surface first.",
+        "Check whether the platform has a first-class localization or resource mechanism before adding new user-facing copy.",
+        "Check whether the framework has a canonical way to model commands, routes, requests, or screens before inventing a custom pattern."
+      ]
+    }
+  ],
+  "platforms": [],
+  "framework_hints": [
+    "maven",
+    "docker"
+  ],
+  "documentation_topics": [
+    "Java language guide",
+    "Java enums, records, and interface design",
+    "JUnit and build-tool testing patterns",
+    "Maven lifecycle and project structure guidance",
+    "Docker image and runtime configuration guidance"
+  ],
+  "next_checks": [
+    "Confirm new java changes follow idiomatic modeling and naming conventions.",
+    "Review java test layout and update the closest existing test surface first.",
+    "Check whether the platform has a first-class localization or resource mechanism before adding new user-facing copy.",
+    "Check whether the framework has a canonical way to model commands, routes, requests, or screens before inventing a custom pattern.",
+    "Model commands, routes, and events with typed abstractions native to the language/platform.",
+    "Externalize user-facing copy, status text, and errors behind a localization/resource strategy.",
+    "Keep configuration, secrets, and environment handling aligned with the platform's standard settings model.",
+    "Verify tests and docs cover the latest feature flow before promoting the next brief version.",
+    "Only promote a new brief version after the final output is runnable, tested, and safe to review or roll back.",
+    "Preserve the last known-good active version when a newer brief version still has unresolved gaps.",
+    "Do not create the next brief version until the current project version is fully implemented and has no open gaps.",
+    "If a brief still has gaps, close them in the same brief version instead of pushing them into a newer brief.",
+    "When the project supports Docker review, make the latest promoted version runnable in Docker before asking for review."
+  ],
+  "active_goals": [
+    "create",
+    "delete",
+    "list",
+    "login",
+    "return",
+    "run",
+    "start",
+    "update",
+    "add",
+    "approve",
+    "borrow",
+    "deposit",
+    "history"
+  ],
+  "current_focus": {
+    "problem_statement": "",
+    "entrypoints": [
+      "src/main/java/com/vulnerax/common/exception/GlobalExceptionHandler.java",
+      "src/main/java/com/vulnerax/modules/ai/AiController.java",
+      "src/main/java/com/vulnerax/modules/aillm/AiLlmController.java",
+      "src/main/java/com/vulnerax/modules/assessment/AssessmentController.java",
+      "src/main/java/com/vulnerax/modules/asset/AssetController.java",
+      "src/main/java/com/vulnerax/modules/audit/AuditController.java",
+      "src/main/java/com/vulnerax/modules/browser/BrowserController.java",
+      "src/main/java/com/vulnerax/modules/campaign/CampaignController.java"
+    ],
+    "contracts": [
+      "add",
+      "approve",
+      "borrow",
+      "create",
+      "delete",
+      "deposit",
+      "history",
+      "list",
+      "login",
+      "logout"
+    ],
+    "feature_count": 8
+  }
+}

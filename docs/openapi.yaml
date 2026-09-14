@@ -1,0 +1,354 @@
+openapi: 3.0.3
+info:
+  title: VulneraX Platform API
+  description: |
+    Unified Security Platform — SAST, DAST, SCA, Secrets, Container, IaC, Mobile, Firmware, Browser Extension, AI/LLM scanning.
+    Risk Engine (CVSS + EPSS + KEV), Attack Path, AI Analyst, SBOM, Compliance, Pentest, Reporting.
+  version: 1.0.0
+  contact:
+    name: VulneraX Team
+servers:
+  - url: http://localhost:8080
+    description: Local development
+  - url: https://vulnerax.example.com
+    description: Production
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+
+    PageResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            type: object
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        user:
+          type: object
+
+    Finding:
+      type: object
+      properties:
+        id:
+          type: string
+        findingId:
+          type: string
+        title:
+          type: string
+        severity:
+          type: string
+          enum: [CRITICAL, HIGH, MEDIUM, LOW, INFO]
+        status:
+          type: string
+          enum: [OPEN, IN_PROGRESS, RESOLVED, FALSE_POSITIVE]
+        type:
+          type: string
+        cvss:
+          type: number
+        cwe:
+          type: string
+        riskScore:
+          type: number
+        riskLevel:
+          type: string
+
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        riskScore:
+          type: number
+
+    Scan:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        scanType:
+          type: string
+
+    DashboardPosture:
+      type: object
+      properties:
+        securityScore:
+          type: integer
+        critical:
+          type: integer
+        high:
+          type: integer
+        totalAssets:
+          type: integer
+        kev:
+          type: integer
+        internetExposed:
+          type: integer
+        slaBreached:
+          type: integer
+        bySeverity:
+          type: object
+
+paths:
+  /api/v1/auth/login:
+    post:
+      tags: [Authentication]
+      summary: Login and get JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/LoginResponse'
+
+  /api/v1/auth/register:
+    post:
+      tags: [Authentication]
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, fullName]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                fullName:
+                  type: string
+                role:
+                  type: string
+      responses:
+        '200':
+          description: Registration successful
+
+  /api/v1/dashboard/posture:
+    get:
+      tags: [Dashboard]
+      summary: Get security posture overview
+      responses:
+        '200':
+          description: Dashboard posture data
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/DashboardPosture'
+
+  /api/v1/findings:
+    get:
+      tags: [Findings]
+      summary: List findings with pagination
+      parameters:
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [CRITICAL, HIGH, MEDIUM, LOW, INFO]
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [OPEN, IN_PROGRESS, RESOLVED, FALSE_POSITIVE]
+      responses:
+        '200':
+          description: Paginated findings
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PageResponse'
+
+  /api/v1/findings/{id}:
+    get:
+      tags: [Findings]
+      summary: Get finding detail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Finding detail
+
+  /api/v1/assets:
+    get:
+      tags: [Assets]
+      summary: List assets
+      parameters:
+        - name: size
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Paginated assets
+
+  /api/v1/scans:
+    get:
+      tags: [Scans]
+      summary: List scans
+      parameters:
+        - name: size
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Paginated scans
+
+  /api/v1/cloud:
+    get:
+      tags: [Cloud]
+      summary: List cloud resources
+      responses:
+        '200':
+          description: Cloud resources
+
+  /api/v1/k8s:
+    get:
+      tags: [Kubernetes]
+      summary: List K8s resources
+      responses:
+        '200':
+          description: K8s resources
+
+  /api/v1/containers:
+    get:
+      tags: [Containers]
+      summary: List container images
+      responses:
+        '200':
+          description: Container images
+
+  /api/v1/compliance/frameworks:
+    get:
+      tags: [Compliance]
+      summary: List compliance frameworks
+      responses:
+        '200':
+          description: Compliance frameworks
+
+  /api/v1/pentest:
+    get:
+      tags: [Pentest]
+      summary: List pentest engagements
+      responses:
+        '200':
+          description: Pentest engagements
+
+  /api/v1/reports:
+    get:
+      tags: [Reports]
+      summary: List reports
+      responses:
+        '200':
+          description: Reports
+
+  /api/v1/notifications:
+    get:
+      tags: [Notifications]
+      summary: List notifications
+      parameters:
+        - name: size
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Notifications
+
+  /actuator/health:
+    get:
+      tags: [Health]
+      summary: Health check
+      security: []
+      responses:
+        '200':
+          description: Health status

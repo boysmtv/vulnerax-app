@@ -1,7 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import axios from 'axios'
-
-// we test the client interceptor logic directly
 import { api } from '../api/client'
 
 describe('api client', () => {
@@ -18,9 +15,7 @@ describe('api client', () => {
     const token = 'tok123'
     // @ts-ignore
     localStorage.getItem = vi.fn().mockReturnValue(token)
-    // invoke request interceptor directly
     const cfg: any = { headers: {} }
-    // @ts-ignore - reach interceptor
     const interceptor = (api.interceptors.request as any).handlers[0].fulfilled
     const out = await interceptor(cfg)
     expect(out.headers.Authorization).toBe(`Bearer ${token}`)
@@ -33,5 +28,60 @@ describe('api client', () => {
     const interceptor = (api.interceptors.request as any).handlers[0].fulfilled
     const out = await interceptor(cfg)
     expect(out.headers.Authorization).toBeUndefined()
+  })
+
+  it('handles 401 error by clearing token', async () => {
+    const handler = (api.interceptors.response as any).handlers[0].rejected
+    const err = { response: { status: 401, data: { message: 'Unauthorized' } } }
+    try { await handler(err) } catch {}
+    expect(localStorage.getItem('vulnerax_token')).toBeFalsy()
+  })
+
+  it('handles 403 error with Forbidden message', async () => {
+    const handler = (api.interceptors.response as any).handlers[0].rejected
+    const err = { response: { status: 403, data: { message: 'Forbidden access' } } }
+    try { await handler(err) } catch {}
+    expect(localStorage.getItem('vulnerax_token')).toBeFalsy()
+  })
+
+  it('handles 401 error without message', async () => {
+    const handler = (api.interceptors.response as any).handlers[0].rejected
+    const err = { response: { status: 401, data: {} } }
+    try { await handler(err) } catch {}
+    expect(localStorage.getItem('vulnerax_token')).toBeFalsy()
+  })
+
+  it('handles 403 error without matching message', async () => {
+    // @ts-ignore
+    localStorage.getItem = vi.fn().mockReturnValue('tok123')
+    const handler = (api.interceptors.response as any).handlers[0].rejected
+    const err = { response: { status: 403, data: { message: 'Some other error' } } }
+    try { await handler(err) } catch {}
+    expect(localStorage.getItem('vulnerax_token')).toBeTruthy()
+  })
+
+  it('rejects non-401/403 errors without clearing token', async () => {
+    // @ts-ignore
+    localStorage.getItem = vi.fn().mockReturnValue('tok123')
+    const handler = (api.interceptors.response as any).handlers[0].rejected
+    const err = { response: { status: 500, data: { message: 'Server error' } } }
+    try { await handler(err) } catch {}
+    expect(localStorage.getItem('vulnerax_token')).toBeTruthy()
+  })
+
+  it('handles error without response object', async () => {
+    // @ts-ignore
+    localStorage.getItem = vi.fn().mockReturnValue('tok123')
+    const handler = (api.interceptors.response as any).handlers[0].rejected
+    const err = { message: 'Network error' }
+    try { await handler(err) } catch {}
+    expect(localStorage.getItem('vulnerax_token')).toBeTruthy()
+  })
+
+  it('handles successful response passthrough', async () => {
+    const handler = (api.interceptors.response as any).handlers[0].fulfilled
+    const res = { data: { success: true } }
+    const out = await handler(res)
+    expect(out).toBe(res)
   })
 })

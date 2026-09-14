@@ -51,21 +51,27 @@
     "with_token": 0
   },
   "2026-09-13": {
-    "total": 10,
+    "total": 20,
     "by_tool": {
-      "project_status": 1,
-      "project_memory_list": 2,
+      "project_status": 2,
+      "project_memory_list": 3,
       "history_stats": 1,
       "proven_usage": 1,
-      "history_recent": 1,
+      "history_recent": 2,
       "project_scan": 2,
       "history_store": 1,
-      "project_memory_inspect": 1
+      "project_memory_inspect": 1,
+      "system_brain": 1,
+      "history_search": 2,
+      "memory_query": 1,
+      "security_scan": 1,
+      "generate_monitoring": 1,
+      "generate_performance_scripts": 1
     },
     "by_agent": {
-      "opencode": 10
+      "opencode": 20
     },
-    "read_only": 10,
+    "read_only": 20,
     "with_token": 0
   }
 }

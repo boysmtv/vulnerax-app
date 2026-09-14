@@ -1,0 +1,32 @@
+{{
+  "title": "D:\Work\Pribadi\WebProject\vulnerax-app\monitoring - Service Dashboard",
+  "uid": "d:\work\pribadi\webproject\vulnerax-app\monitoring_dashboard",
+  "schemaVersion": 38,
+  "version": 1,
+  "panels": [
+    {{
+      "title": "Request Rate",
+      "type": "graph",
+      "targets": [{"expr": "rate(http_requests_total[5m])", "legendFormat": "{{status}}"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+    }},
+    {{
+      "title": "Latency (P95)",
+      "type": "graph",
+      "targets": [{"expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))", "legendFormat": "p95"}],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+    }},
+    {{
+      "title": "Error Rate",
+      "type": "stat",
+      "targets": [{"expr": "rate(http_requests_total{{status=~"5.."}}[5m])", "legendFormat": "errors"}],
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 8}
+    }},
+    {{
+      "title": "Active Requests",
+      "type": "stat",
+      "targets": [{"expr": "sum(http_requests_active)", "legendFormat": "active"}],
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 8}
+    }}
+  ]
+}}

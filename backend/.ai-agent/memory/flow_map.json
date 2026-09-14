@@ -1,0 +1,252 @@
+{
+  "flows": [
+    {
+      "name": "create",
+      "entrypoints": [
+        "src/main/java/com/vulnerax/modules/aillm/AiLlmService.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetController.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java",
+        "src/main/java/com/vulnerax/modules/browser/BrowserService.java"
+      ],
+      "domain_functions": [
+        "src/main/java/com/vulnerax/modules/aillm/AiLlmService.java:create",
+        "src/main/java/com/vulnerax/modules/asset/AssetController.java:create",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java:create",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java:createAsset",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java:create",
+        "src/main/java/com/vulnerax/modules/browser/BrowserService.java:create",
+        "src/main/java/com/vulnerax/modules/campaign/CampaignService.java:create",
+        "src/main/java/com/vulnerax/modules/cicd/CicdService.java:create"
+      ],
+      "tests": [
+        "src/test/java/com/vulnerax/integration/EvidenceIntegrationTest.java",
+        "src/test/java/com/vulnerax/integration/RiskEngineIntegrationTest.java",
+        "src/test/java/com/vulnerax/modules/asset/AssetControllerTest.java",
+        "src/test/java/com/vulnerax/modules/asset/AssetServiceTest.java",
+        "src/test/java/com/vulnerax/modules/finding/FindingControllerTest.java",
+        "src/test/java/com/vulnerax/modules/finding/FindingServiceTest.java"
+      ],
+      "docs": [
+        "pom.xml",
+        "src/main/resources/application.yml",
+        "src/test/resources/application-test.yml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "delete",
+      "entrypoints": [
+        "src/main/java/com/vulnerax/modules/aillm/AiLlmService.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetController.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java",
+        "src/main/java/com/vulnerax/modules/browser/BrowserService.java",
+        "src/main/java/com/vulnerax/modules/cicd/CicdService.java",
+        "src/main/java/com/vulnerax/modules/database/DatabaseService.java"
+      ],
+      "domain_functions": [
+        "src/main/java/com/vulnerax/modules/aillm/AiLlmService.java:delete",
+        "src/main/java/com/vulnerax/modules/asset/AssetController.java:delete",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java:delete",
+        "src/main/java/com/vulnerax/modules/browser/BrowserService.java:delete",
+        "src/main/java/com/vulnerax/modules/cicd/CicdService.java:delete",
+        "src/main/java/com/vulnerax/modules/database/DatabaseService.java:delete",
+        "src/main/java/com/vulnerax/modules/firmware/FirmwareService.java:delete",
+        "src/main/java/com/vulnerax/modules/iac/IacService.java:delete"
+      ],
+      "tests": [
+        "src/test/java/com/vulnerax/modules/asset/AssetControllerTest.java",
+        "src/test/java/com/vulnerax/modules/asset/AssetServiceTest.java"
+      ],
+      "docs": [
+        "pom.xml",
+        "src/main/resources/application.yml",
+        "src/test/resources/application-test.yml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "list",
+      "entrypoints": [
+        "src/main/java/com/vulnerax/modules/aillm/AiLlmService.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetController.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java",
+        "src/main/java/com/vulnerax/modules/audit/AuditController.java",
+        "src/main/java/com/vulnerax/modules/audit/AuditService.java",
+        "src/main/java/com/vulnerax/modules/browser/BrowserService.java"
+      ],
+      "domain_functions": [
+        "src/main/java/com/vulnerax/modules/aillm/AiLlmService.java:list",
+        "src/main/java/com/vulnerax/modules/asset/AssetController.java:list",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java:list",
+        "src/main/java/com/vulnerax/modules/audit/AuditController.java:list",
+        "src/main/java/com/vulnerax/modules/audit/AuditService.java:list",
+        "src/main/java/com/vulnerax/modules/browser/BrowserService.java:list",
+        "src/main/java/com/vulnerax/modules/campaign/CampaignService.java:list",
+        "src/main/java/com/vulnerax/modules/cicd/CicdService.java:list"
+      ],
+      "tests": [
+        "src/test/java/com/vulnerax/modules/ai/AiControllerTest.java",
+        "src/test/java/com/vulnerax/modules/aillm/AiLlmControllerTest.java",
+        "src/test/java/com/vulnerax/modules/assessment/AssessmentControllerTest.java",
+        "src/test/java/com/vulnerax/modules/asset/AssetControllerTest.java",
+        "src/test/java/com/vulnerax/modules/asset/AssetServiceTest.java",
+        "src/test/java/com/vulnerax/modules/audit/AuditControllerTest.java"
+      ],
+      "docs": [
+        "pom.xml",
+        "src/main/resources/application.yml",
+        "src/test/resources/application-test.yml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "login",
+      "entrypoints": [
+        "src/main/java/com/vulnerax/modules/identity/AuthController.java",
+        "src/main/java/com/vulnerax/modules/identity/AuthService.java",
+        "src/test/java/com/vulnerax/modules/identity/AuthControllerTest.java",
+        "src/test/java/com/vulnerax/modules/identity/AuthControllerTest.java",
+        "src/test/java/com/vulnerax/modules/identity/AuthServiceTest.java",
+        "src/test/java/com/vulnerax/modules/identity/AuthServiceTest.java"
+      ],
+      "domain_functions": [
+        "src/main/java/com/vulnerax/modules/identity/AuthController.java:login",
+        "src/main/java/com/vulnerax/modules/identity/AuthService.java:login",
+        "src/test/java/com/vulnerax/modules/identity/AuthControllerTest.java:login_returns_token",
+        "src/test/java/com/vulnerax/modules/identity/AuthControllerTest.java:login_validation_fails_when_email_blank",
+        "src/test/java/com/vulnerax/modules/identity/AuthServiceTest.java:login_success",
+        "src/test/java/com/vulnerax/modules/identity/AuthServiceTest.java:login_wrongPassword_throws",
+        "src/test/java/com/vulnerax/modules/identity/AuthServiceTest.java:login_userNotFound_throws"
+      ],
+      "tests": [
+        "src/test/java/com/vulnerax/modules/identity/AuthControllerTest.java",
+        "src/test/java/com/vulnerax/modules/identity/AuthServiceTest.java"
+      ],
+      "docs": [
+        "pom.xml",
+        "src/main/resources/application.yml",
+        "src/test/resources/application-test.yml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "return",
+      "entrypoints": [
+        "src/main/java/com/vulnerax/config/AuditingConfig.java",
+        "src/main/java/com/vulnerax/modules/scan/analyzers/SastAnalyzer.java",
+        "src/main/java/com/vulnerax/modules/scan/analyzers/SecretAnalyzer.java",
+        "src/test/java/com/vulnerax/ApiSmokeTest.java",
+        "src/test/java/com/vulnerax/integration/EvidenceIntegrationTest.java",
+        "src/test/java/com/vulnerax/integration/EvidenceIntegrationTest.java"
+      ],
+      "domain_functions": [
+        "src/main/java/com/vulnerax/config/AuditingConfig.java:return",
+        "src/main/java/com/vulnerax/modules/scan/analyzers/SastAnalyzer.java:return",
+        "src/main/java/com/vulnerax/modules/scan/analyzers/SecretAnalyzer.java:return",
+        "src/test/java/com/vulnerax/ApiSmokeTest.java:all_critical_apis_return_200_and_no_500",
+        "src/test/java/com/vulnerax/integration/EvidenceIntegrationTest.java:reportService_generateHtml_returnsValidHtml",
+        "src/test/java/com/vulnerax/integration/EvidenceIntegrationTest.java:reportService_generatePdf_returnsBytes",
+        "src/test/java/com/vulnerax/integration/EvidenceIntegrationTest.java:reportService_generateJson_returnsValidJson",
+        "src/test/java/com/vulnerax/integration/RiskEngineIntegrationTest.java:findingRepo_countByTypePerProject_returnsCorrectGrouping"
+      ],
+      "tests": [
+        "src/test/java/com/vulnerax/ApiSmokeTest.java",
+        "src/test/java/com/vulnerax/integration/EvidenceIntegrationTest.java",
+        "src/test/java/com/vulnerax/integration/RiskEngineIntegrationTest.java",
+        "src/test/java/com/vulnerax/modules/ai/AiControllerTest.java",
+        "src/test/java/com/vulnerax/modules/aillm/AiLlmControllerTest.java",
+        "src/test/java/com/vulnerax/modules/assessment/AssessmentControllerTest.java"
+      ],
+      "docs": [
+        "pom.xml",
+        "src/main/resources/application.yml",
+        "src/test/resources/application-test.yml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "run",
+      "entrypoints": [
+        "src/main/java/com/vulnerax/modules/assessment/AssessmentController.java",
+        "src/main/java/com/vulnerax/modules/mobile/MobileService.java",
+        "src/main/java/com/vulnerax/modules/oneclick/OneClickRun.java",
+        "src/main/java/com/vulnerax/modules/oneclick/OneClickRun.java",
+        "src/main/java/com/vulnerax/modules/report/ReportService.java",
+        "src/main/java/com/vulnerax/modules/scan/ScanService.java"
+      ],
+      "domain_functions": [
+        "src/main/java/com/vulnerax/modules/assessment/AssessmentController.java:runProjectAssessment",
+        "src/main/java/com/vulnerax/modules/mobile/MobileService.java:RuntimeException",
+        "src/main/java/com/vulnerax/modules/report/ReportService.java:truncate",
+        "src/main/java/com/vulnerax/modules/scan/ScanService.java:runLegacyAnalyzer",
+        "src/main/java/com/vulnerax/modules/scan/ScanService.java:runLegacyAnalyzer",
+        "src/main/java/com/vulnerax/modules/scan/ScanService.java:runLegacyAnalyzer",
+        "src/main/java/com/vulnerax/seed/DataSeeder.java:run",
+        "src/test/java/com/vulnerax/integration/EvidenceIntegrationTest.java:slaBreachScheduler_runsWithoutException"
+      ],
+      "tests": [
+        "src/test/java/com/vulnerax/integration/EvidenceIntegrationTest.java"
+      ],
+      "docs": [
+        "pom.xml",
+        "src/main/resources/application.yml",
+        "src/test/resources/application-test.yml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "start",
+      "entrypoints": [
+        "src/main/java/com/vulnerax/modules/oneclick/OneClickService.java",
+        "src/main/java/com/vulnerax/modules/scan/ScanService.java"
+      ],
+      "domain_functions": [
+        "src/main/java/com/vulnerax/modules/oneclick/OneClickService.java:start",
+        "src/main/java/com/vulnerax/modules/scan/ScanService.java:startScan"
+      ],
+      "tests": [],
+      "docs": [
+        "pom.xml",
+        "src/main/resources/application.yml",
+        "src/test/resources/application-test.yml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "update",
+      "entrypoints": [
+        "src/main/java/com/vulnerax/modules/asset/AssetController.java",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java",
+        "src/main/java/com/vulnerax/modules/finding/Finding.java",
+        "src/main/java/com/vulnerax/modules/finding/FindingController.java",
+        "src/main/java/com/vulnerax/modules/finding/FindingService.java",
+        "src/test/java/com/vulnerax/modules/asset/AssetControllerTest.java"
+      ],
+      "domain_functions": [
+        "src/main/java/com/vulnerax/modules/asset/AssetController.java:update",
+        "src/main/java/com/vulnerax/modules/asset/AssetService.java:update",
+        "src/main/java/com/vulnerax/modules/finding/Finding.java:onUpdate",
+        "src/main/java/com/vulnerax/modules/finding/FindingController.java:updateStatus",
+        "src/main/java/com/vulnerax/modules/finding/FindingService.java:updateStatus",
+        "src/test/java/com/vulnerax/modules/asset/AssetControllerTest.java:update_patches_asset",
+        "src/test/java/com/vulnerax/modules/asset/AssetServiceTest.java:update_patches_fields",
+        "src/test/java/com/vulnerax/modules/finding/FindingControllerTest.java:updateStatus_changes_state"
+      ],
+      "tests": [
+        "src/test/java/com/vulnerax/modules/asset/AssetControllerTest.java",
+        "src/test/java/com/vulnerax/modules/asset/AssetServiceTest.java",
+        "src/test/java/com/vulnerax/modules/finding/FindingControllerTest.java",
+        "src/test/java/com/vulnerax/modules/finding/FindingServiceTest.java"
+      ],
+      "docs": [
+        "pom.xml",
+        "src/main/resources/application.yml",
+        "src/test/resources/application-test.yml"
+      ],
+      "notes": []
+    }
+  ],
+  "updated_at": "2026-09-13T17:05:08.046315+00:00"
+}
