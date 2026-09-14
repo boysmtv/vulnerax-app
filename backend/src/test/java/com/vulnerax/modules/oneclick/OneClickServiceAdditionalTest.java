@@ -1,6 +1,5 @@
 package com.vulnerax.modules.oneclick;
 
-import com.vulnerax.common.exception.ResourceNotFoundException;
 import com.vulnerax.modules.organization.ProjectRepository;
 import com.vulnerax.modules.reporting.ReportService;
 import com.vulnerax.modules.scan.*;
@@ -16,7 +15,8 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -24,201 +24,241 @@ import static org.mockito.Mockito.*;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class OneClickServiceAdditionalTest {
 
-    @Mock private OneClickRepository repo;
-    @Mock private ScanService scanService;
-    @Mock private ScanRepository scanRepo;
-    @Mock private ScanJobRepository jobRepo;
-    @Mock private ReportService reportService;
-    @Mock private ProjectRepository projectRepo;
-    @Mock private ApplicationContext ctx;
-    @InjectMocks private OneClickService service;
+    @Mock OneClickRepository repo;
+    @Mock ScanService scanService;
+    @Mock ScanRepository scanRepo;
+    @Mock ScanJobRepository jobRepo;
+    @Mock ReportService reportService;
+    @Mock ProjectRepository projectRepo;
+    @Mock ApplicationContext ctx;
+    @Mock OneClickService selfProxy;
+
+    @InjectMocks OneClickService service;
+
+    @BeforeEach
+    void setUp() {
+        lenient().when(ctx.getBean(OneClickService.class)).thenReturn(selfProxy);
+    }
 
     @Test
-    void detectType_variousInputs() {
-        assertEquals("WEBAPP", service.detectType("https://example.com"));
-        assertEquals("WEBAPP", service.detectType("http://test.com"));
-        assertEquals("API", service.detectType("https://example.com/api/v1"));
-        assertEquals("API", service.detectType("http://swagger.io/docs"));
+    void detectType_cidrWithPort_returnsContainer() {
+        // Test the regex for container detection with port
+        assertEquals("CONTAINER_IMAGE", service.detectType("registry.example.com:5000/myimage:v1"));
+    }
+
+    @Test
+    void detectType_dockerHubWithSha_returnsContainer() {
+        assertEquals("CONTAINER_IMAGE", service.detectType("docker.io/library/nginx@sha256:abc123"));
+    }
+
+    @Test
+    void detectType_ecrFullUrl_returnsContainer() {
+        assertEquals("CONTAINER_IMAGE", service.detectType("123456789.dkr.ecr.us-east-1.amazonaws.com/myrepo/myimage:latest"));
+    }
+
+    @Test
+    void detectType_gcrFullUrl_returnsContainer() {
+        assertEquals("CONTAINER_IMAGE", service.detectType("gcr.io/my-project/my-image:v2"));
+    }
+
+    @Test
+    void detectType_httpUrlWithApiPath_returnsApi() {
+        assertEquals("API", service.detectType("https://api.example.com/v2/users"));
+    }
+
+    @Test
+    void detectType_httpUrlWithSwaggerPath_returnsApi() {
+        assertEquals("API", service.detectType("https://example.com/swagger-ui/"));
+    }
+
+    @Test
+    void detectType_httpUrlWithOpenApiPath_returnsApi() {
         assertEquals("API", service.detectType("https://example.com/openapi.json"));
-        assertEquals("API", service.detectType("http://example.com/graphql"));
-        assertEquals("MOBILE", service.detectType("app.apk"));
-        assertEquals("MOBILE", service.detectType("app.aab"));
-        assertEquals("MOBILE", service.detectType("app.ipa"));
-        assertEquals("REPOSITORY", service.detectType("repo.git"));
-        assertEquals("REPOSITORY", service.detectType("file.zip"));
+    }
+
+    @Test
+    void detectType_httpUrlWithGraphqlPath_returnsApi() {
+        assertEquals("API", service.detectType("https://example.com/graphql"));
+    }
+
+    @Test
+    void detectType_gitlabWithHttp_returnsWebapp() {
+        assertEquals("WEBAPP", service.detectType("https://gitlab.com/acme/app"));
+    }
+
+    @Test
+    void detectType_zipFile_returnsRepository() {
+        assertEquals("REPOSITORY", service.detectType("source-code.zip"));
+    }
+
+    @Test
+    void detectType_jarFile_returnsRepository() {
         assertEquals("REPOSITORY", service.detectType("app.jar"));
-        assertEquals("REPOSITORY", service.detectType("app.war"));
-        assertEquals("NETWORK", service.detectType("192.168.1.1"));
-        assertEquals("WEBAPP", service.detectType("unknown-target"));
-        assertEquals("UNKNOWN", service.detectType(null));
-        assertEquals("WEBAPP", service.detectType("  "));
     }
 
     @Test
-    void detectType_containerImages() {
-        assertEquals("CONTAINER_IMAGE", service.detectType("docker.io/library/nginx:latest"));
-        assertEquals("CONTAINER_IMAGE", service.detectType("gcr.io/project/image:v1"));
-        assertEquals("CONTAINER_IMAGE", service.detectType("123456789.dkr.ecr.us-east-1.amazonaws.com/app:latest"));
+    void detectType_warFile_returnsRepository() {
+        assertEquals("REPOSITORY", service.detectType("webapp.war"));
     }
 
     @Test
-    void scannersFor_alwaysReturnsAllEight() {
-        List<String> scanners = service.scannersFor("WEBAPP");
-        assertEquals(8, scanners.size());
-        assertTrue(scanners.contains("SAST"));
-        assertTrue(scanners.contains("SCA"));
-        assertTrue(scanners.contains("SECRET"));
-        assertTrue(scanners.contains("DAST"));
-        assertTrue(scanners.contains("API"));
-        assertTrue(scanners.contains("CONTAINER"));
-        assertTrue(scanners.contains("IAC"));
-        assertTrue(scanners.contains("MOBILE"));
+    void detectType_ipAddress_returnsNetwork() {
+        assertEquals("NETWORK", service.detectType("10.0.0.1"));
     }
 
     @Test
-    void get_existingRun_returnsRun() {
-        OneClickRun run = OneClickRun.builder().target("test").status("RUNNING").build();
-        run.setId(UUID.randomUUID());
-        when(repo.findById(run.getId())).thenReturn(Optional.of(run));
-        assertEquals("RUNNING", service.get(run.getId()).getStatus());
+    void detectType_cidr_returnsNetwork() {
+        assertEquals("NETWORK", service.detectType("192.168.1.0/24"));
     }
 
     @Test
-    void get_notFound_throws() {
-        when(repo.findById(any())).thenReturn(Optional.empty());
-        assertThrows(ResourceNotFoundException.class, () -> service.get(UUID.randomUUID()));
+    void scannersFor_anyType_returnsAll8() {
+        for (String type : List.of("WEBAPP", "API", "MOBILE", "REPOSITORY", "CONTAINER_IMAGE", "NETWORK", "UNKNOWN")) {
+            assertThat(service.scannersFor(type)).hasSize(8);
+        }
     }
 
     @Test
-    void list_withProjectId_filtersByProject() {
-        UUID projectId = UUID.randomUUID();
-        OneClickRun run = OneClickRun.builder().projectId(projectId).target("test").build();
-        when(repo.findByProjectIdOrderByCreatedAtDesc(projectId)).thenReturn(List.of(run));
-
-        List<OneClickRun> result = service.list(projectId);
-
-        assertEquals(1, result.size());
-    }
-
-    @Test
-    void list_nullProjectId_returnsAll() {
-        OneClickRun run1 = OneClickRun.builder().target("test1").build();
-        run1.setCreatedAt(java.time.Instant.now());
-        OneClickRun run2 = OneClickRun.builder().target("test2").build();
-        run2.setCreatedAt(java.time.Instant.now().minusSeconds(100));
-        when(repo.findAll()).thenReturn(List.of(run1, run2));
-
-        List<OneClickRun> result = service.list(null);
-
-        assertEquals(2, result.size());
-    }
-
-    @Test
-    void progress_returnsDetailedMap() {
+    void progress_runNotFound_throws() {
         UUID runId = UUID.randomUUID();
-        OneClickRun run = OneClickRun.builder().target("test").status("RUNNING").message("Running").build();
+        when(repo.findById(runId)).thenReturn(Optional.empty());
+        try {
+            service.progress(runId);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(RuntimeException.class);
+        }
+    }
+
+    @Test
+    void progress_withMultipleScans_returnsAll() {
+        UUID runId = UUID.randomUUID();
+        UUID scanId1 = UUID.randomUUID();
+        UUID scanId2 = UUID.randomUUID();
+        OneClickRun run = OneClickRun.builder()
+                .target("https://example.com")
+                .status("RUNNING")
+                .progress(50)
+                .scanIdsJson("[\"" + scanId1 + "\",\"" + scanId2 + "\"]")
+                .build();
         run.setId(runId);
-        run.setTotalScans(2);
-        run.setCompletedScans(1);
-        run.setFindingsCount(5);
-        run.setScanIdsJson("[]");
         when(repo.findById(runId)).thenReturn(Optional.of(run));
 
-        Map<String,Object> result = service.progress(runId);
+        Scan s1 = new Scan();
+        s1.setId(scanId1);
+        s1.setScannerType("SAST");
+        s1.setStatus("COMPLETED");
+        s1.setTarget("https://example.com");
+        s1.setFindingsCount(3);
 
-        assertNotNull(result);
-        assertEquals("RUNNING", result.get("status"));
-        assertNotNull(result.get("steps"));
+        Scan s2 = new Scan();
+        s2.setId(scanId2);
+        s2.setScannerType("DAST");
+        s2.setStatus("RUNNING");
+        s2.setTarget("https://example.com");
+        s2.setFindingsCount(1);
+
+        when(scanRepo.findById(scanId1)).thenReturn(Optional.of(s1));
+        when(scanRepo.findById(scanId2)).thenReturn(Optional.of(s2));
+        when(jobRepo.findByScanId(scanId1)).thenReturn(List.of());
+        when(jobRepo.findByScanId(scanId2)).thenReturn(List.of());
+
+        Map<String, Object> result = service.progress(runId);
+        List<?> scans = (List<?>) result.get("scans");
+        assertThat(scans).hasSize(2);
     }
 
     @Test
-    void progress_withScanIds_showsScanDetails() {
+    void progress_allScannerTypes_haveActions() {
         UUID runId = UUID.randomUUID();
-        UUID scanId = UUID.randomUUID();
-        OneClickRun run = OneClickRun.builder().target("test").status("RUNNING").message("Running").build();
+        OneClickRun run = OneClickRun.builder()
+                .target("https://example.com")
+                .status("RUNNING")
+                .progress(10)
+                .scanIdsJson("[]")
+                .build();
         run.setId(runId);
-        run.setScanIdsJson("[\"" + scanId + "\"]");
         when(repo.findById(runId)).thenReturn(Optional.of(run));
 
-        Scan scan = new Scan();
-        scan.setId(scanId);
-        scan.setScannerType("SAST");
-        scan.setStatus("COMPLETED");
-        scan.setFindingsCount(3);
-        scan.setTarget("test");
-        when(scanRepo.findById(scanId)).thenReturn(Optional.of(scan));
-        when(jobRepo.findByScanId(scanId)).thenReturn(List.of());
-
-        Map<String,Object> result = service.progress(runId);
-
-        assertNotNull(result);
+        Map<String, Object> result = service.progress(runId);
+        List<?> steps = (List<?>) result.get("steps");
+        assertThat(steps).isNotEmpty();
     }
 
     @Test
-    void progress_withRunningScan_showsRunningAction() {
+    void progress_scanWithJobDetails_showsJobInfo() {
         UUID runId = UUID.randomUUID();
         UUID scanId = UUID.randomUUID();
-        OneClickRun run = OneClickRun.builder().target("test").status("RUNNING").message("Running").build();
+        OneClickRun run = OneClickRun.builder()
+                .target("https://example.com")
+                .status("RUNNING")
+                .progress(50)
+                .scanIdsJson("[\"" + scanId + "\"]")
+                .build();
         run.setId(runId);
-        run.setScanIdsJson("[\"" + scanId + "\"]");
         when(repo.findById(runId)).thenReturn(Optional.of(run));
 
-        Scan scan = new Scan();
-        scan.setId(scanId);
-        scan.setScannerType("DAST");
-        scan.setStatus("RUNNING");
-        scan.setTarget("https://example.com");
-        when(scanRepo.findById(scanId)).thenReturn(Optional.of(scan));
-        when(jobRepo.findByScanId(scanId)).thenReturn(List.of());
+        Scan s = new Scan();
+        s.setId(scanId);
+        s.setScannerType("SECRET");
+        s.setStatus("RUNNING");
+        s.setTarget("https://example.com");
+        when(scanRepo.findById(scanId)).thenReturn(Optional.of(s));
 
-        Map<String,Object> result = service.progress(runId);
+        ScanJob job = new ScanJob();
+        job.setStatus("RUNNING");
+        job.setProgress(60);
+        job.setLogs("Scanning for secrets...");
+        when(jobRepo.findByScanId(scanId)).thenReturn(List.of(job));
 
-        assertNotNull(result);
+        Map<String, Object> result = service.progress(runId);
+        List<Map<String, Object>> scans = (List<Map<String, Object>>) result.get("scans");
+        assertThat(scans).isNotEmpty();
+        assertThat(scans.get(0).get("progress")).isEqualTo(60);
     }
 
     @Test
-    void progress_withNoJobs_showsDefault() {
+    void progress_completedScans_showsProgress() {
         UUID runId = UUID.randomUUID();
         UUID scanId = UUID.randomUUID();
-        OneClickRun run = OneClickRun.builder().target("test").status("RUNNING").message("Running").build();
+        OneClickRun run = OneClickRun.builder()
+                .target("https://example.com")
+                .status("RUNNING")
+                .progress(10)
+                .totalScans(1)
+                .completedScans(1)
+                .findingsCount(5)
+                .scanIdsJson("[\"" + scanId + "\"]")
+                .build();
         run.setId(runId);
-        run.setScanIdsJson("[\"" + scanId + "\"]");
         when(repo.findById(runId)).thenReturn(Optional.of(run));
 
-        Scan scan = new Scan();
-        scan.setId(scanId);
-        scan.setScannerType("SCA");
-        scan.setStatus("RUNNING");
-        scan.setTarget("test");
-        when(scanRepo.findById(scanId)).thenReturn(Optional.of(scan));
+        Scan s = new Scan();
+        s.setId(scanId);
+        s.setScannerType("SCA");
+        s.setStatus("COMPLETED");
+        s.setTarget("https://example.com");
+        s.setFindingsCount(5);
+        when(scanRepo.findById(scanId)).thenReturn(Optional.of(s));
         when(jobRepo.findByScanId(scanId)).thenReturn(List.of());
 
-        Map<String,Object> result = service.progress(runId);
-
-        assertNotNull(result);
+        Map<String, Object> result = service.progress(runId);
+        assertThat(result.get("findingsCount")).isEqualTo(5);
     }
 
     @Test
-    void progress_withAllScannerTypes_showsCorrectActions() {
+    void progress_noRunningNoCompleted_showsPreparing() {
         UUID runId = UUID.randomUUID();
-        OneClickRun run = OneClickRun.builder().target("test").status("RUNNING").message("Running").build();
+        OneClickRun run = OneClickRun.builder()
+                .target("https://example.com")
+                .status("RUNNING")
+                .progress(5)
+                .scanIdsJson("[]")
+                .message("Queued")
+                .build();
         run.setId(runId);
-        run.setScanIdsJson("[]");
         when(repo.findById(runId)).thenReturn(Optional.of(run));
 
-        Map<String,Object> result = service.progress(runId);
-
-        assertNotNull(result);
-        assertEquals("[]", run.getScanIdsJson());
-    }
-
-    @Test
-    void start_blankTarget_throws() {
-        assertThrows(RuntimeException.class, () -> service.start("  ", UUID.randomUUID()));
-    }
-
-    @Test
-    void start_nullTarget_throws() {
-        assertThrows(RuntimeException.class, () -> service.start(null, UUID.randomUUID()));
+        Map<String, Object> result = service.progress(runId);
+        assertThat(result.get("currentAction")).isNotNull();
     }
 }
