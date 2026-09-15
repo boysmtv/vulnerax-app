@@ -1,96 +1,28 @@
 {
-  "2026-09-10": {
-    "total": 14,
+  "2026-09-15": {
+    "total": 15,
     "by_tool": {
-      "assistant_pack": 1,
-      "parallel_context": 1,
-      "development_plan_generate": 1,
-      "code_interpreter": 8,
-      "project_scan": 1,
-      "project_brain": 1,
-      "project_status": 1
-    },
-    "by_agent": {
-      "opencode": 14
-    },
-    "read_only": 14,
-    "with_token": 0
-  },
-  "2026-09-11": {
-    "total": 30,
-    "by_tool": {
-      "parallel_context": 5,
-      "project_status": 2,
-      "project_brain": 1,
-      "history_recent": 1,
-      "history_stats": 1,
+      "project_status": 1,
       "project_memory_list": 1,
+      "history_recent": 1,
       "task_queue_stats": 1,
       "approval_status": 1,
-      "mcp_dashboard": 1,
-      "project_contracts": 1,
-      "project_validate": 1,
-      "test_coverage_analysis": 1,
-      "test_evidence_collect": 2,
-      "prd_quality_validate": 1,
-      "project_scan": 1,
-      "security_hint": 1,
-      "development_plan_generate": 1,
-      "nfr_generate": 1,
-      "deployment_generate": 1,
-      "observability_generate": 1,
-      "testing_generate": 1,
-      "predict_bug": 1,
       "project_memory_inspect": 1,
-      "commit_msg": 1
-    },
-    "by_agent": {
-      "opencode": 30
-    },
-    "read_only": 30,
-    "with_token": 0
-  },
-  "2026-09-13": {
-    "total": 20,
-    "by_tool": {
-      "project_status": 2,
-      "project_memory_list": 3,
       "history_stats": 1,
-      "proven_usage": 1,
-      "history_recent": 2,
-      "project_scan": 2,
-      "history_store": 1,
-      "project_memory_inspect": 1,
-      "system_brain": 1,
-      "history_search": 2,
-      "memory_query": 1,
-      "security_scan": 1,
-      "generate_monitoring": 1,
-      "generate_performance_scripts": 1
+      "project_scan": 1,
+      "find_usage": 1,
+      "quick_fix": 1,
+      "security_hint": 1,
+      "test_gen": 1,
+      "explain_diff": 1,
+      "commit_msg": 1,
+      "code_explain": 1
     },
     "by_agent": {
-      "opencode": 20
+      "opencode": 15
     },
-    "read_only": 20,
-    "with_token": 0
-  },
-  "2026-09-14": {
-    "total": 11,
-    "by_tool": {
-      "history_store": 3,
-      "project_status": 1,
-      "project_brain": 1,
-      "history_recent": 1,
-      "proven_usage": 1,
-      "mcp_dashboard": 1,
-      "project_memory_inspect": 1,
-      "history_search": 1,
-      "history_session": 1
-    },
-    "by_agent": {
-      "opencode": 11
-    },
-    "read_only": 11,
-    "with_token": 0
+    "read_only": 12,
+    "with_token": 3,
+    "session_summary": "Fixed One-Click Test scan pipeline: API routing (404→200), entity constraints (scan_type NOT NULL), Kafka blocking (excluded auto-config), Vite proxy port (8081→8080). Scan now finds real vulnerabilities: 5 findings from 8 scanners against testphp.vulnweb.com."
   }
 }

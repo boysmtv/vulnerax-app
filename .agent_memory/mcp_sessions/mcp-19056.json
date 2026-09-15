@@ -1,0 +1,174 @@
+{
+  "session_id": "mcp-19056",
+  "created_at": "2026-09-13T05:43:53.022316+00:00",
+  "last_active": "2026-09-13T14:47:47.527399+00:00",
+  "tool_call_count": 11,
+  "context": {
+    "client_info": "{'name': 'opencode', 'version': '1.18.30'}",
+    "client_name": "opencode",
+    "last_tool": "tools/call",
+    "last_args": "{'dir': 'D:\\\\Work\\\\Pribadi\\\\WebProject\\\\vulnerax-app'}"
+  },
+  "stream_buffer": [
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_status",
+        "success": true
+      },
+      "timestamp": "2026-09-13T05:48:13.891049+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_memory_list",
+        "success": true
+      },
+      "timestamp": "2026-09-13T05:48:13.916212+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "history_stats",
+        "success": true
+      },
+      "timestamp": "2026-09-13T05:48:13.945188+00:00"
+    },
+    {
+      "type": "tool_error",
+      "data": {
+        "tool": "proven_usage",
+        "error": "cannot access local variable 'get_telemetry' where it is not associated with a value"
+      },
+      "timestamp": "2026-09-13T05:48:13.968284+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "history_recent",
+        "success": true
+      },
+      "timestamp": "2026-09-13T05:48:14.024374+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 17,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-13T05:48:15.498054+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 18,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-13T05:48:15.551898+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 19,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-13T05:48:15.551898+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 20,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-13T05:48:15.552903+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 21,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-13T05:48:15.552903+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_scan",
+        "success": true
+      },
+      "timestamp": "2026-09-13T06:07:14.352516+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 22,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-13T06:07:14.987831+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "history_store",
+        "success": true
+      },
+      "timestamp": "2026-09-13T14:47:24.505359+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 23,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-13T14:47:25.158556+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_memory_inspect",
+        "success": true
+      },
+      "timestamp": "2026-09-13T14:47:31.655515+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 24,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-13T14:47:32.292012+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_memory_list",
+        "success": true
+      },
+      "timestamp": "2026-09-13T14:47:39.867275+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 25,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-13T14:47:40.426836+00:00"
+    },
+    {
+      "type": "tool_result",
+      "data": {
+        "tool": "project_scan",
+        "success": true
+      },
+      "timestamp": "2026-09-13T14:47:47.092059+00:00"
+    },
+    {
+      "type": "cancelled",
+      "data": {
+        "requestId": 26,
+        "reason": "AbortError: The operation was aborted."
+      },
+      "timestamp": "2026-09-13T14:47:47.527399+00:00"
+    }
+  ]
+}

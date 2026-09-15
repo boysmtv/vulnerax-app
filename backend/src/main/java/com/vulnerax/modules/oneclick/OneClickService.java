@@ -94,6 +94,7 @@ public class OneClickService {
                 Scan s = Scan.builder()
                         .projectId(projectId)
                         .scannerType(scanner)
+                        .scanType(detected)
                         .profile("STANDARD")
                         .target(target)
                         .configJson("{\"oneClickRunId\":\"" + run.getId() + "\",\"detectedType\":\"" + detected + "\"}")

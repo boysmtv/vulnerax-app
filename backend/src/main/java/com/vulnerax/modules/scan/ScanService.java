@@ -407,6 +407,8 @@ public class ScanService {
     }
 
     private void publishEvent(String topic, Scan scan) {
+        // Kafka is optional — skip silently if not connected
+        if (kafkaTemplate == null) return;
         try {
             Map<String, Object> event = new LinkedHashMap<>();
             event.put("scanId", scan.getId().toString());
@@ -416,7 +418,7 @@ public class ScanService {
             event.put("timestamp", Instant.now().toString());
             kafkaTemplate.send(topic, scan.getId().toString(), event);
         } catch (Exception e) {
-            log.debug("Kafka publish failed (non-critical): {}", e.getMessage());
+            log.debug("Kafka publish skipped: {}", e.getMessage());
         }
     }
 

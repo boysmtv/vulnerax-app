@@ -12,12 +12,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/v1/oneclick")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class OneClickController {
+    private final OneClickService oneClickService;
     private final ScanService scanService;
     private final AssetService assetService;
     private final SecurityCoverageRegistry coverageRegistry;
+
+    @PostMapping("/one-click/test")
+    public ApiResponse<?> oneClickTest(@RequestBody Map<String, Object> body, Authentication auth) {
+        String target = (String) body.get("target");
+        UUID projectId = body.get("projectId") != null ? UUID.fromString((String) body.get("projectId")) : null;
+        var run = oneClickService.start(target, projectId);
+        return ApiResponse.ok(run);
+    }
+
+    @GetMapping("/one-click/{id}/progress")
+    public ApiResponse<?> oneClickProgress(@PathVariable UUID id) {
+        return ApiResponse.ok(oneClickService.progress(id));
+    }
+
+    @GetMapping("/one-click")
+    public ApiResponse<?> oneClickList(@RequestParam(required = false) UUID projectId) {
+        return ApiResponse.ok(oneClickService.list(projectId));
+    }
 
     @PostMapping("/scan")
     public ApiResponse<?> scan(@RequestParam String targetType, @RequestParam String targetUrl, Authentication auth) {
