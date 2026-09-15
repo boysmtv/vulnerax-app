@@ -104,4 +104,44 @@ describe('Reports', () => {
       expect(screen.getByText('Compliance (ASVS 5.0)')).toBeInTheDocument()
     })
   })
+
+  it('changes project selector to a different project', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Project A' }, { id: 'p2', name: 'Project B' }] } } })
+      if (url.includes('/reports') && !url.includes('/export')) return Promise.resolve({ data: { success: true, data: [] } })
+      return Promise.resolve({ data: { success: true, data: [] } })
+    })
+    render(wrap(<Reports />))
+    await waitFor(() => expect(screen.getByDisplayValue('Project A')).toBeInTheDocument())
+    fireEvent.change(screen.getByDisplayValue('Project A'), { target: { value: 'p2' } })
+    expect(screen.getByDisplayValue('Project B')).toBeInTheDocument()
+  })
+
+  it('renders export link with correct href', async () => {
+    render(wrap(<Reports />))
+    await waitFor(() => {
+      expect(screen.getByText('Export')).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: 'Export' })).toHaveAttribute('href', '#')
+    })
+  })
+
+  it('renders all report table columns', async () => {
+    render(wrap(<Reports />))
+    await waitFor(() => {
+      expect(screen.getByText('Report')).toBeInTheDocument()
+      expect(screen.getByText('Type')).toBeInTheDocument()
+      expect(screen.getByText('Format')).toBeInTheDocument()
+      expect(screen.getByText('Classification')).toBeInTheDocument()
+      expect(screen.getByText('Status')).toBeInTheDocument()
+      expect(screen.getByText('Created')).toBeInTheDocument()
+      expect(screen.getByText('Action')).toBeInTheDocument()
+    })
+  })
+
+  it('renders white-label info text', async () => {
+    render(wrap(<Reports />))
+    await waitFor(() => {
+      expect(screen.getByText(/White-label/)).toBeInTheDocument()
+    })
+  })
 })

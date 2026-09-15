@@ -374,4 +374,52 @@ describe('EntityListPage', () => {
     renderEntity({ columns: cols, nameLabel: 'title' })
     await waitFor(() => { expect(screen.getByText('Custom Title')).toBeInTheDocument() })
   })
+
+  it('supports object-style createFields and types into inputs', async () => {
+    vi.mocked(api.get).mockImplementation(async (url: string) => {
+      if (url === '/api/v1/projects') return { data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project', organizationId: 'org1' }] } } }
+      return { data: { success: true, data: { content: [] } } }
+    })
+    const objFields = { name: 'Resource name', type: 'Type (SIEM/SLACK)' }
+    renderEntity({ createFields: objFields })
+    const user = userEvent.setup()
+    await user.click(screen.getByText('+ New'))
+    await user.type(screen.getByPlaceholderText('Resource name'), 'My Resource')
+    await user.type(screen.getByPlaceholderText('Type (SIEM/SLACK)'), 'SIEM')
+    await user.click(screen.getByText('Create'))
+    expect(api.post).toHaveBeenCalledWith('/api/v1/integrations', expect.objectContaining({ name: 'My Resource', type: 'SIEM' }))
+  })
+
+  it('handles data as array instead of object with content', async () => {
+    vi.mocked(api.get).mockImplementation(async (url: string) => {
+      if (url === '/api/v1/projects') return { data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project', organizationId: 'org1' }] } } }
+      return { data: { success: true, data: [{ id: 'x1', name: 'Array Item', status: 'ACTIVE', url: 'http://test.com' }] } }
+    })
+    renderEntity()
+    await waitFor(() => { expect(screen.getByText('Array Item')).toBeInTheDocument() })
+  })
+
+  it('renders rows without id using index as key', async () => {
+    vi.mocked(api.get).mockImplementation(async (url: string) => {
+      if (url === '/api/v1/projects') return { data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project', organizationId: 'org1' }] } } }
+      return { data: { success: true, data: { content: [{ name: 'No ID Item', status: 'ACTIVE', url: 'http://test.com' }] } } }
+    })
+    renderEntity()
+    await waitFor(() => { expect(screen.getByText('No ID Item')).toBeInTheDocument() })
+  })
+
+  it('handles create error without response data', async () => {
+    vi.mocked(api.get).mockImplementation(async (url: string) => {
+      if (url === '/api/v1/projects') return { data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project', organizationId: 'org1' }] } } }
+      return { data: { success: true, data: mockData } }
+    })
+    vi.mocked(api.post).mockRejectedValueOnce(new Error('Network error'))
+    const user = userEvent.setup()
+    renderEntity()
+    await waitFor(() => { screen.getByText('Integration Alpha') })
+    await user.click(screen.getByText('+ New'))
+    await user.type(screen.getByPlaceholderText('Integration Name'), 'Fail')
+    await user.click(screen.getByText('Create'))
+    await waitFor(() => { expect(screen.queryByText('Create New Integration')).toBeInTheDocument() })
+  })
 })

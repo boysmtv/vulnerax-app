@@ -33,7 +33,7 @@ export default function Projects() {
       <div className="grid lg:grid-cols-3 gap-4">
         <div className="bg-white border rounded-xl p-5">
           <h3 className="font-semibold text-sm mb-3">Organizations</h3>
-          {(orgList||[]).map((o:any)=><div key={o.id} className="border rounded-lg p-3 mb-2"><div className="font-medium text-sm">{o.name}</div><div className="text-xs text-slate-500">{o.slug} • {o.tier}</div></div>)}
+          {orgList.map((o:any)=><div key={o.id} className="border rounded-lg p-3 mb-2"><div className="font-medium text-sm">{o.name}</div><div className="text-xs text-slate-500">{o.slug} • {o.tier}</div></div>)}
           <div className="flex gap-2 mt-3">
             <input value={orgName} onChange={e=>setOrgName(e.target.value)} placeholder="New org name" className="flex-1 border rounded-lg px-3 py-2 text-sm" />
             <button onClick={createOrg} className="px-3 py-2 bg-slate-900 text-white rounded-lg text-sm">Create</button>

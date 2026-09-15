@@ -158,4 +158,107 @@ describe('Findings', () => {
       expect(screen.getByText('Actions')).toBeInTheDocument()
     })
   })
+
+  it('displays KEV badge when kev is true', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [{ id: '2', name: 'Test', status: 'OPEN', severity: 'CRITICAL', title: 'Critical Vuln', findingId: 'FND-002', cvss: 9.8, cwe: 'CWE-89', source: 'SEMGREP', riskScore: 95, riskLevel: 'CRITICAL', owasp: 'A03', kev: true, internetExposed: true }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => {
+      expect(screen.getByText('KEV')).toBeInTheDocument()
+      expect(screen.getByText('Exposed')).toBeInTheDocument()
+    })
+  })
+
+  it('displays fallback riskScore when riskScore is null', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [{ id: '3', name: 'Test', status: 'OPEN', severity: 'MEDIUM', title: 'Medium Vuln', findingId: 'FND-003', cvss: 5.0, cwe: 'CWE-79', source: 'DAST', riskScore: null, riskLevel: 'MODERATE', owasp: 'A07' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => {
+      expect(screen.getByText('FND-003 — Medium Vuln')).toBeInTheDocument()
+    })
+  })
+
+  it('displays fallback for unknown severity color', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [{ id: '4', name: 'Test', status: 'OPEN', severity: 'INFO', title: 'Info Vuln', findingId: 'FND-004', cvss: 1.0, source: 'MANUAL', riskScore: 2, riskLevel: 'LOW', owasp: 'A01' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => {
+      expect(screen.getByText('FND-004 — Info Vuln')).toBeInTheDocument()
+    })
+  })
+
+  it('search filters by CWE when q matches cwe', async () => {
+    render(wrap(<Findings />))
+    await waitFor(() => expect(screen.getByText('FND-001 — Test Finding')).toBeInTheDocument())
+    fireEvent.change(screen.getByPlaceholderText(/Search CVE/), { target: { value: 'CWE-79' } })
+    await waitFor(() => expect(screen.getByText('FND-001 — Test Finding')).toBeInTheDocument())
+  })
+
+  it('search filters by findingId match shows results', async () => {
+    render(wrap(<Findings />))
+    await waitFor(() => expect(screen.getByText('FND-001 — Test Finding')).toBeInTheDocument())
+    fireEvent.change(screen.getByPlaceholderText(/Search CVE/), { target: { value: 'FND' } })
+    await waitFor(() => expect(screen.getByText('FND-001 — Test Finding')).toBeInTheDocument())
+  })
+
+  it('search filters by title match', async () => {
+    render(wrap(<Findings />))
+    await waitFor(() => expect(screen.getByText('FND-001 — Test Finding')).toBeInTheDocument())
+    fireEvent.change(screen.getByPlaceholderText(/Search CVE/), { target: { value: 'Test Finding' } })
+    await waitFor(() => expect(screen.getByText('FND-001 — Test Finding')).toBeInTheDocument())
+  })
+
+  it('displays fallback bg-slate-200 for unknown severity color', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [{ id: '5', name: 'Test', status: 'OPEN', severity: 'UNKNOWN', title: 'Unknown Sev', findingId: 'FND-005', cvss: 3.0, source: 'MANUAL', riskScore: 10, riskLevel: 'LOW', owasp: 'A01' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => {
+      expect(screen.getByText('FND-005 — Unknown Sev')).toBeInTheDocument()
+      const badge = screen.getByText('UNKNOWN')
+      expect(badge.className).toContain('bg-slate-200')
+    })
+  })
+
+  it('displays fallback empty class for unknown riskLevel', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [{ id: '6', name: 'Test', status: 'OPEN', severity: 'LOW', title: 'Unknown Risk', findingId: 'FND-006', cvss: 2.0, source: 'MANUAL', riskScore: 5, riskLevel: 'VERY_LOW', owasp: 'A01' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => {
+      expect(screen.getByText('FND-006 — Unknown Risk')).toBeInTheDocument()
+      expect(screen.getByText('VERY_LOW')).toBeInTheDocument()
+    })
+  })
+
+  it('displays finding with no cwe field', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [{ id: '7', name: 'Test', status: 'OPEN', severity: 'HIGH', title: 'No CWE', findingId: 'FND-007', cvss: 7.0, source: 'DAST', riskScore: 60, riskLevel: 'HIGH', owasp: 'A05' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => {
+      expect(screen.getByText('FND-007 — No CWE')).toBeInTheDocument()
+    })
+  })
+
+  it('search filters by cwe fallback when finding has no cwe and q is set', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [{ id: '7', name: 'Test', status: 'OPEN', severity: 'HIGH', title: 'No CWE Vuln', findingId: 'FND-007', cvss: 7.0, source: 'DAST', riskScore: 60, riskLevel: 'HIGH', owasp: 'A05' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => expect(screen.getByText('FND-007 — No CWE Vuln')).toBeInTheDocument())
+    fireEvent.change(screen.getByPlaceholderText(/Search CVE/), { target: { value: 'xyz' } })
+    await waitFor(() => expect(screen.getByText(/No findings/)).toBeInTheDocument())
+  })
 })

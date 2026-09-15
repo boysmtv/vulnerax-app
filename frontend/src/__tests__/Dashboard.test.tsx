@@ -200,4 +200,88 @@ describe('Dashboard', () => {
       expect(screen.getByText('User Service')).toBeInTheDocument()
     })
   })
+
+  it('renders empty state for top risk assets when topRiskAssets is null', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/dashboard/posture')) return Promise.resolve({ data: { success: true, data: { bySeverity: { CRITICAL: 5 }, topRiskAssets: null } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Dashboard />))
+    await waitFor(() => expect(screen.getByText(/No critical assets/)).toBeInTheDocument())
+  })
+
+  it('renders empty state for top risk assets when topRiskAssets is undefined', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/dashboard/posture')) return Promise.resolve({ data: { success: true, data: { bySeverity: { CRITICAL: 5 } } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Dashboard />))
+    await waitFor(() => expect(screen.getByText(/No critical assets/)).toBeInTheDocument())
+  })
+
+  it('shows zero securityScore when data exists but securityScore is null', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/dashboard/posture')) return Promise.resolve({ data: { success: true, data: { bySeverity: { CRITICAL: 5 }, critical: 0, high: 0, totalAssets: 0 } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Dashboard />))
+    await waitFor(() => {
+      expect(screen.getByText('Security Score')).toBeInTheDocument()
+      expect(screen.getByText(/\/ 100/)).toBeInTheDocument()
+    })
+  })
+
+  it('renders bar chart with unknown severity key using default color', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/dashboard/posture')) return Promise.resolve({ data: { success: true, data: { bySeverity: { CRITICAL: 5, UNKNOWN_SEV: 10 }, topRiskAssets: [] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Dashboard />))
+    await waitFor(() => expect(screen.getByText('Findings by Severity')).toBeInTheDocument())
+  })
+
+  it('shows null securityScore fallback as 0', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/dashboard/posture')) return Promise.resolve({ data: { success: true, data: { securityScore: null, bySeverity: { CRITICAL: 1 }, topRiskAssets: [] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Dashboard />))
+    await waitFor(() => expect(screen.getByText('Security Score')).toBeInTheDocument())
+  })
+
+  it('shows zero securityScore when data is null', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/dashboard/posture')) return Promise.resolve({ data: { success: true, data: null } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Dashboard />))
+    await waitFor(() => expect(screen.getByText('Security Score')).toBeInTheDocument())
+  })
+
+  it('renders pie chart with unknown severity key', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/dashboard/posture')) return Promise.resolve({ data: { success: true, data: { bySeverity: { CRITICAL: 5, CUSTOM_SEV: 15 }, topRiskAssets: [] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Dashboard />))
+    await waitFor(() => expect(screen.getByText('Risk Distribution')).toBeInTheDocument())
+  })
+
+  it('shows topRiskAssets with items', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/dashboard/posture')) return Promise.resolve({ data: { success: true, data: { bySeverity: { CRITICAL: 5 }, topRiskAssets: [{ name: 'Payment API', type: 'API', criticality: 'CRITICAL' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Dashboard />))
+    await waitFor(() => expect(screen.getByText('Payment API')).toBeInTheDocument())
+  })
+
+  it('shows topRiskAssets empty state when array length is 0', async () => {
+    mockGet.mockImplementationOnce((url: string) => {
+      if (url.includes('/dashboard/posture')) return Promise.resolve({ data: { success: true, data: { bySeverity: { CRITICAL: 5 }, topRiskAssets: [] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Dashboard />))
+    await waitFor(() => expect(screen.getByText(/No critical assets/)).toBeInTheDocument())
+  })
 })

@@ -73,5 +73,24 @@
     },
     "read_only": 20,
     "with_token": 0
+  },
+  "2026-09-14": {
+    "total": 11,
+    "by_tool": {
+      "history_store": 3,
+      "project_status": 1,
+      "project_brain": 1,
+      "history_recent": 1,
+      "proven_usage": 1,
+      "mcp_dashboard": 1,
+      "project_memory_inspect": 1,
+      "history_search": 1,
+      "history_session": 1
+    },
+    "by_agent": {
+      "opencode": 11
+    },
+    "read_only": 11,
+    "with_token": 0
   }
 }

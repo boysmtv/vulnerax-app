@@ -261,4 +261,43 @@ describe('Assets', () => {
       expect(screen.getByText('1')).toBeInTheDocument()
     })
   })
+
+  it('displays HIGH criticality badge', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project', organizationId: 'org1' }] } } })
+      if (url.includes('/assets/stats')) return Promise.resolve({ data: { success: true, data: { total: 1, internetExposed: 0, discoveryDelta: {}, byType: {} } } })
+      if (url.includes('/assets')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'a1', name: 'High Asset', identifier: 'high.test', type: 'API', criticality: 'HIGH', internetExposed: false }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Assets />))
+    await waitFor(() => {
+      expect(screen.getByText('HIGH')).toBeInTheDocument()
+      expect(screen.getByText('Internal')).toBeInTheDocument()
+    })
+  })
+
+  it('displays asset with team instead of owner', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project', organizationId: 'org1' }] } } })
+      if (url.includes('/assets/stats')) return Promise.resolve({ data: { success: true, data: { total: 1, internetExposed: 0, discoveryDelta: {}, byType: {} } } })
+      if (url.includes('/assets')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'a1', name: 'Team Asset', identifier: 'team.test', type: 'API', criticality: 'MEDIUM', internetExposed: false, team: 'Backend Team' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Assets />))
+    await waitFor(() => expect(screen.getByText('Backend Team')).toBeInTheDocument())
+  })
+
+  it('displays dash when no owner or team', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project', organizationId: 'org1' }] } } })
+      if (url.includes('/assets/stats')) return Promise.resolve({ data: { success: true, data: { total: 1, internetExposed: 0, discoveryDelta: {}, byType: {} } } })
+      if (url.includes('/assets')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'a1', name: 'No Owner Asset', identifier: 'noowner.test', type: 'DOMAIN', criticality: 'LOW', internetExposed: false }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Assets />))
+    await waitFor(() => {
+      expect(screen.getByText('No Owner Asset')).toBeInTheDocument()
+      expect(screen.getByText('-')).toBeInTheDocument()
+    })
+  })
 })

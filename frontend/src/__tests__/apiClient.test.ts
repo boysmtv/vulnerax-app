@@ -51,6 +51,23 @@ describe('api client', () => {
     expect(localStorage.getItem('vulnerax_token')).toBeFalsy()
   })
 
+  it('skips redirect when already on /login', async () => {
+    const realHref = location.href
+    const mockLocation = { ...location, pathname: '/login', href: realHref }
+    Object.defineProperty(window, 'location', { value: mockLocation, writable: true, configurable: true })
+    const handler = (api.interceptors.response as any).handlers[0].rejected
+    const err = { response: { status: 401, data: { message: 'Unauthorized' } } }
+    try { await handler(err) } catch {}
+    expect(localStorage.getItem('vulnerax_token')).toBeFalsy()
+  })
+
+  it('handles 401 error without message', async () => {
+    const handler = (api.interceptors.response as any).handlers[0].rejected
+    const err = { response: { status: 401, data: {} } }
+    try { await handler(err) } catch {}
+    expect(localStorage.getItem('vulnerax_token')).toBeFalsy()
+  })
+
   it('handles 403 error without matching message', async () => {
     // @ts-ignore
     localStorage.getItem = vi.fn().mockReturnValue('tok123')

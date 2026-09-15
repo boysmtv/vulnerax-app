@@ -35,7 +35,7 @@ export default function Coverage() {
       {isLoading ? <div className="text-sm text-slate-500">Loading...</div> : (
         <div className="bg-white border rounded-xl overflow-hidden">
           <div className="overflow-x-auto max-h-[60vh]">
-            <pre className="text-xs p-4 whitespace-pre-wrap break-words">{JSON.stringify(list.slice(0,3), null, 2) || 'No data yet. Click Create Demo or run a scan.'}</pre>
+            <pre className="text-xs p-4 whitespace-pre-wrap break-words">{JSON.stringify(list.slice(0,3), null, 2)}</pre>
           </div>
           {list.length===0 && <div className="p-8 text-center text-sm text-slate-500">No data â€” Security Coverage will appear here after sync/scan.</div>}
           <div className="p-3 text-xs text-slate-500 border-t bg-slate-50">API: GET /api/v1/coverage â€¢ POST â€¢ GET /{'{id}'} â€¢ Auto-mapped to PRD â€¢ Security Coverage</div>

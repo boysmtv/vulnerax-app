@@ -237,6 +237,23 @@ describe('Layout', () => {
     expect(assetsLink?.className).toContain('rounded-lg')
   })
 
+  it('renders advanced nav links with correct hrefs', async () => {
+    render(wrapWithLayout(<div>Content</div>), ['/dashboard'])
+    clickAdvanced()
+    expect(screen.getByText('Policies').closest('a')).toHaveAttribute('href', '/policies')
+    expect(screen.getByText('Cloud').closest('a')).toHaveAttribute('href', '/cloud')
+    expect(screen.getByText('Coverage').closest('a')).toHaveAttribute('href', '/coverage')
+  })
+
+  it('toggles advanced nav with arrow indicator', async () => {
+    render(wrapWithLayout(<div>Content</div>), ['/dashboard'])
+    expect(screen.getByText('▼')).toBeInTheDocument()
+    clickAdvanced()
+    expect(screen.getByText('▲')).toBeInTheDocument()
+    clickAdvanced()
+    expect(screen.getByText('▼')).toBeInTheDocument()
+  })
+
   it('renders Cloud advanced nav item', () => {
     render(wrapWithLayout(<div>Content</div>))
     clickAdvanced()

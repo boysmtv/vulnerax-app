@@ -102,4 +102,115 @@ describe('Coverage', () => {
       expect(pre).toBeInTheDocument()
     })
   })
+
+  it('handles data as object with content property', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'c1', domain: 'SCA', status: 'TESTED', coveragePercent: 90, provider: 'GITHUB' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => {
+      expect(screen.getByText(/SCA.*TESTED.*90/)).toBeInTheDocument()
+    })
+  })
+
+  it('shows No data yet when JSON.stringify returns empty array', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: { content: [] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => expect(screen.getByText(/No data.*Security Coverage will appear/)).toBeInTheDocument())
+  })
+
+  it('handles create error without response', async () => {
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {})
+    mockPost.mockRejectedValueOnce(new Error('Network error'))
+    render(wrap(<Coverage />))
+    await waitFor(() => expect(screen.getByText('Create Demo')).toBeInTheDocument())
+    fireEvent.click(screen.getByText('Create Demo'))
+    await waitFor(() => {
+      expect(alertSpy).toHaveBeenCalledWith('Network error')
+    })
+    alertSpy.mockRestore()
+  })
+
+  it('displays loading state', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return new Promise(() => {})
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => expect(screen.getByText('Test Project')).toBeInTheDocument())
+    expect(screen.getByText('Loading...')).toBeInTheDocument()
+  })
+
+  it('handles null data from coverage API', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: null } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => {
+      expect(screen.getByText('Test Project')).toBeInTheDocument()
+      expect(screen.getByText(/No data.*Security Coverage will appear/)).toBeInTheDocument()
+    })
+  })
+
+  it('handles data as object with content property being null', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: { content: null } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => {
+      expect(screen.getByText('Test Project')).toBeInTheDocument()
+      expect(screen.getByText(/No data.*Security Coverage will appear/)).toBeInTheDocument()
+    })
+  })
+
+  it('displays coverage data as JSON array in pre element', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [{ id: 'c1', domain: 'SAST', status: 'TESTED', coveragePercent: 85 }, { id: 'c2', domain: 'DAST', status: 'TESTED', coveragePercent: 70 }, { id: 'c3', domain: 'SCA', status: 'TESTED', coveragePercent: 90 }, { id: 'c4', domain: 'SECRETS', status: 'PASSED', coveragePercent: 95 }] } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => {
+      const pre = document.querySelector('pre')
+      expect(pre).toBeInTheDocument()
+      expect(pre!.textContent).toContain('SAST')
+    })
+  })
+
+  it('displays list items when data is array with items', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [{ id: 'c1', domain: 'SAST', status: 'TESTED', coveragePercent: 85, provider: 'AWS' }] } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => {
+      expect(screen.getAllByText(/SAST/).length).toBeGreaterThan(0)
+      expect(screen.getByText(/TESTED/)).toBeInTheDocument()
+    })
+  })
+
+  it('hides empty state when list has items', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [{ id: 'c1', domain: 'SAST', status: 'TESTED', coveragePercent: 85, provider: 'AWS' }] } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => {
+      expect(screen.getByText('Test Project')).toBeInTheDocument()
+    })
+    expect(screen.queryByText(/No data.*Security Coverage will appear/)).not.toBeInTheDocument()
+  })
 })

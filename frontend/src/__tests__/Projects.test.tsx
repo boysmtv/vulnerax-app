@@ -168,4 +168,84 @@ describe('Projects', () => {
     await waitFor(() => expect(alertSpy).toHaveBeenCalledWith('Create org first'))
     alertSpy.mockRestore()
   })
+
+  it('displays fallback Retail when project has no businessUnit', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/organizations')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'org1', name: 'Acme Corp', slug: 'acme', tier: 'ENTERPRISE' }] } } })
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Banking App', description: 'Core', criticality: 'HIGH', status: 'ACTIVE' }] } } })
+      if (url.includes('/workspaces')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'ws1', name: 'Primary', organizationId: 'org1' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Projects />))
+    await waitFor(() => {
+      expect(screen.getByText(/Core.*HIGH.*Retail/)).toBeInTheDocument()
+    })
+  })
+
+  it('renders empty org list when orgs content is null', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/organizations')) return Promise.resolve({ data: { success: true, data: { content: null } } })
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Projects />))
+    await waitFor(() => {
+      expect(screen.getByText('Organization & Project Hierarchy')).toBeInTheDocument()
+    })
+  })
+
+  it('renders empty projects list when data content is null', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/organizations')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'org1', name: 'Acme Corp', slug: 'acme', tier: 'ENTERPRISE' }] } } })
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: null } } })
+      if (url.includes('/workspaces')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'ws1', name: 'Primary', organizationId: 'org1' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Projects />))
+    await waitFor(() => {
+      expect(screen.getByText('Projects')).toBeInTheDocument()
+    })
+  })
+
+  it('renders multiple organizations', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/organizations')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'org1', name: 'Acme Corp', slug: 'acme', tier: 'ENTERPRISE' }, { id: 'org2', name: 'Beta Inc', slug: 'beta', tier: 'STARTUP' }] } } })
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Projects />))
+    await waitFor(() => {
+      expect(screen.getByText('Acme Corp')).toBeInTheDocument()
+      expect(screen.getByText('Beta Inc')).toBeInTheDocument()
+      expect(screen.getByText(/acme.*ENTERPRISE/)).toBeInTheDocument()
+      expect(screen.getByText(/beta.*STARTUP/)).toBeInTheDocument()
+    })
+  })
+
+  it('renders multiple projects', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/organizations')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'org1', name: 'Acme Corp', slug: 'acme', tier: 'ENTERPRISE' }] } } })
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Digital Banking', description: 'Core banking', criticality: 'HIGH', status: 'ACTIVE', businessUnit: 'Retail' }, { id: 'p2', name: 'Mobile App', description: 'Mobile app', criticality: 'MEDIUM', status: 'ACTIVE', businessUnit: 'Digital' }] } } })
+      if (url.includes('/workspaces')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'ws1', name: 'Primary', organizationId: 'org1' }] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Projects />))
+    await waitFor(() => {
+      expect(screen.getAllByText('Digital Banking').length).toBeGreaterThanOrEqual(1)
+      expect(screen.getByText('Mobile App')).toBeInTheDocument()
+    })
+  })
+
+  it('disables project query when no org exists', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/organizations')) return Promise.resolve({ data: { success: true, data: { content: [] } } })
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Projects />))
+    await waitFor(() => {
+      expect(screen.getByText('Organization & Project Hierarchy')).toBeInTheDocument()
+      expect(screen.queryByText('Projects')).toBeInTheDocument()
+    })
+  })
 })
