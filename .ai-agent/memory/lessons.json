@@ -85,8 +85,41 @@
       "fix": "Disabled Kafka auto-config for local dev. In production, use proper broker addresses and verify connectivity.",
       "files": ["docker-compose.yml", "backend/src/main/resources/application.yml"],
       "recorded_at": "2026-09-15T20:15:00.000Z"
+    },
+    {
+      "id": "LESSON-009",
+      "title": "Backend 0% Coverage Classes Have Tests That Don't Run",
+      "description": "ScanService (0% = 1488 missed), OneClickService (0% = 1058 missed), OneClickController (0% = 235 missed) show 0% JaCoCo coverage despite having test files. Root causes: (1) OneClickControllerTest uses @WebMvcTest but doesn't mock OneClickService bean → context fails to load. (2) ScanService tests may exist but use wrong context. Must check if tests actually compile+run before adding more.",
+      "category": "testing",
+      "severity": "critical",
+      "fix": "Fix OneClickControllerTest by adding @MockBean OneClickService. Verify ScanService tests compile and run. Run `mvn test -Dtest=ClassName` per class to verify.",
+      "files": [
+        "backend/src/test/java/com/vulnerax/modules/oneclick/OneClickControllerTest.java",
+        "backend/src/test/java/com/vulnerax/modules/scan/ScanServiceTest.java"
+      ],
+      "recorded_at": "2026-09-15T22:00:00.000Z"
+    },
+    {
+      "id": "LESSON-010",
+      "title": "Frontend-Backend API Path Alignment Is Already Correct",
+      "description": "Dashboard (/api/v1/dashboard/posture), SBOM (/api/v1/sboms), Container (/api/v1/containers), Database (/api/v1/databases), Browser (/api/v1/browser-extensions) — all frontend paths match backend @RequestMapping. Initial curl test with wrong paths (singular/plural) gave false 404. Always check @RequestMapping annotation before assuming mismatch.",
+      "category": "testing",
+      "severity": "medium",
+      "fix": "No code change needed. Frontend and backend paths are already aligned.",
+      "files": [],
+      "recorded_at": "2026-09-15T22:00:00.000Z"
+    },
+    {
+      "id": "LESSON-011",
+      "title": "Backend Coverage Focus: Top 5 Gap Classes",
+      "description": "To reach 100% backend coverage, focus on these 5 classes first (they account for ~90% of missed instructions): (1) ScanService 0% → 1488 missed, (2) OneClickService 0% → 1058 missed, (3) DastAnalyzer 68% → 631 missed, (4) ApiAnalyzer 60% → 267 missed, (5) OneClickController 0% → 235 missed. Total ~3679 missed instructions out of ~6542 total gap.",
+      "category": "planning",
+      "severity": "high",
+      "fix": "Write unit tests for each class, ensuring JaCoCo reports them. Test with `mvn test -Dtest=ClassName jacoco:report` to verify incremental progress.",
+      "files": [],
+      "recorded_at": "2026-09-15T22:00:00.000Z"
     }
   ],
   "scope": "project",
-  "updated_at": "2026-09-15T20:15:00.000Z"
+  "updated_at": "2026-09-15T22:00:00.000Z"
 }

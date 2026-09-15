@@ -57,6 +57,46 @@
       },
       "features": ["scan", "one-click", "dast", "sast", "sca", "secret", "api", "container", "iac", "mobile"],
       "recorded_at": "2026-09-15T20:15:00.000Z"
+    },
+    {
+      "run_id": "session-2026-09-15-coverage-audit",
+      "final_status": "partial",
+      "summary": "Verified all 31 API endpoints working. Identified root cause of 0% JaCoCo coverage for ScanService/OneClickService/OneClickController — broken OneClickControllerTest (missing @MockBean). Backend 80.8% stmt / 68.3% branch. Frontend 98.7% stmt / 96.7% branch / 100% lines. 1824 tests pass, 6 errors in OneClickControllerTest.",
+      "changed_artifacts": [
+        ".ai-agent/memory/lessons.json"
+      ],
+      "coverage现状": {
+        "backend": {
+          "statements": "80.8%",
+          "branches": "68.3%",
+          "tests_total": 1824,
+          "tests_errors": 6,
+          "top_gap_classes": [
+            {"class": "ScanService", "coverage": "0%", "missed": 1488},
+            {"class": "OneClickService", "coverage": "0%", "missed": 1058},
+            {"class": "DastAnalyzer", "coverage": "68.1%", "missed": 631},
+            {"class": "ApiAnalyzer", "coverage": "60.4%", "missed": 267},
+            {"class": "OneClickController", "coverage": "0%", "missed": 235}
+          ]
+        },
+        "frontend": {
+          "statements": "98.71%",
+          "branches": "96.67%",
+          "functions": "98.63%",
+          "lines": "100%",
+          "tests": 633
+        }
+      },
+      "next_steps": [
+        "Fix OneClickControllerTest — add @MockBean for OneClickService, OneClickRepository",
+        "Verify ScanServiceTest actually runs and covers ScanService",
+        "Write new tests for ScanService (0% → 100%)",
+        "Write new tests for OneClickService (0% → 100%)",
+        "Improve DastAnalyzer tests (68% → 100%)",
+        "Improve ApiAnalyzer tests (60% → 100%)",
+        "Cover remaining smaller packages to 100%"
+      ],
+      "recorded_at": "2026-09-15T22:15:00.000Z"
     }
   ]
 }
