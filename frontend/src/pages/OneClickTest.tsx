@@ -46,7 +46,7 @@ export default function OneClickTest() {
   }
 
   async function start() {
-    const effProject = await createProjectIfNeeded().catch(e => { alert(e.message); throw e })
+    const effProject = await createProjectIfNeeded().catch(e => { alert(e.message); return null })
     if (!effProject) return
     setProjectId(effProject)
     // collect all non-empty targets across selected platforms
