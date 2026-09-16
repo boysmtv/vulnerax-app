@@ -48,7 +48,7 @@ describe('Login', () => {
   it('pre-fills email and password fields', () => {
     render(wrap(<Login />))
     expect(screen.getByPlaceholderText(/email/i)).toHaveValue('admin@vulnerax.io')
-    expect(screen.getByPlaceholderText(/password/i)).toHaveValue('Admin123!')
+    expect(screen.getByPlaceholderText(/password/i)).toHaveValue('Admin12345!abc')
   })
 
   it('toggles to register mode and shows fullName input', () => {
@@ -93,7 +93,7 @@ describe('Login', () => {
     mockPost.mockResolvedValue({ data: { success: true, data: { accessToken: 'tok123', user: { email: 'admin@vulnerax.io' } } } })
     render(wrap(<Login />))
     fireEvent.click(screen.getByRole('button', { name: /sign in/i }))
-    await waitFor(() => expect(mockPost).toHaveBeenCalledWith('/api/v1/auth/login', expect.objectContaining({ email: 'admin@vulnerax.io', password: 'Admin123!' })))
+    await waitFor(() => expect(mockPost).toHaveBeenCalledWith('/api/v1/auth/login', expect.objectContaining({ email: 'admin@vulnerax.io', password: 'Admin12345!abc' })))
   })
 
   it('calls login from auth store after successful submit', async () => {

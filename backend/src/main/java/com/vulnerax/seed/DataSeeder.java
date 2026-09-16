@@ -47,8 +47,8 @@ public class DataSeeder implements CommandLineRunner {
         if ("true".equalsIgnoreCase(demo)) {
             log.warn("VULNERAX_SEED_DEMO=true — demo seed skipped (mock removed)");
         }
-        User admin = userRepo.save(User.builder().email("admin@vulnerax.io").passwordHash(encoder.encode("Admin123!")).fullName("Security Admin").role(User.Role.ORG_OWNER).build());
+        User admin = userRepo.save(User.builder().email("admin@vulnerax.io").passwordHash(encoder.encode("Admin12345!abc")).fullName("Security Admin").role(User.Role.ORG_OWNER).build());
         // No mock org/workspace/project/asset/finding — must be created via POST /api/v1/organizations /projects /assets and real scans
-        log.info("Seed done: admin@vulnerax.io / Admin123! (no mock data)");
+        log.info("Seed done: admin@vulnerax.io / Admin12345!abc (no mock data)");
     }
 }

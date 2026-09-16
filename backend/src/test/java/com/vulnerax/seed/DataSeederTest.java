@@ -48,20 +48,20 @@ class DataSeederTest {
     @Test
     void run_whenEmpty_createsAdmin() {
         when(userRepo.count()).thenReturn(0L);
-        when(encoder.encode("Admin123!")).thenReturn("$2a$10$hashed");
+        when(encoder.encode("Admin12345!abc")).thenReturn("$2a$10$hashed");
         User saved = User.builder().email("admin@vulnerax.io").role(User.Role.ORG_OWNER).build();
         when(userRepo.save(any(User.class))).thenReturn(saved);
 
         seeder.run();
 
         verify(userRepo).save(any(User.class));
-        verify(encoder).encode("Admin123!");
+        verify(encoder).encode("Admin12345!abc");
     }
 
     @Test
     void run_whenEmpty_savesAdminWithCorrectFields() {
         when(userRepo.count()).thenReturn(0L);
-        when(encoder.encode("Admin123!")).thenReturn("$2a$10$hashed");
+        when(encoder.encode("Admin12345!abc")).thenReturn("$2a$10$hashed");
         when(userRepo.save(any(User.class))).thenAnswer(invocation -> {
             User u = invocation.getArgument(0);
             u.setId(UUID.randomUUID());
@@ -80,7 +80,7 @@ class DataSeederTest {
     @Test
     void run_doesNotCreateMockAssets() {
         when(userRepo.count()).thenReturn(0L);
-        when(encoder.encode("Admin123!")).thenReturn("$2a$10$hashed");
+        when(encoder.encode("Admin12345!abc")).thenReturn("$2a$10$hashed");
         when(userRepo.save(any(User.class))).thenReturn(User.builder().build());
 
         seeder.run();
@@ -91,7 +91,7 @@ class DataSeederTest {
     @Test
     void run_doesNotCreateOrganizations() {
         when(userRepo.count()).thenReturn(0L);
-        when(encoder.encode("Admin123!")).thenReturn("$2a$10$hashed");
+        when(encoder.encode("Admin12345!abc")).thenReturn("$2a$10$hashed");
         when(userRepo.save(any(User.class))).thenReturn(User.builder().build());
 
         seeder.run();

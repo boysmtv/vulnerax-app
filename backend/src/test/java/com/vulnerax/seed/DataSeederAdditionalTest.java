@@ -46,7 +46,7 @@ class DataSeederAdditionalTest {
     @Test
     void run_whenEmpty_createsAdminWithCorrectRole() {
         when(userRepo.count()).thenReturn(0L);
-        when(encoder.encode("Admin123!")).thenReturn("$2a$10$hashed");
+        when(encoder.encode("Admin12345!abc")).thenReturn("$2a$10$hashed");
         when(userRepo.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
         seeder.run();
         verify(userRepo).save(argThat(u ->
@@ -59,7 +59,7 @@ class DataSeederAdditionalTest {
     @Test
     void run_doesNotCreateOrgsOrProjects() {
         when(userRepo.count()).thenReturn(0L);
-        when(encoder.encode("Admin123!")).thenReturn("$2a$10$hashed");
+        when(encoder.encode("Admin12345!abc")).thenReturn("$2a$10$hashed");
         when(userRepo.save(any(User.class))).thenReturn(User.builder().build());
         seeder.run();
         verify(orgRepo, never()).save(any());
@@ -71,7 +71,7 @@ class DataSeederAdditionalTest {
     @Test
     void run_doesNotCreateFindings() {
         when(userRepo.count()).thenReturn(0L);
-        when(encoder.encode("Admin123!")).thenReturn("$2a$10$hashed");
+        when(encoder.encode("Admin12345!abc")).thenReturn("$2a$10$hashed");
         when(userRepo.save(any(User.class))).thenReturn(User.builder().build());
         seeder.run();
         verify(findingService, never()).create(any());
@@ -80,7 +80,7 @@ class DataSeederAdditionalTest {
     @Test
     void run_multipleCalls_onlySeedsOnce() {
         when(userRepo.count()).thenReturn(0L).thenReturn(1L);
-        when(encoder.encode("Admin123!")).thenReturn("$2a$10$hashed");
+        when(encoder.encode("Admin12345!abc")).thenReturn("$2a$10$hashed");
         when(userRepo.save(any(User.class))).thenReturn(User.builder().build());
         seeder.run();
         seeder.run();

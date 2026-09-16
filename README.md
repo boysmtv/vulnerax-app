@@ -41,7 +41,7 @@ docker compose up --build
 # Postgres → localhost:5432 (vulnerax/vulnerax)
 ```
 
-Default seed user: `admin@vulnerax.io / Admin123!` (sec@vulnerax.io / Sec123!, dev@vulnerax.io / Dev123!)
+Default seed user: `admin@vulnerax.io / Admin12345!abc` (sec@vulnerax.io / Sec123!, dev@vulnerax.io / Dev123!)
 
 ### Local Dev
 

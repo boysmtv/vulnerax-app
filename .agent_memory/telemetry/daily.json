@@ -26,7 +26,7 @@
     "session_summary": "Fixed One-Click Test scan pipeline: API routing (404\u2192200), entity constraints (scan_type NOT NULL), Kafka blocking (excluded auto-config), Vite proxy port (8081\u21928080). Scan now finds real vulnerabilities: 5 findings from 8 scanners against testphp.vulnweb.com."
   },
   "2026-09-16": {
-    "total": 8,
+    "total": 14,
     "by_tool": {
       "project_status": 1,
       "system_brain": 1,
@@ -35,12 +35,17 @@
       "task_queue_stats": 1,
       "scheduler_status": 1,
       "project_memory_list": 1,
-      "history_stats": 1
+      "history_stats": 1,
+      "project_onboard": 1,
+      "project_scan": 1,
+      "project_validate": 1,
+      "security_scan": 1,
+      "code_interpreter": 2
     },
     "by_agent": {
-      "opencode": 8
+      "opencode": 14
     },
-    "read_only": 8,
+    "read_only": 14,
     "with_token": 0
   }
 }

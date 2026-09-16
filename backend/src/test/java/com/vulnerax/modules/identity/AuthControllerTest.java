@@ -63,7 +63,7 @@ class AuthControllerTest {
     @Test
     void register_creates_user() throws Exception {
         when(authService.register(any(), any(), any(), any())).thenReturn(Map.of("token","tok2"));
-        var body = Map.of("email","new@b.com","password","Admin123!","fullName","New User","role","DEVELOPER");
+        var body = Map.of("email","new@b.com","password","Admin12345!abc","fullName","New User","role","DEVELOPER");
         mvc.perform(post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(body)))

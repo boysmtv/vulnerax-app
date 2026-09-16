@@ -6,7 +6,7 @@ import { Shield } from 'lucide-react'
 
 export default function Login() {
   const [email, setEmail] = useState('admin@vulnerax.io')
-  const [password, setPassword] = useState('Admin123!')
+  const [password, setPassword] = useState('Admin12345!abc')
   const [mode, setMode] = useState<'login'|'register'>('login')
   const [fullName, setFullName] = useState('Demo User')
   const [error, setError] = useState('')
@@ -39,7 +39,7 @@ export default function Login() {
           </div>
           <div>
             <h2 className="text-2xl font-semibold">{mode==='login'?'Welcome back':'Create account'}</h2>
-            <p className="text-sm text-slate-500 mt-1">Demo: admin@vulnerax.io / Admin123! &nbsp; • &nbsp; dev@vulnerax.io / Dev123!</p>
+            <p className="text-sm text-slate-500 mt-1">Demo: admin@vulnerax.io / Admin12345!abc</p>
           </div>
           {error && <div className="bg-red-50 text-red-700 text-sm p-3 rounded-lg border border-red-200">{error}</div>}
           <div className="space-y-3">
