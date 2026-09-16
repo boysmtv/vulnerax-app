@@ -23,11 +23,33 @@ public class DastAnalyzer {
         try {
             HttpResponse<String> resp = fetch(url);
             if (resp == null) {
-                Map<String,Object> f = mk("Target Unreachable", "CWE-693", "MEDIUM", "Tidak bisa fetch target " + url, url, 1, "Periksa apakah target internet-exposed");
+                // SCAN FAILURE — not a vulnerability
+                Map<String,Object> f = mkScanIssue("Target Unreachable", "TARGET_UNREACHABLE", "INFO",
+                    "Scanner tidak bisa mengakses " + url + ". Kemungkinan: DNS gagal, timeout, firewall, service down, atau jaringan terbatas.",
+                    url);
                 f.put("testUrl", url);
                 f.put("statusCode", 0);
                 f.put("responseHeaders", "");
                 f.put("responseBody", "");
+                f.put("findingType", "SCAN_ERROR");
+                f.put("scanSubtype", "TARGET_UNREACHABLE");
+                f.put("vulnerabilityConfirmed", false);
+                f.put("securityVulnerability", false);
+                f.put("severity", "INFO");
+                f.put("confidence", "LOW");
+                f.put("cwe", null);
+                f.put("cvss", null);
+                f.put("riskScore", 0);
+                f.put("riskLevel", "UNKNOWN");
+                f.put("recommendation", "1. Verifikasi DNS resolution dari scanner worker\n2. Test TCP connectivity ke port 80/443\n3. Pastikan HTTP/HTTPS protocol benar\n4. Cek firewall/WAF allowlist\n5. Konfirmasi apakah app perlu VPN/private network\n6. Retry DAST setelah connectivity pulih");
+                f.put("evidence", Map.of(
+                    "target", url,
+                    "dns", Map.of("resolved", "unknown"),
+                    "tcp", Map.of("reachable", false, "reason", "connection failed"),
+                    "http", Map.of("response", null),
+                    "scanner", Map.of("attempts", 1, "worker", "local"),
+                    "vulnerability", Map.of("confirmed", false)
+                ));
                 out.add(f);
                 return out;
             }
@@ -350,7 +372,16 @@ public class DastAnalyzer {
                 out.add(f);
             }
         } catch (Exception e) {
-            Map<String,Object> f = mk("DAST Error", "CWE-693", "INFO", "Error: " + e.getMessage(), target, 1, "Pastikan target accessible");
+            Map<String,Object> f = mkScanIssue("DAST Scan Error", "SCAN_ERROR", "INFO",
+                "Error during scan: " + e.getMessage(), target);
+            f.put("findingType", "SCAN_ERROR");
+            f.put("scanSubtype", "EXCEPTION");
+            f.put("vulnerabilityConfirmed", false);
+            f.put("securityVulnerability", false);
+            f.put("cwe", null);
+            f.put("cvss", null);
+            f.put("riskScore", 0);
+            f.put("evidence", Map.of("error", e.getMessage(), "vulnerability", Map.of("confirmed", false)));
             enrichDast(f, target, 0, "", "", null);
             out.add(f);
         }
@@ -407,6 +438,26 @@ public class DastAnalyzer {
         m.put("snippet", desc);
         m.put("recommendation", rec);
         m.put("match", title);
+        m.put("findingType", "VULNERABILITY");
+        m.put("securityVulnerability", true);
+        m.put("vulnerabilityConfirmed", true);
+        return m;
+    }
+
+    private static Map<String,Object> mkScanIssue(String title, String subtype, String severity, String desc, String url) {
+        Map<String,Object> m = new HashMap<>();
+        m.put("title", title);
+        m.put("rule", "SCAN_" + subtype);
+        m.put("cwe", null);
+        m.put("severity", severity);
+        m.put("file", url);
+        m.put("line", 0);
+        m.put("snippet", desc);
+        m.put("recommendation", "Verify connectivity before rescan");
+        m.put("match", title);
+        m.put("findingType", "SCAN_ERROR");
+        m.put("securityVulnerability", false);
+        m.put("vulnerabilityConfirmed", false);
         return m;
     }
 }

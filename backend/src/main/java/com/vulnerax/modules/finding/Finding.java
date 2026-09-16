@@ -68,6 +68,11 @@ public class Finding extends BaseEntity {
     @Builder.Default private Boolean falsePositive = false;
     @Builder.Default private Boolean duplicate = false;
 
+    // Classification: VULNERABILITY, MISCONFIGURATION, SCAN_ERROR, CONNECTIVITY, EXPOSURE
+    private String findingType;
+    @Builder.Default private Boolean securityVulnerability = true;
+    @Builder.Default private Boolean vulnerabilityConfirmed = false;
+
     private UUID parentFindingId;
     private UUID correlationId;
     private Instant firstSeenAt;

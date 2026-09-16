@@ -133,6 +133,13 @@ public class AiAnalystService {
     }
 
     private String rootCause(Finding f) {
+        // SCAN ERRORS — no vulnerability, don't hallucinate
+        if ("SCAN_ERROR".equals(f.getFindingType())) {
+            return "The scanner could not establish a valid connection to the target. The available evidence is insufficient to determine whether this is caused by service downtime, network filtering, DNS issues, firewall rules, or scanner network restrictions. No application vulnerability has been confirmed.";
+        }
+        if (!Boolean.TRUE.equals(f.getVulnerabilityConfirmed())) {
+            return "Root cause could not be determined because the vulnerability was not confirmed with supporting evidence.";
+        }
         if (f.getType()!=null && f.getType().contains("AUTHORIZATION")) return "Object-level authorization missing in " + f.getFunctionName() + ". Authentication present but ownership not validated before repository access.";
         if ("INJECTION".equals(f.getType())) return "Unsanitized input concatenated into query. Missing parameterized query / ORM usage.";
         if ("SECRET".equals(f.getType())) return "Hardcoded credential committed to repository. Secret not managed via Vault/KMS and exposed in build artifact.";
@@ -140,22 +147,43 @@ public class AiAnalystService {
         return "Insecure implementation of " + f.getType() + " with CWE " + f.getCwe() + ". Root cause is missing security control.";
     }
     private String impact(Finding f) {
+        // SCAN ERRORS — no vulnerability impact
+        if ("SCAN_ERROR".equals(f.getFindingType())) {
+            return "The security assessment is incomplete because the DAST engine was unable to test the target. This does not itself indicate a vulnerability, but it creates a coverage gap in the security assessment.";
+        }
+        if (!Boolean.TRUE.equals(f.getVulnerabilityConfirmed())) {
+            return "Security impact cannot be determined without confirmed vulnerability evidence.";
+        }
         if (Boolean.TRUE.equals(f.getInternetExposed()) && "CRITICAL".equals(f.getBusinessCriticality())) return "Critical - Internet exposed + critical asset + sensitive data. Exploit would lead to data breach.";
         if (Boolean.TRUE.equals(f.getKev())) return "High - Known exploited in the wild (CISA KEV). Immediate patch required.";
         return "Risk level " + f.getRiskLevel() + " with CVSS " + f.getCvss() + ". Business impact depends on data classification.";
     }
     private String remediation(Finding f) {
+        // SCAN ERRORS — remediation is about connectivity, not code
+        if ("SCAN_ERROR".equals(f.getFindingType())) {
+            return "1. Verify DNS resolution from the scanner worker\n2. Test TCP connectivity to ports 80 and 443\n3. Verify HTTP/HTTPS protocol and configured target port\n4. Check firewall/WAF allowlists\n5. Confirm whether the application requires VPN/private network access\n6. Retry DAST after connectivity has been restored";
+        }
+        if (!Boolean.TRUE.equals(f.getVulnerabilityConfirmed())) {
+            return "Remediation cannot be recommended without confirmed vulnerability evidence. Rescan after connectivity is restored.";
+        }
         if (f.getType()!=null && f.getType().contains("AUTHORIZATION")) return "Implement object-level authorization: validate that authenticated user owns/is authorized for requested object id before DB access. Add service-layer check + tests.";
         if ("SECRET".equals(f.getType())) return "Rotate secret immediately, purge from git history, move to Vault/Secrets Manager, enable secret scanning in CI, add pre-commit hook.";
         if ("INJECTION".equals(f.getType())) return "Use parameterized queries / prepared statements, input validation, ORM, and WAF rule as compensating control.";
         return f.getRecommendation()!=null? f.getRecommendation(): "Follow secure coding standard for " + f.getType() + " and verify via retest.";
     }
     private String codeFix(Finding f) {
+        if ("SCAN_ERROR".equals(f.getFindingType()) || !Boolean.TRUE.equals(f.getVulnerabilityConfirmed())) {
+            return "// No code fix needed — this is a scan connectivity issue, not a code vulnerability.";
+        }
         if ("INJECTION".equals(f.getType())) return "// Before: String q = \"SELECT * FROM users WHERE id=\" + input;\n// After: PreparedStatement ps = conn.prepareStatement(\"SELECT * FROM users WHERE id=?\"); ps.setString(1, input);";
         if (f.getType()!=null && f.getType().contains("AUTHORIZATION")) return "// In Service:\nif (!account.getOwnerId().equals(currentUser.getId()) && !currentUser.hasRole(\"ADMIN\")) throw new AccessDeniedException();\nreturn repo.findById(id);";
         return "// Apply secure pattern for " + f.getType() + " per CWE " + f.getCwe();
     }
     private String priority(Finding f) {
+        // SCAN ERRORS — no priority, just informational
+        if ("SCAN_ERROR".equals(f.getFindingType()) || !Boolean.TRUE.equals(f.getVulnerabilityConfirmed())) {
+            return "N/A — Scan connectivity issue, not a security vulnerability";
+        }
         double r = f.getRiskScore()!=null? f.getRiskScore():0;
         if (r>=81) return "P0 - Fix within 24 hours (SLA breach if not)";
         if (r>=61) return "P1 - Fix within 7 days";

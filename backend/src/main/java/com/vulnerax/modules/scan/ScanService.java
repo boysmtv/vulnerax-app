@@ -248,9 +248,33 @@ public class ScanService {
                 List<Map<String, Object>> results = com.vulnerax.modules.scan.analyzers.DastAnalyzer.analyze(scan.getTarget(), fileName);
                 for (var f : results) {
                     Finding fd = buildFindingFromMap(f, scan, "DAST", "dast-analyzer", 6.0);
-                    fd.setInternetExposed(true);
+                    String findingType = (String) f.getOrDefault("findingType", "VULNERABILITY");
+                    Boolean secVuln = (Boolean) f.getOrDefault("securityVulnerability", true);
+                    Boolean confirmed = (Boolean) f.getOrDefault("vulnerabilityConfirmed", false);
+
+                    fd.setFindingType(findingType);
+                    fd.setSecurityVulnerability(secVuln);
+                    fd.setVulnerabilityConfirmed(confirmed);
                     fd.setDataFlow("DAST: live site " + scan.getTarget());
                     fd.setEvidenceJson(buildDastEvidence(f, scan.getTarget()));
+
+                    // Only set internetExposed for confirmed vulnerabilities
+                    if (Boolean.TRUE.equals(secVuln) && Boolean.TRUE.equals(confirmed)) {
+                        fd.setInternetExposed(true);
+                    } else {
+                        fd.setInternetExposed(false);
+                        fd.setRiskScore(0.0);
+                        fd.setRiskLevel("UNKNOWN");
+                    }
+
+                    // Set confidence based on finding type
+                    if ("SCAN_ERROR".equals(findingType)) {
+                        fd.setConfidence("LOW");
+                        fd.setCwe(null);
+                        fd.setCvss(null);
+                        fd.setSeverity("INFO");
+                    }
+
                     findingService.create(fd);
                     total++;
                 }
