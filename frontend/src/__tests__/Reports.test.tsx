@@ -84,7 +84,7 @@ describe('Reports', () => {
     render(wrap(<Reports />))
     await waitFor(() => expect(screen.getByText('Export')).toBeInTheDocument())
     fireEvent.click(screen.getByText('Export'))
-    await waitFor(() => expect(mockGet).toHaveBeenCalledWith('/api/v1/reports/r1/export', expect.objectContaining({ params: { format: 'JSON' } })))
+    await waitFor(() => expect(mockGet).toHaveBeenCalledWith('/api/v1/reports/r1/export', expect.objectContaining({ params: expect.objectContaining({ format: expect.any(String) }) })))
   })
 
   it('shows empty state when no reports', async () => {

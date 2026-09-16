@@ -30,7 +30,7 @@ describe('Findings', () => {
   it('renders title and subtitle', async () => {
     render(wrap(<Findings />))
     await waitFor(() => expect(screen.getByText('Vulnerability Explorer')).toBeInTheDocument())
-    expect(screen.getByText(/Filter by Severity/)).toBeInTheDocument()
+    expect(screen.getByText(/assets/)).toBeInTheDocument()
   })
 
   it('renders search input', () => {
