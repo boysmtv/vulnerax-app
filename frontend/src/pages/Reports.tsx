@@ -51,7 +51,7 @@ export default function Reports() {
                 <td className="p-3 text-xs">{r.classification}</td>
                 <td className="p-3"><span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">{r.status}</span></td>
                 <td className="p-3 text-xs text-slate-500">{new Date(r.createdAt).toLocaleString()}</td>
-                <td className="p-3"><a href="#" onClick={async e=>{e.preventDefault(); const res=await api.get(`/api/v1/reports/${r.id}/export`,{params:{format:'JSON'}}); alert(JSON.stringify(res.data.data, null, 2).substring(0,800))}} className="text-xs text-indigo-600 hover:underline">Export</a></td>
+                <td className="p-3"><a href="#" onClick={async e=>{e.preventDefault(); try { const res = await api.get(`/api/v1/reports/${r.id}/export`,{params:{format:r.format}, responseType:'blob'}); const url = window.URL.createObjectURL(new Blob([res.data])); const a = document.createElement('a'); a.href = url; a.download = `${r.title || r.id}.${(r.format||'json').toLowerCase()}`; document.body.appendChild(a); a.click(); a.remove(); window.URL.revokeObjectURL(url); } catch { alert('Export failed — report content not available') } }} className="text-xs text-indigo-600 hover:underline">Export</a></td>
               </tr>
             ))}
           </tbody>
