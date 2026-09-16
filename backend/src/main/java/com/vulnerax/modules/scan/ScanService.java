@@ -3,6 +3,10 @@ package com.vulnerax.modules.scan;
 import com.vulnerax.common.exception.ResourceNotFoundException;
 import com.vulnerax.modules.finding.Finding;
 import com.vulnerax.modules.finding.FindingService;
+import com.vulnerax.modules.classification.ClassificationEngine;
+import com.vulnerax.modules.risk.Cvss4Calculator;
+import com.vulnerax.modules.risk.RiskEngine;
+import com.vulnerax.modules.compliance.OwaspMapper;
 import com.vulnerax.modules.identity.TenantContext;
 import com.vulnerax.modules.scan.SecurityScannerPlugin;
 import com.vulnerax.modules.scan.plugins.*;
@@ -29,6 +33,7 @@ public class ScanService {
     private final SecurityCoverageRegistry coverageRegistry;
     private final Map<String, SecurityScannerPlugin> pluginRegistry = new LinkedHashMap<>();
     private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final ClassificationEngine classificationEngine = new ClassificationEngine();
 
     public ScanService(ScanRepository scanRepo, ScanJobRepository jobRepo, FindingService findingService,
                       ApplicationContext ctx, SecurityCoverageRegistry coverageRegistry,
@@ -258,21 +263,64 @@ public class ScanService {
                     fd.setDataFlow("DAST: live site " + scan.getTarget());
                     fd.setEvidenceJson(buildDastEvidence(f, scan.getTarget()));
 
-                    // Only set internetExposed for confirmed vulnerabilities
-                    if (Boolean.TRUE.equals(secVuln) && Boolean.TRUE.equals(confirmed)) {
-                        fd.setInternetExposed(true);
-                    } else {
-                        fd.setInternetExposed(false);
-                        fd.setRiskScore(0.0);
-                        fd.setRiskLevel("UNKNOWN");
-                    }
+                    // Classify finding using ClassificationEngine
+                    ClassificationEngine.Classification classification = classificationEngine.classify(f);
+                    fd.setFindingSubtype(classification.findingSubtype().name());
+                    fd.setEvidenceStrength(classification.evidenceStrength());
+                    fd.setDetectionConfidence(classification.confidence().getOrDefault("detection", 0.0));
+                    fd.setClassificationConfidence(classification.confidence().getOrDefault("classification", 0.0));
+                    fd.setVulnerabilityConfidence(classification.confidence().getOrDefault("vulnerability", 0.0));
 
-                    // Set confidence based on finding type
-                    if ("SCAN_ERROR".equals(findingType)) {
+                    // Apply classification rules
+                    if ("SCAN_ERROR".equals(classification.findingClass().name())) {
                         fd.setConfidence("LOW");
                         fd.setCwe(null);
                         fd.setCvss(null);
                         fd.setSeverity("INFO");
+                        fd.setInternetExposed(false);
+                        fd.setRiskScore(0.0);
+                        fd.setRiskLevel("UNKNOWN");
+                        fd.setNextBestAction("Retest after connectivity issue resolved");
+                        fd.setNextBestActionPriority("MEDIUM");
+                    } else if ("VULNERABILITY".equals(classification.findingClass().name()) && Boolean.TRUE.equals(confirmed)) {
+                        fd.setCwe(classification.validatedCwe());
+                        fd.setInternetExposed(true);
+                        fd.setScanSubtype("SECURITY");
+
+                        // Calculate CVSS v4.0
+                        Cvss4Calculator.CvssResult cvss = Cvss4Calculator.calculate(
+                                classification.validatedCwe(),
+                                "N",
+                                "L",
+                                true, false, false
+                        );
+                        if (cvss != null) {
+                            fd.setCvss(cvss.score());
+                            fd.setSeverity(cvss.severity());
+                        }
+
+                        // Calculate Security Risk
+                        RiskEngine.RiskResult risk = RiskEngine.calculate(
+                                true,
+                                fd.getSeverity(),
+                                fd.getCvss() != null ? fd.getCvss() : 0,
+                                true, false, "MEDIUM", "INTERNAL", 0, "VULNERABILITY"
+                        );
+                        fd.setSecurityRisk(risk.securityRisk());
+                        fd.setCoverageRisk(risk.coverageRisk());
+                        fd.setSecurityRiskLevel(risk.securityRiskLevel());
+                        fd.setCoverageRiskLevel(risk.coverageRiskLevel());
+                        fd.setRiskScore(Math.max(risk.securityRisk(), risk.coverageRisk()));
+                        fd.setRiskLevel(risk.securityRiskLevel());
+
+                        // Set OWASP/ASVS/WSTG
+                        fd.setOwasp(OwaspMapper.getOwasp(classification.validatedCwe()));
+                        fd.setAsvsReq(OwaspMapper.getAsvs(classification.validatedCwe()));
+                        fd.setWstgTest(OwaspMapper.getWstg(classification.validatedCwe()));
+                    } else {
+                        fd.setInternetExposed(false);
+                        fd.setRiskScore(0.0);
+                        fd.setRiskLevel("UNKNOWN");
                     }
 
                     findingService.create(fd);

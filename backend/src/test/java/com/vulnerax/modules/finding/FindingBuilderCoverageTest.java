@@ -140,11 +140,15 @@ class FindingBuilderCoverageTest {
 
     @Test
     void allArgsConstructor_setsAll() {
-        Finding f = new Finding("F-001", "Title", "Desc", "SAST", "HIGH", "CONFIRMED",
-                "OPEN", null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null);
+        Finding f = Finding.builder()
+                .findingId("F-001")
+                .title("Title")
+                .description("Desc")
+                .type("SAST")
+                .severity("HIGH")
+                .confidence("CONFIRMED")
+                .status("OPEN")
+                .build();
         assertThat(f.getFindingId()).isEqualTo("F-001");
         assertThat(f.getTitle()).isEqualTo("Title");
     }

@@ -133,18 +133,26 @@ public class AiAnalystService {
     }
 
     private String rootCause(Finding f) {
-        // SCAN ERRORS — no vulnerability, don't hallucinate
+        // HARD RULE 1: SCAN_ERROR — never attribute vulnerability
         if ("SCAN_ERROR".equals(f.getFindingType())) {
-            return "The scanner could not establish a valid connection to the target. The available evidence is insufficient to determine whether this is caused by service downtime, network filtering, DNS issues, firewall rules, or scanner network restrictions. No application vulnerability has been confirmed.";
+            return "Scanner could not reach target. Evidence shows connection failure, not a vulnerability. No CWE or CVE assignment possible without confirmation.";
         }
+        // HARD RULE 2: Unconfirmed findings — no root cause attribution
         if (!Boolean.TRUE.equals(f.getVulnerabilityConfirmed())) {
-            return "Root cause could not be determined because the vulnerability was not confirmed with supporting evidence.";
+            return "Root cause cannot be determined. Finding is not confirmed. No evidence supports vulnerability classification.";
         }
-        if (f.getType()!=null && f.getType().contains("AUTHORIZATION")) return "Object-level authorization missing in " + f.getFunctionName() + ". Authentication present but ownership not validated before repository access.";
-        if ("INJECTION".equals(f.getType())) return "Unsanitized input concatenated into query. Missing parameterized query / ORM usage.";
-        if ("SECRET".equals(f.getType())) return "Hardcoded credential committed to repository. Secret not managed via Vault/KMS and exposed in build artifact.";
-        if ("SCA".equals(f.getType())) return "Transitive vulnerable dependency. Direct dependency pulls vulnerable component, reachable from application code.";
-        return "Insecure implementation of " + f.getType() + " with CWE " + f.getCwe() + ". Root cause is missing security control.";
+        // HARD RULE 3: CVE assignment requires NVD confirmation
+        if (f.getCveId() != null && !f.getCveId().isBlank()) {
+            return "Vulnerability confirmed with CVE " + f.getCveId() + ". Root cause: " + f.getCwe() + " in " + f.getFilePath() + ":" + f.getLineNumber() + ". Evidence: " + f.getCodeSnippet();
+        }
+        // Only assign root cause if we have evidence
+        if (f.getCwe() == null || f.getCodeSnippet() == null) {
+            return "Root cause cannot be determined without CWE and code evidence.";
+        }
+        if (f.getType()!=null && f.getType().contains("AUTHORIZATION")) return "Object-level authorization missing in " + f.getFunctionName() + ". Evidence: " + f.getCodeSnippet();
+        if ("INJECTION".equals(f.getType())) return "Unsanitized input concatenated into query. Evidence: " + f.getCodeSnippet();
+        if ("SECRET".equals(f.getType())) return "Hardcoded credential committed to repository. Evidence: " + f.getFilePath();
+        return "Insecure implementation of " + f.getType() + " with CWE " + f.getCwe() + ". Evidence: " + f.getFilePath();
     }
     private String impact(Finding f) {
         // SCAN ERRORS — no vulnerability impact

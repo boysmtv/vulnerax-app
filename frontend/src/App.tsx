@@ -34,6 +34,9 @@ import Coverage from './pages/Coverage'
 import Campaigns from './pages/Campaigns'
 import SupplyChain from './pages/SupplyChain'
 import OneClickTest from './pages/OneClickTest'
+import CorrelationPage from './pages/Correlation'
+import AssetGraphPage from './pages/AssetGraph'
+import ValidationPage from './pages/Validation'
 
 const qc = new QueryClient()
 
@@ -81,6 +84,9 @@ export default function App() {
           <Route path="/campaigns" element={<Guard><Campaigns /></Guard>} />
           <Route path="/supply-chain" element={<Guard><SupplyChain /></Guard>} />
           <Route path="/one-click" element={<Guard><OneClickTest /></Guard>} />
+          <Route path="/correlation" element={<Guard><CorrelationPage /></Guard>} />
+          <Route path="/asset-graph" element={<Guard><AssetGraphPage /></Guard>} />
+          <Route path="/validation" element={<Guard><ValidationPage /></Guard>} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

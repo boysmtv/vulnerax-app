@@ -144,6 +144,11 @@ public class FindingService {
     }
 
     @Transactional
+    public Finding update(Finding f) {
+        return findingRepo.save(f);
+    }
+
+    @Transactional
     public Finding updateStatus(UUID id, String status, String comment) {
         Finding f = get(id);
         String old = f.getStatus();

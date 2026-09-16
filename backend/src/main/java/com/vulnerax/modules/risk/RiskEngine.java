@@ -123,4 +123,80 @@ public class RiskEngine {
             return Integer.toHexString(input.hashCode());
         }
     }
+
+    // Static methods for new risk calculation (Security Risk vs Coverage Risk)
+    public record RiskResult(
+            double securityRisk,
+            double coverageRisk,
+            String securityRiskLevel,
+            String coverageRiskLevel,
+            Map<String, Double> breakdown,
+            Map<String, String> explanation
+    ) {}
+
+    public static RiskResult calculate(
+            boolean vulnerabilityConfirmed,
+            String cvssSeverity,
+            double cvssScore,
+            boolean internetExposed,
+            boolean kev,
+            String businessCriticality,
+            String dataClassification,
+            double scanCoverage,
+            String findingClass
+    ) {
+        java.util.LinkedHashMap<String, Double> breakdown = new java.util.LinkedHashMap<>();
+        java.util.LinkedHashMap<String, String> explanation = new java.util.LinkedHashMap<>();
+
+        double securityRisk = 0;
+        double coverageRisk = 0;
+
+        if (vulnerabilityConfirmed && cvssScore > 0) {
+            double technicalSeverity = cvssScore * 10;
+            breakdown.put("technical_severity", technicalSeverity);
+            explanation.put("technical_severity", "CVSS v4.0 score: " + cvssScore);
+
+            double exploitability = 0;
+            if (kev) exploitability += 16.0;
+            if (internetExposed) exploitability += 12.0;
+            breakdown.put("exploitability", exploitability);
+            explanation.put("exploitability", kev ? "Known exploited (CISA KEV)" : "No KEV entry");
+
+            double assetCriticality = switch (businessCriticality != null ? businessCriticality : "MEDIUM") {
+                case "CRITICAL" -> 14.0;
+                case "HIGH" -> 10.0;
+                case "MEDIUM" -> 6.0;
+                default -> 2.0;
+            };
+            breakdown.put("asset_criticality", assetCriticality);
+            explanation.put("asset_criticality", "Business criticality: " + businessCriticality);
+
+            double dataSensitivity = switch (dataClassification != null ? dataClassification : "INTERNAL") {
+                case "RESTRICTED" -> 12.0;
+                case "CONFIDENTIAL" -> 8.0;
+                case "INTERNAL" -> 4.0;
+                default -> 1.0;
+            };
+            breakdown.put("data_sensitivity", dataSensitivity);
+            explanation.put("data_sensitivity", "Data classification: " + dataClassification);
+
+            securityRisk = Math.min(100, technicalSeverity + exploitability + assetCriticality + dataSensitivity);
+        }
+
+        if (scanCoverage < 100) {
+            coverageRisk = (100 - scanCoverage) * 0.8;
+            if ("CRITICAL".equals(businessCriticality) || "HIGH".equals(businessCriticality)) {
+                coverageRisk *= 1.3;
+            }
+            coverageRisk = Math.min(100, coverageRisk);
+        }
+
+        String securityRiskLevel = Cvss4Calculator.getSeverity(securityRisk / 10);
+        String coverageRiskLevel = coverageRisk >= 70 ? "HIGH" : coverageRisk >= 40 ? "MEDIUM" : "LOW";
+
+        explanation.put("final_security_risk", "Security risk: " + String.format("%.1f", securityRisk) + "/100");
+        explanation.put("final_coverage_risk", "Coverage risk: " + String.format("%.1f", coverageRisk) + "/100 (scan coverage: " + String.format("%.0f", scanCoverage) + "%)");
+
+        return new RiskResult(securityRisk, coverageRisk, securityRiskLevel, coverageRiskLevel, breakdown, explanation);
+    }
 }

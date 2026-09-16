@@ -36,6 +36,9 @@ const nav = [
   { to: '/coverage', label: 'Coverage', icon: PieChart },
   { to: '/campaigns', label: 'Campaigns', icon: Flag },
   { to: '/supply-chain', label: 'Supply Chain', icon: PackageCheck },
+  { to: '/correlation', label: 'Correlation', icon: Network },
+  { to: '/asset-graph', label: 'Asset Graph', icon: Boxes },
+  { to: '/validation', label: 'Validation Gate', icon: ClipboardCheck },
 ]
 
 export default function Layout({ children }: { children: React.ReactNode }) {
