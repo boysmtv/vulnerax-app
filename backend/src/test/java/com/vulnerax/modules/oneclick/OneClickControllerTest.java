@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class OneClickControllerTest {
 
     @Autowired MockMvc mvc;
+    @MockBean OneClickService oneClickService;
     @MockBean ScanService scanService;
     @MockBean AssetService assetService;
     @MockBean SecurityCoverageRegistry coverageRegistry;
@@ -55,7 +56,7 @@ class OneClickControllerTest {
     @Test
     void scan_urlType_returnsOk() throws Exception {
         setupScanMocks();
-        mvc.perform(post("/api/v1/oneclick/scan")
+        mvc.perform(post("/api/v1/scan")
                         .param("targetType", "url")
                         .param("targetUrl", "https://example.com")
                         .principal(mockAuth()))
@@ -65,7 +66,7 @@ class OneClickControllerTest {
     @Test
     void scan_ipType_returnsOk() throws Exception {
         setupScanMocks();
-        mvc.perform(post("/api/v1/oneclick/scan")
+        mvc.perform(post("/api/v1/scan")
                         .param("targetType", "ip")
                         .param("targetUrl", "192.168.1.1")
                         .principal(mockAuth()))
@@ -75,7 +76,7 @@ class OneClickControllerTest {
     @Test
     void scan_domainType_returnsOk() throws Exception {
         setupScanMocks();
-        mvc.perform(post("/api/v1/oneclick/scan")
+        mvc.perform(post("/api/v1/scan")
                         .param("targetType", "domain")
                         .param("targetUrl", "example.com")
                         .principal(mockAuth()))
@@ -85,7 +86,7 @@ class OneClickControllerTest {
     @Test
     void scan_mobileType_returnsOk() throws Exception {
         setupScanMocks();
-        mvc.perform(post("/api/v1/oneclick/scan")
+        mvc.perform(post("/api/v1/scan")
                         .param("targetType", "mobile")
                         .param("targetUrl", "app.apk")
                         .principal(mockAuth()))
@@ -97,7 +98,7 @@ class OneClickControllerTest {
         Map<String, Object> coverage = Map.of("totalTests", 15, "recommendedTags", List.of("url", "sqli"));
         when(coverageRegistry.planCoverage(anyString(), anyString())).thenReturn(coverage);
 
-        mvc.perform(get("/api/v1/oneclick/plan")
+        mvc.perform(get("/api/v1/plan")
                         .param("targetType", "url")
                         .param("targetUrl", "https://example.com"))
                 .andExpect(status().isOk());
@@ -108,7 +109,7 @@ class OneClickControllerTest {
         Map<String, Object> coverage = Map.of("totalTests", 2);
         when(coverageRegistry.planCoverage(anyString(), anyString())).thenReturn(coverage);
 
-        mvc.perform(get("/api/v1/oneclick/plan")
+        mvc.perform(get("/api/v1/plan")
                         .param("targetType", "unknown")
                         .param("targetUrl", "something"))
                 .andExpect(status().isOk());
