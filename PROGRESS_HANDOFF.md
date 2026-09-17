@@ -1,37 +1,35 @@
 # VulneraX Test Coverage Handoff
 
-## Current State (Sept 17, 2026 — 12:32 PM)
+## Current State (Sept 17, 2026 — 1:35 PM)
 - **Frontend**: 658 tests ALL PASS, 98.9% stmts, 95.66% branch, 98.78% funcs, 100% lines
-- **Backend**: 68 tests ALL PASS (risk, identity, finding, report modules)
+- **Backend**: 106 tests ALL PASS (risk, identity, finding, report modules subset)
 - **Backend JaCoCo**: 19% overall (modules/report 97%, modules/graph 95%, modules/mobile 81%)
+- **System Status**: Running locally — backend :8080, frontend :5173
+- **Docker Services**: PostgreSQL :5434, Redis :6381, Kafka :9094, Zookeeper
+
+## System Running State
+- Backend started via `mvn spring-boot:run` with env vars: DATABASE_URL=jdbc:postgresql://localhost:5434/vulnerax, REDIS_HOST=localhost:6381, KAFKA_BOOTSTRAP=localhost:9094
+- Frontend via `npm run dev` on port 5173
+- Docker infra: `docker compose up -d postgres redis zookeeper kafka`
+- DataSeeder seeds admin@vulnerax.io / Admin12345!abc (ORG_OWNER)
+- Login works, dashboard accessible, all features available
 
 ## What Was Fixed This Session
 1. **4 broken page imports** — `import api from "../api"` → `import { api } from "../api/client"`:
-   - `Coverage.tsx`
-   - `AssetGraph.tsx`
-   - `Correlation.tsx`
-   - `Validation.tsx`
+   - `Coverage.tsx`, `AssetGraph.tsx`, `Correlation.tsx`, `Validation.tsx`
 
-2. **Rewrote `Coverage.tsx`** — old page used `overallCoverage.toFixed()` on wrong data shape. New page:
-   - Project selector dropdown
-   - Create Demo button
-   - Coverage cards with domain/status/percent
-   - JSON `<pre>` display
-   - Empty state, loading state, error handling
+2. **Rewrote `Coverage.tsx`** — new page with project selector, Create Demo, coverage cards, JSON pre display
 
-3. **Fixed `Coverage.test.tsx`** — 3 test fixes:
-   - `beforeEach` now restores default mock implementation (was lost by `vi.clearAllMocks()`)
-   - Changed `mockImplementationOnce` → `mockImplementation` (component makes 2 API calls)
-   - Changed `getByText(/TESTED/)` → `getAllByText(/TESTED/)` (multiple elements match)
+3. **Fixed `Coverage.test.tsx`** — mock restoration, mockImplementationOnce→mockImplementation, getAllByText
 
-4. **Fixed `Findings.tsx` collapseAll bug** — `collapseAll()` set `expanded({})` but `isOpen` checked `!== false` (undefined !== false = true), so groups never collapsed. Fixed by explicitly setting all groups to `false`.
+4. **Fixed `Findings.tsx` collapseAll bug** — explicitly set all groups to `false`
 
-5. **Added 12 frontend tests** (Findings expand/collapse/toggle/sort/stats, Coverage error handling, non-TESTED status, CreateDemo with content/null responses, multiple items)
+5. **Added 12 frontend tests** (Findings expand/collapse/toggle/sort/stats, Coverage error handling)
 
 6. **Added 45 backend tests** across 3 new test files:
-   - `RiskEngineStaticCalculateTest` (21 tests) — static `calculate()` method with RiskResult
+   - `RiskEngineStaticCalculateTest` (21 tests) — static `calculate()` method
    - `AuthServicePasswordValidationTest` (9 tests) — `validatePasswordStrength()` branches
-   - `FindingServiceExtendedTest` (15 tests) — `update()`, evidence creation, correlation, stats null handling
+   - `FindingServiceExtendedTest` (15 tests) — `update()`, evidence, correlation, stats
 
 ## Frontend Coverage Detail
 | File | Stmts | Branch | Funcs | Lines |
@@ -51,9 +49,9 @@
 | modules/graph | 95% | 86% | GOOD |
 | modules/mobile | 81% | 74% | GOOD |
 | modules/reporting | 44% | 20% | NEEDS WORK |
-| modules/risk | 39% | 28% | IMPROVED (21 new tests for static calculate) |
-| modules/finding | 37% | 43% | IMPROVED (15 new tests for update/evidence/correlation) |
-| modules/identity | 37% | 28% | IMPROVED (9 new tests for password validation) |
+| modules/risk | 39% | 28% | IMPROVED (21 new tests) |
+| modules/finding | 37% | 43% | IMPROVED (15 new tests) |
+| modules/identity | 37% | 28% | IMPROVED (9 new tests) |
 | modules/scan | 29% | 10% | NEEDS WORK |
 | All others | 0% | 0% | NO TESTS |
 
@@ -67,8 +65,7 @@
 ## Key Pitfalls Learned
 - `vi.clearAllMocks()` clears mock implementations too — restore in `beforeEach`
 - `mockImplementationOnce` only applies to 1 call — use `mockImplementation` for multi-call components
-- Frontend pages must match test expectations — check test mocks before writing page
-- `document.querySelector` returns `null` in tests — prefer `screen` queries
-- Backend full test suite times out — run subsets or use `-Dtest=Pattern`
 - `assertEquals(0, boxedDouble)` fails — use `assertEquals(0.0, ...)` for type match
-- `User.Role` enum has no `ADMIN` — valid values: ORG_OWNER, SECURITY_ADMIN, SECURITY_ENGINEER, PENTESTER, DEVELOPER, TECH_LEAD, AUDITOR, VIEWER, CLIENT
+- `User.Role` enum: ORG_OWNER, SECURITY_ADMIN, SECURITY_ENGINEER, PENTESTER, DEVELOPER, TECH_LEAD, AUDITOR, VIEWER, CLIENT
+- DataSeeder skips if user count > 0 — delete all users to force re-seed
+- Backend full test suite times out — run subsets with `-Dtest=Pattern`
