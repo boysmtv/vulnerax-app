@@ -49,7 +49,9 @@ export default function Findings() {
   }
 
   function collapseAll() {
-    setExpanded({})
+    const all: Record<string, boolean> = {}
+    Object.keys(grouped).forEach(k => all[k] = false)
+    setExpanded(all)
   }
 
   function getGroupStats(findings: any[]) {

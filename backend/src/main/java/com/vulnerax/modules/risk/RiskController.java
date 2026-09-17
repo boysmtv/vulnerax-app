@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController @RequestMapping("/api/risk") @RequiredArgsConstructor
+@RestController @RequestMapping("/api/v1/risk") @RequiredArgsConstructor
 public class RiskController {
     private final EnrichmentService enrichmentService;
 

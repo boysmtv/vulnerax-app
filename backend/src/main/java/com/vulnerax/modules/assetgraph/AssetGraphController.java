@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController @RequestMapping("/api/asset-graph") @RequiredArgsConstructor
+@RestController @RequestMapping("/api/v1/asset-graph") @RequiredArgsConstructor
 public class AssetGraphController {
     private final AssetGraphEngine assetGraphEngine;
 

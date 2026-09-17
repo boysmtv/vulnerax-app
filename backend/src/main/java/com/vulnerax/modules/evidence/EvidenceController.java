@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController @RequestMapping("/api/evidence") @RequiredArgsConstructor
+@RestController @RequestMapping("/api/v1/evidence") @RequiredArgsConstructor
 public class EvidenceController {
     private final EvidenceChainService evidenceService;
 

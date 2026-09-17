@@ -261,4 +261,91 @@ describe('Findings', () => {
     fireEvent.change(screen.getByPlaceholderText(/Search CVE/), { target: { value: 'xyz' } })
     await waitFor(() => expect(screen.getByText(/No findings/)).toBeInTheDocument())
   })
+
+  it('search filters by assetName', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [
+        { id: '1', name: 'API Gateway', status: 'OPEN', severity: 'HIGH', title: 'XSS', findingId: 'FND-001', cvss: 7.0, cwe: 'CWE-79', source: 'SAST', riskScore: 60, riskLevel: 'HIGH', owasp: 'A03', assetName: 'API Gateway' },
+        { id: '2', name: 'DB Server', status: 'OPEN', severity: 'LOW', title: 'Info Leak', findingId: 'FND-002', cvss: 3.0, source: 'DAST', riskScore: 20, riskLevel: 'LOW', owasp: 'A01', assetName: 'DB Server' }
+      ] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => expect(screen.getByText('FND-001 — XSS')).toBeInTheDocument())
+    fireEvent.change(screen.getByPlaceholderText(/Search CVE/), { target: { value: 'API Gateway' } })
+    await waitFor(() => expect(screen.getByText('FND-001 — XSS')).toBeInTheDocument())
+  })
+
+  it('expand all and collapse all', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [
+        { id: '1', name: 'Test', status: 'OPEN', severity: 'HIGH', title: 'XSS', findingId: 'FND-001', cvss: 7.0, source: 'SAST', riskScore: 60, riskLevel: 'HIGH', owasp: 'A03', assetName: 'API' },
+        { id: '2', name: 'Test', status: 'OPEN', severity: 'CRITICAL', title: 'SQLi', findingId: 'FND-002', cvss: 9.8, source: 'DAST', riskScore: 95, riskLevel: 'CRITICAL', owasp: 'A03', assetName: 'API' }
+      ] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => expect(screen.getByText('FND-001 — XSS')).toBeInTheDocument())
+    fireEvent.click(screen.getByText('Collapse All'))
+    expect(screen.queryByText('FND-001 — XSS')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByText('Expand All'))
+    await waitFor(() => expect(screen.getByText('FND-001 — XSS')).toBeInTheDocument())
+  })
+
+  it('toggle group by clicking asset header', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [
+        { id: '1', name: 'Test', status: 'OPEN', severity: 'HIGH', title: 'XSS', findingId: 'FND-001', cvss: 7.0, source: 'SAST', riskScore: 60, riskLevel: 'HIGH', owasp: 'A03', assetName: 'API' }
+      ] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => expect(screen.getByText('FND-001 — XSS')).toBeInTheDocument())
+    fireEvent.click(screen.getByText('API'))
+    expect(screen.queryByText('FND-001 — XSS')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByText('API'))
+    await waitFor(() => expect(screen.getByText('FND-001 — XSS')).toBeInTheDocument())
+  })
+
+  it('displays group stats and risk score', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [
+        { id: '1', name: 'Test', status: 'OPEN', severity: 'HIGH', title: 'XSS', findingId: 'FND-001', cvss: 7.0, source: 'SAST', riskScore: 60, riskLevel: 'HIGH', owasp: 'A03', assetName: 'API' },
+        { id: '2', name: 'Test', status: 'OPEN', severity: 'CRITICAL', title: 'SQLi', findingId: 'FND-002', cvss: 9.8, source: 'DAST', riskScore: 95, riskLevel: 'CRITICAL', owasp: 'A03', assetName: 'API' }
+      ] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => {
+      expect(screen.getByText('2 findings')).toBeInTheDocument()
+      expect(screen.getByText('Risk 95')).toBeInTheDocument()
+    })
+  })
+
+  it('displays open count in group header', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [
+        { id: '1', name: 'Test', status: 'OPEN', severity: 'HIGH', title: 'XSS', findingId: 'FND-001', cvss: 7.0, source: 'SAST', riskScore: 60, riskLevel: 'HIGH', owasp: 'A03', assetName: 'API' },
+        { id: '2', name: 'Test', status: 'RESOLVED', severity: 'LOW', title: 'Info', findingId: 'FND-002', cvss: 3.0, source: 'DAST', riskScore: 10, riskLevel: 'LOW', owasp: 'A01', assetName: 'API' }
+      ] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => expect(screen.getByText(/1 open/)).toBeInTheDocument())
+  })
+
+  it('sorts groups by highest severity', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/findings')) return Promise.resolve({ data: { success: true, data: { content: [
+        { id: '1', name: 'Test', status: 'OPEN', severity: 'LOW', title: 'Low Issue', findingId: 'FND-001', cvss: 3.0, source: 'DAST', riskScore: 10, riskLevel: 'LOW', owasp: 'A01', assetName: 'LowAsset' },
+        { id: '2', name: 'Test', status: 'OPEN', severity: 'CRITICAL', title: 'Critical Issue', findingId: 'FND-002', cvss: 9.8, source: 'SAST', riskScore: 95, riskLevel: 'CRITICAL', owasp: 'A03', assetName: 'CriticalAsset' }
+      ] } } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+    render(wrap(<Findings />))
+    await waitFor(() => {
+      const assets = screen.getAllByText(/Asset/)
+      expect(assets.length).toBeGreaterThanOrEqual(2)
+    })
+  })
 })

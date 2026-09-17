@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController @RequestMapping("/api/findings/validation") @RequiredArgsConstructor
+@RestController @RequestMapping("/api/v1/findings/validation") @RequiredArgsConstructor
 public class ValidationGateController {
     private final ValidationGateService validationGateService;
     private final FindingService findingService;

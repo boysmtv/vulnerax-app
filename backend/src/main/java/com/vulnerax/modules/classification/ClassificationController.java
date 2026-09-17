@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController @RequestMapping("/api/classification") @RequiredArgsConstructor
+@RestController @RequestMapping("/api/v1/classification") @RequiredArgsConstructor
 public class ClassificationController {
     private final ClassificationEngine engine;
 

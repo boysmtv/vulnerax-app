@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController @RequestMapping("/api/findings/actions") @RequiredArgsConstructor
+@RestController @RequestMapping("/api/v1/findings/actions") @RequiredArgsConstructor
 public class NextBestActionController {
     private final NextBestActionService nextBestActionService;
 

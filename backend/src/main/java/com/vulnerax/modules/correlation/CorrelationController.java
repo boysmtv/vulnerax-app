@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController @RequestMapping("/api/correlation") @RequiredArgsConstructor
+@RestController @RequestMapping("/api/v1/correlation") @RequiredArgsConstructor
 public class CorrelationController {
     private final CorrelationEngine correlationEngine;
 

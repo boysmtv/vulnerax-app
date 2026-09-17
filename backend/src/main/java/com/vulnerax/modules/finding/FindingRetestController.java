@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController @RequestMapping("/api/findings/retest") @RequiredArgsConstructor
+@RestController @RequestMapping("/api/v1/findings/retest") @RequiredArgsConstructor
 public class FindingRetestController {
     private final FindingService findingService;
     private final EvidenceChainService evidenceService;

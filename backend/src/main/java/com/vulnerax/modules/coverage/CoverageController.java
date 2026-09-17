@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController @RequestMapping("/api/coverage") @RequiredArgsConstructor
+@RestController @RequestMapping("/api/v1/coverage") @RequiredArgsConstructor
 public class CoverageController {
     private final CoverageEngine coverageEngine;
 

@@ -25,7 +25,14 @@ const qc = () => new QueryClient({ defaultOptions: { queries: { retry: false } }
 const wrap = (c: React.ReactNode) => <QueryClientProvider client={qc()}><MemoryRouter>{c}</MemoryRouter></QueryClientProvider>
 
 describe('Coverage', () => {
-  beforeEach(() => { vi.clearAllMocks() })
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [{ id: 'c1', domain: 'SAST', status: 'TESTED', coveragePercent: 85, provider: 'AWS' }] } })
+      return Promise.resolve({ data: { success: true, data: { content: [] } } })
+    })
+  })
 
   it('renders title and subtitle', async () => {
     render(wrap(<Coverage />))
@@ -57,7 +64,7 @@ describe('Coverage', () => {
   })
 
   it('shows empty state when no coverage data', async () => {
-    mockGet.mockImplementationOnce((url: string) => {
+    mockGet.mockImplementation((url: string) => {
       if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
       if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [] } })
       return Promise.resolve({ data: { success: true, data: {} } })
@@ -72,7 +79,7 @@ describe('Coverage', () => {
   })
 
   it('changes project selector', async () => {
-    mockGet.mockImplementationOnce((url: string) => {
+    mockGet.mockImplementation((url: string) => {
       if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Project A' }, { id: 'p2', name: 'Project B' }] } } })
       if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [] } })
       return Promise.resolve({ data: { success: true, data: {} } })
@@ -197,7 +204,7 @@ describe('Coverage', () => {
     render(wrap(<Coverage />))
     await waitFor(() => {
       expect(screen.getAllByText(/SAST/).length).toBeGreaterThan(0)
-      expect(screen.getByText(/TESTED/)).toBeInTheDocument()
+      expect(screen.getAllByText(/TESTED/).length).toBeGreaterThan(0)
     })
   })
 
@@ -212,5 +219,137 @@ describe('Coverage', () => {
       expect(screen.getByText('Test Project')).toBeInTheDocument()
     })
     expect(screen.queryByText(/No data.*Security Coverage will appear/)).not.toBeInTheDocument()
+  })
+
+  it('handles projects API error gracefully', async () => {
+    mockGet.mockRejectedValueOnce(new Error('Network error'))
+    render(wrap(<Coverage />))
+    await waitFor(() => {
+      expect(screen.getByText('Security Coverage')).toBeInTheDocument()
+    })
+  })
+
+  it('handles coverage API error gracefully', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.reject(new Error('Coverage API down'))
+      return Promise.resolve({ data: { success: true, data: {} } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => {
+      expect(screen.getByText('Test Project')).toBeInTheDocument()
+      expect(screen.getByText(/No data.*Security Coverage will appear/)).toBeInTheDocument()
+    })
+  })
+
+  it('displays non-TESTED status with different badge color', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [{ id: 'c1', domain: 'SAST', status: 'PENDING', coveragePercent: 50, provider: 'SONAR' }] } })
+      return Promise.resolve({ data: { success: true, data: {} } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => {
+      expect(screen.getByText('PENDING')).toBeInTheDocument()
+      expect(screen.getByText('50%')).toBeInTheDocument()
+      expect(screen.getByText('Provider: SONAR')).toBeInTheDocument()
+    })
+  })
+
+  it('handles CreateDemo success with content property response', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [] } })
+      return Promise.resolve({ data: { success: true, data: {} } })
+    })
+    mockPost.mockResolvedValueOnce({ data: { success: true } })
+    render(wrap(<Coverage />))
+    await waitFor(() => expect(screen.getByText('Create Demo')).toBeInTheDocument())
+    fireEvent.click(screen.getByText('Create Demo'))
+    await waitFor(() => expect(mockPost).toHaveBeenCalled())
+  })
+
+  it('handles CreateDemo success with null response data', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [] } })
+      return Promise.resolve({ data: { success: true, data: {} } })
+    })
+    mockPost.mockResolvedValueOnce({ data: { success: true } })
+    render(wrap(<Coverage />))
+    await waitFor(() => expect(screen.getByText('Create Demo')).toBeInTheDocument())
+    fireEvent.click(screen.getByText('Create Demo'))
+    await waitFor(() => expect(mockPost).toHaveBeenCalled())
+  })
+
+  it('handles CreateDemo refresh returning content object', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [] } })
+      return Promise.resolve({ data: { success: true, data: {} } })
+    })
+    let callCount = 0
+    mockPost.mockImplementation(() => {
+      callCount++
+      return Promise.resolve({ data: { success: true } })
+    })
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) {
+        if (callCount > 0) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'c1', domain: 'SAST', status: 'TESTED', coveragePercent: 85, provider: 'AWS' }] } } })
+        return Promise.resolve({ data: { success: true, data: [] } })
+      }
+      return Promise.resolve({ data: { success: true, data: {} } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => expect(screen.getByText('Create Demo')).toBeInTheDocument())
+    fireEvent.click(screen.getByText('Create Demo'))
+    await waitFor(() => expect(screen.getByText('SAST')).toBeInTheDocument())
+  })
+
+  it('handles CreateDemo refresh returning null data', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [] } })
+      return Promise.resolve({ data: { success: true, data: {} } })
+    })
+    let callCount = 0
+    mockPost.mockImplementation(() => {
+      callCount++
+      return Promise.resolve({ data: { success: true } })
+    })
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) {
+        if (callCount > 0) return Promise.resolve({ data: { success: true, data: null } })
+        return Promise.resolve({ data: { success: true, data: [] } })
+      }
+      return Promise.resolve({ data: { success: true, data: {} } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => expect(screen.getByText('Create Demo')).toBeInTheDocument())
+    fireEvent.click(screen.getByText('Create Demo'))
+    await waitFor(() => expect(screen.getByText(/No data.*Security Coverage will appear/)).toBeInTheDocument())
+  })
+
+  it('displays multiple coverage items with progress bars', async () => {
+    mockGet.mockImplementation((url: string) => {
+      if (url.includes('/projects')) return Promise.resolve({ data: { success: true, data: { content: [{ id: 'p1', name: 'Test Project' }] } } })
+      if (url.includes('/coverage')) return Promise.resolve({ data: { success: true, data: [
+        { id: 'c1', domain: 'SAST', status: 'TESTED', coveragePercent: 85, provider: 'AWS' },
+        { id: 'c2', domain: 'DAST', status: 'TESTED', coveragePercent: 70, provider: 'BURP' },
+        { id: 'c3', domain: 'SCA', status: 'PASSED', coveragePercent: 95, provider: 'SCATool' }
+      ] } })
+      return Promise.resolve({ data: { success: true, data: {} } })
+    })
+    render(wrap(<Coverage />))
+    await waitFor(() => {
+      expect(screen.getByText('SAST')).toBeInTheDocument()
+      expect(screen.getByText('DAST')).toBeInTheDocument()
+      expect(screen.getByText('SCA')).toBeInTheDocument()
+      expect(screen.getByText('85%')).toBeInTheDocument()
+      expect(screen.getByText('70%')).toBeInTheDocument()
+      expect(screen.getByText('95%')).toBeInTheDocument()
+    })
   })
 })
