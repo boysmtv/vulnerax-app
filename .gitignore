@@ -29,7 +29,7 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
-coverage/
+frontend/coverage/
 .nyc_output/
 logs/
 *.tmp
