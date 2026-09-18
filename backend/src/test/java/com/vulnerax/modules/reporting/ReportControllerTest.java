@@ -17,6 +17,10 @@ class ReportControllerTest {
 
     @Autowired MockMvc mvc;
     @MockBean ReportService service;
+    @MockBean com.vulnerax.modules.report.ReportService pdfService;
+    @MockBean com.vulnerax.modules.scan.ScanRepository scanRepo;
+    @MockBean com.vulnerax.modules.finding.FindingRepository findingRepo;
+    @MockBean com.vulnerax.modules.finding.FindingService findingService;
     @MockBean com.vulnerax.modules.identity.JwtTokenProvider jwtTokenProvider;
     @MockBean com.vulnerax.modules.identity.JwtAuthFilter jwtAuthFilter;
     @MockBean com.vulnerax.modules.identity.UserRepository userRepository;

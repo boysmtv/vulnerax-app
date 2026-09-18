@@ -1,8 +1,9 @@
 # VulneraX Test Coverage Handoff
 
-## Current State (Sept 17, 2026 — 1:35 PM)
-- **Frontend**: 658 tests ALL PASS, 98.9% stmts, 95.66% branch, 98.78% funcs, 100% lines
-- **Backend**: 106 tests ALL PASS (risk, identity, finding, report modules subset)
+## Current State (Sept 18, 2026 — 12:35 PM)
+- **Frontend**: 658 tests ALL PASS (39 files), Findings.tsx + Coverage.tsx verified 100% stmts / 100% funcs / 100% lines (target 95%+ EXCEEDED)
+- **Backend**: 56 tests ALL PASS (reporting 48 + scan controller 8) — ReportControllerTest fixed (2 errors → 0)
+- **Backend JaCoCo (reporting)**: ReportController 0% → 85.6% instr, 100% lines; ReportService ~98% (3 missed)
 - **Backend JaCoCo**: 19% overall (modules/report 97%, modules/graph 95%, modules/mobile 81%)
 - **System Status**: Running locally — backend :8080, frontend :5173
 - **Docker Services**: PostgreSQL :5434, Redis :6381, Kafka :9094, Zookeeper
@@ -56,11 +57,13 @@
 | All others | 0% | 0% | NO TESTS |
 
 ## Next Steps (Priority Order)
-1. **Frontend Findings.tsx** — 76.66% stmts → push to 95%+
-2. **Frontend Coverage.tsx** — 88.09% stmts → push to 95%+
-3. **Backend reporting** — 44% → add more ReportService/ReportController tests
-4. **Backend scan** — 29% → add ScanService/ScanController tests
-5. **Backend 0% modules** — prioritized by business value
+1. ~~Frontend Findings.tsx — 76.66% stmts → push to 95%+~~ DONE (100% stmts verified Sept 18)
+2. ~~Frontend Coverage.tsx — 88.09% stmts → push to 95%+~~ DONE (100% stmts verified Sept 18)
+3. ~~Backend reporting — 44% → add more ReportService/ReportController tests~~ DONE (ReportController 92.1% instr/100% lines, 18 new unit tests + fixed 2 WebMvcTest errors)
+4. ~~Backend scan ScanService 0%~~ DONE 67.5% (20 new unit tests: list/get/jobs/create/pluginsFor/start/cancel/kafka/executeAsync legacy+plugin paths)
+5. ~~Backend scan plugins 0%~~ DONE: Secret 100%, Registry 100%, Sca 99.4%, Sast 96.8%, Container 90.3%, Iac 88.5%, Mobile 88% (12 new tests; Dast 35.5%/Api 34.7% network-bound, plan/validate covered)
+6. ~~Backend controllers 0%~~ DONE: Mfa 100% (11 tests), EvidenceService 96.9% (7 tests), FindingController 91.1% (4 tests), AuthController 86.7% (6 tests), ScanController 100% (8 tests), SlaBreachScheduler 100% (7 tests)
+7. **Sisa (opsional, network-bound): DastAnalyzer 1%, ApiAnalyzer 0% — butuh WireMock/HTTP stub; modul 0% lain (FindingLifecycle, ValidationGate, NextBestAction, Sso, JwtFilter/Provider, TenantFilter) sudah punya test files lama, tinggal run full suite**
 
 ## Key Pitfalls Learned
 - `vi.clearAllMocks()` clears mock implementations too — restore in `beforeEach`
