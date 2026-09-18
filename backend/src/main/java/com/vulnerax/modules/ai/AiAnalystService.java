@@ -152,6 +152,7 @@ public class AiAnalystService {
         if (f.getType()!=null && f.getType().contains("AUTHORIZATION")) return "Object-level authorization missing in " + f.getFunctionName() + ". Evidence: " + f.getCodeSnippet();
         if ("INJECTION".equals(f.getType())) return "Unsanitized input concatenated into query. Evidence: " + f.getCodeSnippet();
         if ("SECRET".equals(f.getType())) return "Hardcoded credential committed to repository. Evidence: " + f.getFilePath();
+        if ("SCA".equals(f.getType())) return "Transitive vulnerable dependency (" + f.getCwe() + "). Evidence: " + f.getFilePath();
         return "Insecure implementation of " + f.getType() + " with CWE " + f.getCwe() + ". Evidence: " + f.getFilePath();
     }
     private String impact(Finding f) {

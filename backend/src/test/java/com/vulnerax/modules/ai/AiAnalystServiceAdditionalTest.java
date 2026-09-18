@@ -54,6 +54,7 @@ class AiAnalystServiceAdditionalTest {
                 .assetName("api.example.com").source("sast-analyzer")
                 .cvss(9.8).riskScore(85.0).riskLevel("CRITICAL")
                 .internetExposed(true).kev(true).businessCriticality("CRITICAL")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -71,6 +72,7 @@ class AiAnalystServiceAdditionalTest {
                 .findingId("F-002").title("Hardcoded Secret").type("SECRET")
                 .severity("CRITICAL").confidence("HIGH").cwe("CWE-798")
                 .source("secret-analyzer").cvss(8.0).riskScore(70.0).riskLevel("VERY_HIGH")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -83,7 +85,9 @@ class AiAnalystServiceAdditionalTest {
         Finding f = Finding.builder()
                 .findingId("F-003").title("Vulnerable Dep").type("SCA")
                 .severity("HIGH").confidence("HIGH").cwe("CWE-1104")
+                .codeSnippet("lodash 4.17.20")
                 .source("sca-analyzer").cvss(7.5).riskScore(60.0).riskLevel("HIGH")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -98,6 +102,7 @@ class AiAnalystServiceAdditionalTest {
                 .severity("HIGH").confidence("HIGH").cwe("CWE-639")
                 .functionName("getAccount").source("dast-analyzer")
                 .cvss(7.0).riskScore(55.0).riskLevel("HIGH")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -112,6 +117,7 @@ class AiAnalystServiceAdditionalTest {
                 .severity("LOW").confidence("LOW").cwe("CWE-200")
                 .cvss(2.0).riskScore(10.0).riskLevel("LOW")
                 .source("dast-analyzer")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -127,6 +133,7 @@ class AiAnalystServiceAdditionalTest {
                 .cvss(10.0).riskScore(90.0).riskLevel("CRITICAL")
                 .internetExposed(true).kev(true).businessCriticality("CRITICAL")
                 .source("sast-analyzer")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -141,6 +148,7 @@ class AiAnalystServiceAdditionalTest {
                 .severity("HIGH").confidence("HIGH").cwe("CWE-79")
                 .cvss(7.0).riskScore(65.0).riskLevel("VERY_HIGH")
                 .source("sast-analyzer")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -155,6 +163,7 @@ class AiAnalystServiceAdditionalTest {
                 .severity("MEDIUM").confidence("MEDIUM").cwe("CWE-525")
                 .cvss(5.0).riskScore(45.0).riskLevel("HIGH")
                 .source("sast-analyzer")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -169,6 +178,7 @@ class AiAnalystServiceAdditionalTest {
                 .severity("LOW").confidence("LOW").cwe("CWE-200")
                 .cvss(1.0).riskScore(15.0).riskLevel("LOW")
                 .source("dast-analyzer")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -184,6 +194,7 @@ class AiAnalystServiceAdditionalTest {
                 .internetExposed(true).businessCriticality("CRITICAL")
                 .cvss(9.0).riskScore(85.0).riskLevel("CRITICAL")
                 .source("sast-analyzer")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -198,6 +209,7 @@ class AiAnalystServiceAdditionalTest {
                 .severity("HIGH").confidence("HIGH").cwe("CWE-79")
                 .kev(true).cvss(7.0).riskScore(65.0).riskLevel("VERY_HIGH")
                 .source("sast-analyzer")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -208,10 +220,10 @@ class AiAnalystServiceAdditionalTest {
     @Test
     void prioritize_withFindings_returnsTop10() {
         Finding f1 = Finding.builder().findingId("F-001").title("Critical").severity("CRITICAL")
-                .riskScore(90.0).cvss(9.8).kev(true).internetExposed(true).build();
+                .riskScore(90.0).cvss(9.8).kev(true).internetExposed(true).findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true).build();
         f1.setId(UUID.randomUUID());
         Finding f2 = Finding.builder().findingId("F-002").title("High").severity("HIGH")
-                .riskScore(65.0).cvss(7.0).build();
+                .riskScore(65.0).cvss(7.0).findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true).build();
         f2.setId(UUID.randomUUID());
         when(findingRepo.findByProjectId(any())).thenReturn(new ArrayList<>(List.of(f1, f2)));
 
@@ -253,6 +265,7 @@ class AiAnalystServiceAdditionalTest {
                 .severity("MEDIUM").confidence("MEDIUM").cwe("CWE-0")
                 .cvss(5.0).riskScore(30.0).riskLevel("MODERATE")
                 .source("sast-analyzer")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -267,6 +280,7 @@ class AiAnalystServiceAdditionalTest {
                 .severity("MEDIUM").confidence("MEDIUM").cwe("CWE-0")
                 .cvss(5.0).riskScore(30.0).riskLevel("MODERATE")
                 .source("sast-analyzer")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 
@@ -282,6 +296,7 @@ class AiAnalystServiceAdditionalTest {
                 .recommendation("Custom recommendation here")
                 .cvss(5.0).riskScore(30.0).riskLevel("MODERATE")
                 .source("sast-analyzer")
+                .findingType("VULNERABILITY").vulnerabilityConfirmed(true).securityVulnerability(true)
                 .build();
         when(findingRepo.findById(any())).thenReturn(Optional.of(f));
 

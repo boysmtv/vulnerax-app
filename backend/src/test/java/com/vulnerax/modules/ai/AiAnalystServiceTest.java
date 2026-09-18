@@ -47,6 +47,9 @@ class AiAnalystServiceTest {
         f.setBusinessCriticality("CRITICAL");
         f.setKev(false);
         f.setReachable(true);
+        f.setFindingType("VULNERABILITY");
+        f.setVulnerabilityConfirmed(true);
+        f.setSecurityVulnerability(true);
         f.setCwe("CWE-89");
         f.setOwasp("A03:2021");
         f.setRecommendation("Use parameterized queries");

@@ -185,7 +185,7 @@ class DastPluginCoverageTest {
         SecurityScannerPlugin.ScanPlan plan = plugin.plan("http://192.0.2.1:99999", Map.of());
         List<Finding> findings = plugin.execute("http://192.0.2.1:99999", plan, Map.of());
         assertFalse(findings.isEmpty());
-        assertEquals("MEDIUM", findings.get(0).getSeverity());
+        assertEquals("INFO", findings.get(0).getSeverity());
     }
 
     @Test

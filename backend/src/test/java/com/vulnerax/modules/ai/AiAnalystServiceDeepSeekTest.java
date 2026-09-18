@@ -90,6 +90,9 @@ class AiAnalystServiceDeepSeekTest {
                 .source("sast-analyzer")
                 .riskScore(90.0)
                 .riskLevel("CRITICAL")
+                .findingType("VULNERABILITY")
+                .vulnerabilityConfirmed(true)
+                .securityVulnerability(true)
                 .build();
     }
 

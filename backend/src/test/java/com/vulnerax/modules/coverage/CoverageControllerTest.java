@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CoverageControllerTest {
 
     @Autowired MockMvc mvc;
-    @MockBean CoverageService svc;
+    @MockBean CoverageEngine coverageEngine;
     @MockBean com.vulnerax.modules.identity.JwtTokenProvider jwtTokenProvider;
     @MockBean com.vulnerax.modules.identity.JwtAuthFilter jwtAuthFilter;
     @MockBean com.vulnerax.modules.identity.UserRepository userRepository;
