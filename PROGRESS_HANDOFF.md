@@ -67,7 +67,8 @@
 8. ~~Container 55% / Mobile 53% / IaC 29%~~ DONE via `MiscAnalyzersTest` (21 tests): Container 99.3%, Mobile 99.0%, IaC 96.7%. **Bug produksi #2 ditemukan & diperbaiki**: cek secret Dockerfile `"ENV "+s` vs `config.toLowerCase()` — dead code, tidak pernah match (ContainerAnalyzer.java → `"env "/"arg "`).
 9. ~~ScaAnalyzer 64%~~ DONE via `ScaAnalyzerTest` (12 tests: maven/npm/pip/go/generic/null-file): **99.0%**.
 10. ~~Full suite~~ DONE: `mvn test` 1992 tests (8:42 mnt) → 37 failures + 2 errors, **semua diperbaiki**: 36 fixture AiAnalystService* tak set konfirmasi (guard SCAN_ERROR/commit 57ce2b8 membuat stale) + branch rootCause SCA tak ada (ditambah: "Transitive vulnerable dependency") + 1 ekspektasi stale MEDIUM→INFO (DastPluginCoverageTest) + 2 missing-mock CoverageControllerTest (pola LESSON-009). Verifikasi: 101/101 hijau di 5 kelas yang terdampak; sisa suite sudah hijau di run penuh.
-11. **Sisa nyata: tidak ada. Full suite hijau komposisional. Berikutnya (opsional): ScaAnalyzer 99%→100% (5 instr), ScanService 67.5%→80%+, Container/Mobile/IaC plugin execute-paths.**
+11. ~~Repo hygiene~~ DONE: `.gitignore` `coverage/` menelan package Java `modules/coverage` → dipersempit ke `frontend/coverage/`; commit file yang tak pernah terlacak: `CoverageEngine.java` (production! di-require CoverageController yang tracked — fresh clone sebelumnya gagal compile), `CoverageServiceTest`, `CoverageServiceAdditionalTest`.
+12. **Sisa nyata: tidak ada. Berikutnya (opsional): ScaAnalyzer 99%→100% (5 instr), ScanService 67.5%→80%+.**
 
 ## Key Pitfalls Learned
 - `vi.clearAllMocks()` clears mock implementations too — restore in `beforeEach`
