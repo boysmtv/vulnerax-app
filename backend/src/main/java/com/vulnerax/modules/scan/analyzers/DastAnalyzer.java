@@ -46,7 +46,7 @@ public class DastAnalyzer {
                     "target", url,
                     "dns", Map.of("resolved", "unknown"),
                     "tcp", Map.of("reachable", false, "reason", "connection failed"),
-                    "http", Map.of("response", null),
+                    "http", Collections.singletonMap("response", null),
                     "scanner", Map.of("attempts", 1, "worker", "local"),
                     "vulnerability", Map.of("confirmed", false)
                 ));
@@ -381,7 +381,7 @@ public class DastAnalyzer {
             f.put("cwe", null);
             f.put("cvss", null);
             f.put("riskScore", 0);
-            f.put("evidence", Map.of("error", e.getMessage(), "vulnerability", Map.of("confirmed", false)));
+            f.put("evidence", Map.of("error", String.valueOf(e.getMessage()), "vulnerability", Map.of("confirmed", false)));
             enrichDast(f, target, 0, "", "", null);
             out.add(f);
         }
