@@ -279,7 +279,7 @@ cd frontend && npm install && npm run dev
 
 | File | Purpose |
 |------|---------|
-| `PRD.md` | Full PRD (4493 lines) |
+| `../PRD.md` | Full PRD (4493 lines) |
 | `backend/src/main/resources/db/migration/V1__init_schema.sql` | Database schema |
 | `backend/src/main/java/com/vulnerax/modules/rbac/` | RBAC system |
 | `backend/src/main/java/com/vulnerax/config/ratelimit/RateLimitFilter.java` | Rate limiting |
