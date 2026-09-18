@@ -64,7 +64,8 @@
 5. ~~Backend scan plugins 0%~~ DONE: Secret 100%, Registry 100%, Sca 99.4%, Sast 96.8%, Container 90.3%, Iac 88.5%, Mobile 88% (12 new tests; Dast 35.5%/Api 34.7% network-bound, plan/validate covered)
 6. ~~Backend controllers 0%~~ DONE: Mfa 100% (11 tests), EvidenceService 96.9% (7 tests), FindingController 91.1% (4 tests), AuthController 86.7% (6 tests), ScanController 100% (8 tests), SlaBreachScheduler 100% (7 tests)
 7. ~~Sisa (opsional, network-bound): DastAnalyzer 1%, ApiAnalyzer 0%~~ DONE via JDK HttpServer stubs (pola AiAnalystServiceDeepSeekTest): DastAnalyzer 85.7% (10 tests, 25 asersi temuan), ApiAnalyzer 92.4%, DastPlugin 94.1%, ApiPlugin 90.7%. **Bug produksi ditemukan & diperbaiki**: `Map.of("response", null)` + `Map.of("error", null)` NPE di path Target-Unreachable (DastAnalyzer.java) — path itu tidak pernah bisa jalan sebelumnya.
-8. **Sisa nyata: modul 0% lain (FindingLifecycle, ValidationGate, NextBestAction, Sso, JwtFilter/Provider, TenantFilter) sudah punya test files lama, tinggal run full suite `mvn test`**
+8. ~~Container 55% / Mobile 53% / IaC 29%~~ DONE via `MiscAnalyzersTest` (21 tests): Container 99.3%, Mobile 99.0%, IaC 96.7%. **Bug produksi #2 ditemukan & diperbaiki**: cek secret Dockerfile `"ENV "+s` vs `config.toLowerCase()` — dead code, tidak pernah match (ContainerAnalyzer.java → `"env "/"arg "`).
+9. **Sisa nyata: modul 0% lain (FindingLifecycle, ValidationGate, NextBestAction, Sso, JwtFilter/Provider, TenantFilter) sudah punya test files lama, tinggal run full suite `mvn test`**
 
 ## Key Pitfalls Learned
 - `vi.clearAllMocks()` clears mock implementations too — restore in `beforeEach`

@@ -101,7 +101,7 @@ public class ContainerAnalyzer {
             }
             String[] secrets = {"password", "secret", "token", "key", "credential"};
             for (String s : secrets) {
-                if (config.toLowerCase().contains("ENV " + s) || config.toLowerCase().contains("ARG " + s)) {
+                if (config.toLowerCase().contains("env " + s) || config.toLowerCase().contains("arg " + s)) {
                     out.add(mk("Dockerfile: Secret in ENV/ARG", "CWE-798", "CRITICAL",
                         "Secret " + s + " in ENV/ARG — visible in image history",
                         image, 0, "Use build secrets (DOCKER_BUILDKIT=1 --mount=type=secret)"));
