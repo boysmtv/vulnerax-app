@@ -37,5 +37,6 @@ logs/
 *.orig
 agent_memory/
 .agent_memory/
+.ai-agent/
 ai-agent-core-state/
 *.heapsnapshot
